@@ -1,55 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login Hemotrack</title>
-    @vite('resources/css/app.css')
+<meta charset="UTF-8">
+<title>Login Hemotrack</title>
+@vite('resources/css/app.css')
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 
 <body class="h-screen flex">
 
-    <!-- KIRI -->
-    <div class="w-1/3 bg-gray-200 p-10 flex flex-col justify-center">
-        <h1 class="text-3xl font-bold text-teal-700">WELCOME</h1>
-        <h2 class="text-2xl font-bold text-red-500">HEMOTRACK</h2>
+<!-- KIRI -->
+<div class="w-[30%] bg-[#e5e5e5] relative">
 
-        <button class="mt-10 bg-teal-700 text-white px-6 py-2 rounded w-32">
+    <!-- TEXT -->
+    <div class="absolute top-20 left-10">
+        <h1 class="text-teal-700 text-xl" style="font-family: 'Press Start 2P'">
+            WELCOME
+        </h1>
+        <h2 class="text-red-500 text-lg mt-2" style="font-family: 'Press Start 2P'">
+            HEMOTRACK
+        </h2>
+    </div>
+
+    <!-- BUTTON LOGIN (POSISI FIX) -->
+    <div class="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2">
+        <button class="bg-teal-700 text-white px-6 py-2 rounded-full shadow-lg">
             Login
         </button>
     </div>
 
-    <!-- KANAN -->
-    <div class="w-2/3 bg-teal-700 flex items-center justify-center">
+</div>
 
-        <form method="POST" action="{{ route('login') }}" class="w-1/2">
-            @csrf
+<!-- KANAN -->
+<div class="w-[70%] bg-gradient-to-br from-[#1c6b67] via-[#1f7f78] to-[#2aa89c] flex items-center">
 
-            <div class="text-center mb-6">
-                <img src="/logo.png" class="mx-auto w-24">
+    <div class="ml-28 w-[400px]">
+
+        <!-- LOGO -->
+        <div class="flex justify-center mb-10">
+            <div class="bg-white rounded-full p-6 shadow-xl">
+                <img src="/logo.png" class="w-28 h-28">
             </div>
+        </div>
 
-            <div class="mb-4">
-                <label class="text-white">Email :</label>
+        <!-- FORM -->
+        <form method="POST" action="{{ route('login') }}">
+        @csrf
+
+        <!-- EMAIL -->
+        <div class="mb-6">
+            <label class="text-white text-sm">Email :</label>
+            <div class="flex items-center bg-gray-200 rounded-full px-4 py-3 mt-1">
+                <i class="fa fa-user text-gray-500 mr-3"></i>
                 <input type="email" name="email"
-                    class="w-full p-3 rounded bg-gray-200">
+                    class="bg-transparent border-none outline-none w-full focus:ring-0">
             </div>
+        </div>
 
-            <div class="mb-4">
-                <label class="text-white">Password :</label>
+        <!-- PASSWORD -->
+        <div class="mb-6">
+            <label class="text-white text-sm">Password :</label>
+            <div class="flex items-center bg-gray-200 rounded-full px-4 py-2 mt-1 text-sm">
+                <i class="fa fa-lock text-gray-500 mr-3"></i>
                 <input type="password" name="password"
-                    class="w-full p-3 rounded bg-gray-200">
+                    class="bg-transparent border-none outline-none w-full focus:ring-0">
             </div>
+        </div>
 
-            <p class="text-white text-sm mb-4">
-                Forgot Password?
-            </p>
+        <p class="text-white text-sm mb-5">Forgot Password?</p>
 
-            <button class="w-full bg-cyan-300 p-3 rounded">
-                Get Start
-            </button>
+        <!-- BUTTON -->
+        <button class="w-full bg-[#7fd4d6] py-3 rounded-full shadow-lg">
+            Get Start
+        </button>
 
         </form>
+
     </div>
+
+</div>
 
 </body>
 </html>
