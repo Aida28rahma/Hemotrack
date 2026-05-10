@@ -1,20 +1,8 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('content')
     <div class="flex min-h-screen bg-gray-100">
 
-        <!-- Sidebar -->
-        <aside class="w-64 bg-teal-800 text-white p-5">
-            <h1 class="text-xl font-bold mb-6">HEMOTRACK</h1>
-
-            <nav class="space-y-3">
-                <a href="#" class="block hover:bg-teal-700 p-2 rounded">🏠 Beranda</a>
-                <a href="#" class="block hover:bg-teal-700 p-2 rounded">🩸 Stok Darah</a>
-                <a href="#" class="block hover:bg-teal-700 p-2 rounded">📩 Permintaan Darah</a>
-                <a href="#" class="block hover:bg-teal-700 p-2 rounded">🚚 Distribusi Darah</a>
-                <a href="#" class="block hover:bg-teal-700 p-2 rounded">📥 Input Data</a>
-                <a href="#" class="block hover:bg-teal-700 p-2 rounded">🖨️ Cetak Laporan</a>
-                <a href="#" class="block hover:bg-teal-700 p-2 rounded">↩️ Log Out</a>
-            </nav>
-        </aside>
 
         <!-- Content -->
         <main class="flex-1 p-6">
@@ -99,4 +87,4 @@
 
         </main>
     </div>
-</x-app-layout>
+@endsection
