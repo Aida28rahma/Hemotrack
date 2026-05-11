@@ -14,6 +14,12 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * Role constants.
+     */
+    const ROLE_PETUGAS = 'petugas';
+    const ROLE_DOKTER = 'dokter';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -22,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -45,5 +52,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Check if user is petugas.
+     */
+    public function isPetugas(): bool
+    {
+        return $this->role === self::ROLE_PETUGAS;
+    }
+
+    /**
+     * Check if user is dokter.
+     */
+    public function isDokter(): bool
+    {
+        return $this->role === self::ROLE_DOKTER;
     }
 }
