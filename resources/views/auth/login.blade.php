@@ -26,18 +26,18 @@
     </div>
 
     <!-- BUTTON LOGIN (POSISI FIX) -->
-    <div class="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2">
-        <button class="bg-teal-700 text-white px-6 py-2 rounded-full shadow-lg">
-            Login
+    <div class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[10%]">
+        <button class="bg-teal-700 text-white px-8 py-3 rounded-lg shadow-lg text-lg">
+            LOGIN
         </button>
     </div>
 
 </div>
 
 <!-- KANAN -->
-<div class="w-[70%] bg-gradient-to-br from-[#1c6b67] via-[#1f7f78] to-[#2aa89c] flex items-center">
+<div class="w-[70%] bg-gradient-to-br from-[#1c6b67] via-[#1f7f78] to-[#2aa89c] flex items-center justify-center">
 
-    <div class="ml-28 w-[400px]">
+    <div class="w-[400px] translate-x-12">
 
         <!-- LOGO -->
         <div class="flex justify-center mb-10">
