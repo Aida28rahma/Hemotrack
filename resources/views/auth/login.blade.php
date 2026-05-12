@@ -58,25 +58,24 @@
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal-500/5 rounded-full blur-3xl"></div>
     </div>
 
-    <!-- Main Container -->
-    <div class="relative w-full max-w-lg mx-auto">
+
+    <!-- BUTTON LOGIN (POSISI FIX) -->
+    <div class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[10%]">
+        <button class="bg-teal-700 text-white px-8 py-3 rounded-lg shadow-lg text-lg">
+            LOGIN
+        </button>
+    </div>
+
 
         <!-- Login Card -->
         <div class="glass-card rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10">
 
-            <!-- Header / Branding -->
-            <div class="text-center mb-8">
-                <!-- Logo -->
-                <div class="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-teal-50 to-teal-100 rounded-full shadow-lg mb-5 float-animation">
-                    <img src="/logo.png" alt="Hemotrack Logo" class="w-12 h-12 sm:w-14 sm:h-14 object-contain"
-                         onerror="this.style.display='none'; this.parentElement.innerHTML='<svg class=\'w-10 h-10 sm:w-12 sm:h-12 text-teal-700\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z\'></path></svg>'">
-                </div>
 
-                <!-- App Name -->
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 tracking-tight">
-                    HEMO<span class="text-teal-700">TRACK</span>
-                </h1>
-                <p class="text-gray-500 text-sm sm:text-base mt-2">Sistem Manajemen Bank Darah</p>
+<!-- KANAN -->
+<div class="w-[70%] bg-gradient-to-br from-[#1c6b67] via-[#1f7f78] to-[#2aa89c] flex items-center justify-center">
+
+    <div class="w-[400px] translate-x-12">
+
 
                 <!-- Health indicator -->
                 <div class="flex items-center justify-center gap-2 mt-3">
