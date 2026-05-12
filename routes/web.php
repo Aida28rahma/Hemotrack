@@ -47,17 +47,22 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('/inputDarah', function () {
-
     session(['asal_darah' => 'PMI']);
-
     return view('inputDarah');
-
 })->name('inputDarah');
 
 Route::get('/inputPendonor', function () {
-
     session(['asal_darah' => 'Unit Bank Darah RS']);
-
     return view('inputPendonor');
-
 })->name('inputPendonor');
+
+<<<<<<< HEAD
+})->name('inputPendonor');
+=======
+Route::get('/dashboardDokter', function () {
+        return view('dashboardDokter');
+    })->name('dashboardDokter');
+ Route::get('/permintaanDokter', function () {
+        return view('permintaanDokter');
+    })->name('permintaanDokter');
+>>>>>>> 86df71adc525057c90daedf312a7eda69c076850
