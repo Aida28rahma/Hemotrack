@@ -31,8 +31,25 @@ Route::middleware(['auth'])->group(function () {
         return view('Petugas.stok');
     })->name('stok');
 
-    Route::get('/permintaan', function () {
-        return view('Petugas.permintaan');
+    Route::get('/permintaan', function (Request $request) {
+
+        $query = PermintaanDokter::query();
+
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->search . '%')
+                ->orWhere('poli', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $data = $query->latest()->get();
+
+        return view('Petugas.permintaan', compact('data'));
+
     })->name('permintaan');
 
     Route::get('/distribusi', function () {
