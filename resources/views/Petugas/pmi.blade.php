@@ -9,6 +9,12 @@
         Form Input Data Darah Pendonor
     </h1>
 
+    @if(session('success'))
+        <div class="mb-5 bg-green-100 border border-green-300 text-green-700 px-5 py-3 rounded-lg font-bold">
+            {{ session('success') }}
+        </div>
+    @endif
+
     {{-- CARD FORM --}}
     <div class="bg-white rounded-2xl shadow-md border border-gray-200 w-full">
 
@@ -20,74 +26,79 @@
         </div>
 
         {{-- FORM --}}
-        <form class="px-8 py-8 space-y-6">
+        <form action="{{ route('pmi.simpan') }}" method="POST" class="px-8 py-8 space-y-6">
+            @csrf
 
-            {{-- GOLONGAN --}}
-            <div>
-                <label class="block font-bold text-base mb-2">
-                    Golongan
-                </label>
+            <form action="{{ route('pmi.simpan') }}" method="POST" class="px-8 py-8 space-y-6">
+    @csrf
 
-                <select class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
-                    <option value="">Pilih Golongan Darah</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="AB">AB</option>
-                    <option value="O">O</option>
-                </select>
-            </div>
+    {{-- GOLONGAN --}}
+    <div>
+        <label class="block font-bold text-base mb-2">
+            Golongan
+        </label>
 
-            {{-- RHESUS --}}
-            <div>
-                <label class="block font-bold text-base mb-2">
-                    Rhesus
-                </label>
+        <select name="golongan"
+                class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
+            <option value="">Pilih Golongan Darah</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="AB">AB</option>
+            <option value="O">O</option>
+        </select>
+    </div>
 
-                <select class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
-                    <option value="">Pilih Rhesus</option>
-                    <option value="Positif">Positif (+)</option>
-                    <option value="Negatif">Negatif (-)</option>
-                </select>
-            </div>
+    {{-- RHESUS --}}
+    <div>
+        <label class="block font-bold text-base mb-2">
+            Rhesus
+        </label>
 
-            {{-- JENIS KOMPONEN --}}
-            <div>
-                <label class="block font-bold text-base mb-2">
-                    Jenis Komponen
-                </label>
+        <select name="rhesus"
+                class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
+            <option value="">Pilih Rhesus</option>
+            <option value="Positif">Positif (+)</option>
+            <option value="Negatif">Negatif (-)</option>
+        </select>
+    </div>
 
-                <select class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
-                    <option value="">Pilih Jenis Komponen</option>
-                    <option value="Whole Blood">Whole Blood</option>
-                    <option value="PRC">PRC</option>
-                    <option value="TC">TC</option>
-                    <option value="FFP">FFP</option>
-                </select>
-            </div>
+    {{-- JENIS KOMPONEN --}}
+    <div>
+        <label class="block font-bold text-base mb-2">
+            Jenis Komponen
+        </label>
 
-            {{-- TANGGAL KEDALUWARSA --}}
-            <div>
-                <label class="block font-bold text-base mb-2">
-                    Tanggal Kedaluwarsa
-                </label>
+        <select name="jenis_komponen"
+                class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
+            <option value="">Pilih Jenis Komponen</option>
+            <option value="Whole Blood">Whole Blood</option>
+            <option value="PRC">PRC</option>
+            <option value="TC">TC</option>
+            <option value="FFP">FFP</option>
+        </select>
+    </div>
 
-                <input type="date"
-                       class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
-            </div>
+    {{-- TANGGAL KEDALUWARSA --}}
+    <div>
+        <label class="block font-bold text-base mb-2">
+            Tanggal Kedaluwarsa
+        </label>
 
-        </form>
-
+        <input type="date"
+               name="tanggal_kedaluwarsa"
+               class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
     </div>
 
     {{-- BUTTON --}}
-    <div class="flex justify-end w-full mt-10">
+    <div class="flex justify-end w-full pt-6">
 
-        <button class="px-14 py-3 border border-[#0f5c5c] text-[#0f5c5c] font-bold rounded-sm shadow-md hover:bg-[#0f5c5c] hover:text-white transition">
+        <button type="submit"
+                class="px-14 py-3 border border-[#0f5c5c] text-[#0f5c5c] font-bold rounded-sm shadow-md hover:bg-[#0f5c5c] hover:text-white transition">
             Simpan
         </button>
 
     </div>
 
-</div>
+</form>
 
 @endsection

@@ -84,6 +84,10 @@ Route::middleware(['auth'])->group(function () {
         return view('Petugas.pmi');
     })->name('pmi');
 
+    Route::post('/pmi/simpan', function () {
+        return redirect()->route('pmi')->with('success', 'Data darah pendonor berhasil disimpan.');
+    })->name('pmi.simpan');
+
     Route::get('/unit-bank-darah', function () {
         if (auth()->user()->role != 'petugas') {
         abort(403);
@@ -92,6 +96,13 @@ Route::middleware(['auth'])->group(function () {
         return view('Petugas.unitBankDarah');
     })->name('unitBankDarah');
 
+    Route::get('/unit-bank-darah/darah', function () {
+        return view('Petugas.unitBankDarah2');
+    })->name('unitBankDarah.darah');
+
+    Route::post('/unit-bank-darah/simpan', function () {
+        return redirect()->route('unitBankDarah.darah')->with('success', 'Data berhasil disimpan.');
+    })->name('unitBankDarah.simpan');
 });
     /*
     |--------------------------------------------------------------------------
