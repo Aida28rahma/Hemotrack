@@ -2,102 +2,139 @@
 
 @section('content')
 
-<div class="p-6 max-w-2xl mx-auto">
+<div class="min-h-screen flex items-center justify-center p-6">
 
-    <div class="bg-white p-6 rounded-xl shadow">
-        <h2 class="text-xl font-bold mb-6">Form Permintaan Darah</h2>
+    <div class="w-full max-w-5xl bg-gradient-to-br from-[#063b3a] via-[#0d7770] to-[#20b8b0] rounded-xl shadow-2xl p-10">
+
+        <h1 class="text-3xl font-bold text-white text-center mb-8">
+            Form Permintaan Darah
+        </h1>
+
+        @if(session('success'))
+            <div class="mb-6 bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl">
+                ✅ {{ session('success') }}
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('permintaanDokter.store') }}">
             @csrf
 
-            <!-- NO RM -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">No RM</label>
-                <input type="text" name="no_rm"
-                    class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-teal-200">
+            <!-- DATA PASIEN -->
+            <div class="border border-white/70 rounded-md p-5 mb-6">
+                <h2 class="text-2xl font-bold text-white mb-3">
+                    Data Pasien
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+                    <!-- NO RM -->
+                    <div>
+                        <label class="block text-white text-sm mb-2">
+                            No Rekam Medis
+                        </label>
+                        <input type="text" name="no_rm"
+                            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+                    </div>
+
+                    <!-- POLI -->
+                    <div>
+                        <label class="block text-white text-sm mb-2">
+                            Poli Tujuan
+                        </label>
+                        <select name="poli"
+                            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+                            <option value="">Pilih Poli</option>
+                            <option value="IGD">IGD</option>
+                            <option value="Poli Anak">Poli Anak</option>
+                            <option value="Poli Bedah">Poli Bedah</option>
+                            <option value="Poli Obgyn">Poli Obgyn</option>
+                            <option value="Poli Penyakit Dalam">Poli Penyakit Dalam</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- NAMA PASIEN -->
+                <div>
+                    <label class="block text-white text-sm mb-2">
+                        Nama Pasien
+                    </label>
+                    <input type="text" name="nama"
+                        class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+                </div>
             </div>
 
-            <!-- NAMA PASIEN -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Nama Pasien</label>
-                <input type="text" name="nama"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-            </div>
+            <!-- DETAIL PERMINTAAN -->
+            <div class="border border-white/70 rounded-md p-5 mb-6">
+                <h2 class="text-2xl font-bold text-white mb-3">
+                    Detail Permintaan Darah
+                </h2>
 
-            <!-- JENIS KELAMIN -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Jenis Kelamin</label>
-                <select name="jenis_kelamin"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-                    <option value="">-- Pilih --</option>
-                    <option value="L">Laki-laki</option>
-                    <option value="P">Perempuan</option>
-                </select>
-            </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
-            <!-- POLI -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Poli</label>
-                <select name="poli"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-                    <option value="">-- Pilih --</option>
-                    <option value="Bedah">Bedah</option>
-                    <option value="PD">Penyakit Dalam</option>
-                    <option value="Anak">Anak</option>
-                    <option value="Obgyn">Obgyn</option>
-                    <option value="UGD">UGD</option>
-                </select>
-            </div>
-            
-            <!-- Golongan -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Golongan</label>
-                <select name="golongan"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-                    <option value="">-- Pilih --</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="AB">AB</option>
-                    <option value="O">O</option>
-                </select>
-            </div>
+                    <!-- GOLONGAN -->
+                    <div>
+                        <label class="block text-white text-sm mb-2">
+                            Golongan Darah
+                        </label>
+                        <select name="golongan"
+                            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+                            <option value="">Pilih</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="AB">AB</option>
+                            <option value="O">O</option>
+                        </select>
+                    </div>
 
-            <!-- RHESUS -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Rhesus</label>
-                <select name="rhesus"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-                    <option value="">-- Pilih --</option>
-                    <option value="+">Positif (+)</option>
-                    <option value="-">Negatif (-)</option>
-                </select>
-            </div>
+                    <!-- RHESUS -->
+                    <div>
+                        <label class="block text-white text-sm mb-2">
+                            Rhesus
+                        </label>
+                        <select name="rhesus"
+                            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+                            <option value="">Pilih</option>
+                            <option value="+">Positif (+)</option>
+                            <option value="-">Negatif (-)</option>
+                        </select>
+                    </div>
 
-            <!-- KOMPONEN DARAH -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Komponen Darah</label>
-                <select name="komponen"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-                    <option value="">-- Pilih --</option>
-                    <option value="WB">Whole Blood</option>
-                    <option value="PRC">PRC</option>
-                    <option value="TC">Trombosit</option>
-                    <option value="FFP">Plasma</option>
-                    <option value="Kriopresipitat">Kriopresipitat</option>
-                </select>
-            </div>
+                    <!-- KOMPONEN -->
+                    <div>
+                        <label class="block text-white text-sm mb-2">
+                            Jenis Komponen
+                        </label>
+                        <select name="komponen"
+                            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+                            <option value="">Pilih</option>
+                            <option value="Whole Blood">Whole Blood</option>
+                            <option value="PRC">PRC</option>
+                            <option value="Trombosit">Trombosit</option>
+                            <option value="FFP">FFP</option>
+                            <option value="Kriopresipitasi">Kriopresipitasi</option>
+                        </select>
+                    </div>
 
-            <!-- JUMLAH -->
-            <div class="mb-6">
-                <label class="block text-sm font-medium">Jumlah (kantong)</label>
-                <input type="number" name="jumlah"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
+                    <!-- JUMLAH -->
+                    <div>
+                        <label class="block text-white text-sm mb-2">
+                            Jumlah
+                        </label>
+                        <input type="number" name="jumlah"
+                            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+                    </div>
+
+                </div>
             </div>
 
             <!-- BUTTON -->
-            <button class="w-full bg-teal-600 text-white py-2 rounded-lg font-semibold hover:bg-teal-700 transition">
-                Kirim Permintaan
-            </button>
+            <div class="flex justify-end">
+                <button type="submit"
+                    class="bg-white text-teal-700 px-6 py-3 rounded-md font-bold shadow hover:bg-gray-100 transition">
+                    Ajukan Permintaan
+                </button>
+            </div>
 
         </form>
     </div>
