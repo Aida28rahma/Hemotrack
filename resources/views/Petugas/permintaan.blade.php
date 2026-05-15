@@ -11,11 +11,6 @@
             Permintaan Darah
         </h1>
 
-        <button
-            class="bg-teal-500 hover:bg-teal-600 text-white px-5 py-3 rounded-xl shadow transition">
-            + Tambah Permintaan
-        </button>
-
     </div>
 
     <!-- Filter -->
@@ -23,71 +18,43 @@
 
         <div class="flex justify-between items-end flex-wrap gap-4">
 
-            <!-- Status Filter -->
+          <!-- Status Filter -->
             <div class="flex flex-wrap gap-4">
 
                 <!-- Semua -->
-                <button
-                    class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50 transition">
-
-                    <span class="text-xl">📋</span>
-
-                    <span class="font-semibold text-gray-700">
-                        Semua
-                    </span>
-
-                </button>
+                <a href="{{ route('permintaan', ['search' => request('search')]) }}"
+                class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50">
+                    📋 Semua
+                </a>
 
                 <!-- Menunggu -->
-                <button
-                    class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50 transition">
+                <a href="{{ route('permintaan', ['status' => 'menunggu', 'search' => request('search')]) }}"
+                class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50">
+                    ◉ Menunggu
+                </a>
 
-                    <span class="text-gray-600">◉</span>
-
-                    <span class="font-semibold text-gray-700">
-                        Menunggu
-                    </span>
-
-                </button>
-
-                <!-- Selesai -->
-                <button
-                    class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50 transition">
-
-                    <span class="text-gray-600">◉</span>
-
-                    <span class="font-semibold text-gray-700">
-                        Selesai
-                    </span>
-
-                </button>
+                <!-- Disetujui -->
+                <a href="{{ route('permintaan', ['status' => 'disetujui', 'search' => request('search')]) }}"
+                class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50">
+                    ◉ Disetujui
+                </a>
 
                 <!-- Ditolak -->
-                <button
-                    class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50 transition">
-
-                    <span class="text-gray-600">◉</span>
-
-                    <span class="font-semibold text-gray-700">
-                        Ditolak
-                    </span>
-
-                    <span
-                        class="w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center text-sm font-bold">
-                        5
-                    </span>
-
-                </button>
+                <a href="{{ route('permintaan', ['status' => 'ditolak', 'search' => request('search')]) }}"
+                class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50">
+                    ◉ Ditolak
+                </a>
 
             </div>
 
             <!-- Search -->
             <div>
-
-                <input type="text"
-                    placeholder="Cari Data"
-                    class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-64 focus:ring-2 focus:ring-teal-500 outline-none">
-
+                <form method="GET" action="{{ route('permintaan') }}">
+                    <input type="text" name="search"
+                        value="{{ request('search') }}"
+                        placeholder="Cari nama / poli..."
+                        class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-64 focus:ring-2 focus:ring-teal-500 outline-none">
+                </form>
             </div>
 
         </div>

@@ -23,27 +23,64 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('Petugas.dashboard');
-    })->name('dashboard');
+   Route::get('/dashboard', function () {
+
+    if (auth()->user()->role == 'dokter') {
+        return view('Dokter.dashboardDokter');
+    }
+    return view('Petugas.dashboard');
+    })->middleware(['auth'])->name('dashboard');
+
 
     Route::get('/stok', function () {
         return view('Petugas.stok');
     })->name('stok');
 
-    Route::get('/permintaan', function () {
-        return view('Petugas.permintaan');
+    Route::get('/permintaan', function (Request $request) {
+        if (auth()->user()->role != 'petugas') {
+        abort(403);
+        }
+
+        $query = PermintaanDokter::query();
+
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->search . '%')
+                ->orWhere('poli', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $data = $query->latest()->get();
+
+        return view('Petugas.permintaan', compact('data'));
+
     })->name('permintaan');
 
     Route::get('/distribusi', function () {
+        if (auth()->user()->role != 'petugas') {
+        abort(403);
+        }
+
         return view('Petugas.distribusi');
     })->name('distribusi');
 
     Route::get('/laporan', function () {
+        if (auth()->user()->role != 'petugas') {
+        abort(403);
+        }
+
         return view('Petugas.laporan');
     })->name('laporan');
 
     Route::get('/pmi', function () {
+        if (auth()->user()->role != 'petugas') {
+        abort(403);
+        }
+
         return view('Petugas.pmi');
     })->name('pmi');
 
@@ -52,6 +89,10 @@ Route::middleware(['auth'])->group(function () {
     })->name('pmi.simpan');
 
     Route::get('/unit-bank-darah', function () {
+        if (auth()->user()->role != 'petugas') {
+        abort(403);
+        }
+
         return view('Petugas.unitBankDarah');
     })->name('unitBankDarah');
 
@@ -70,10 +111,22 @@ Route::middleware(['auth'])->group(function () {
     */
 
     // Dashboard dokter
-    Route::get('/dashboardDokter', fn() => view('dashboardDokter'))->name('dashboardDokter');
+    Route::get('/dashboardDokter', function () {
+        if (auth()->user()->role != 'dokter') {
+        abort(403);
+        }
+
+        return view('dashboardDokter');
+    })->name('Dokter.dashboardDokter');
 
     // Form permintaan dokter (GET)
-    Route::get('/permintaanDokter', fn() => view('permintaanDokter'))->name('permintaanDokter');
+    Route::get('/permintaanDokter', function () {
+        if (auth()->user()->role != 'dokter') {
+        abort(403);
+        }
+
+        return view('Dokter.permintaanDokter');
+    })->name('permintaanDokter');
 
     // SIMPAN PERMINTAAN (POST)
     Route::post('/permintaanDokter', function (Request $request) {
