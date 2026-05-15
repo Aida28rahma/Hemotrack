@@ -1,206 +1,122 @@
-<div class="w-64 min-h-screen bg-gradient-to-b from-[#0f4d4d] to-[#46b4b0] text-white rounded-r-[30px] px-4 py-6">
+<div class="w-64 min-h-[calc(100vh-86px)] bg-gradient-to-b from-[#0f4d4d] to-[#43b3b0] rounded-br-[28px] px-4 py-8 text-white shrink-0">
 
-    {{-- LOGO --}}
-    <div class="flex items-center gap-3 mb-12 px-2">
-
-        <img src="/logo.png" class="w-10 h-10">
-
-        <h1 class="text-2xl font-bold tracking-wide">
-            HEMOTRACK
-        </h1>
-
-    </div>
-
-    {{-- MENU --}}
-    <ul class="space-y-2">
+    <ul class="space-y-3">
 
         {{-- BERANDA --}}
         <li>
-
             <a href="{{ route('dashboard') }}"
-               class="flex items-center gap-4 px-4 py-4 rounded-l-full transition-all duration-200
+               class="flex items-center gap-4 px-4 py-3 rounded-l-full font-bold transition
+               {{ request()->routeIs('dashboard') ? 'bg-white text-[#0f5c5c]' : 'text-white hover:bg-white/10' }}">
 
-               {{ request()->routeIs('dashboard')
-                    ? 'bg-white text-[#0f5c5c] font-semibold shadow-md'
-                    : 'hover:bg-white/10 text-white'
-               }}">
-
-                {{-- ICON --}}
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="w-5 h-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m0-8H5m7 0h7"/>
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
                 </svg>
 
                 <span>Beranda</span>
-
             </a>
-
         </li>
 
-        {{-- INPUT DATA --}}
-        <li class="mt-4">
+        {{-- INPUT DATA PENDONOR --}}
+        <li x-data="{ open: {{ request()->routeIs('pmi') || request()->routeIs('unitBankDarah') ? 'true' : 'false' }} }">
 
-            <div class="flex items-center gap-4 px-4 py-3 text-white font-medium">
+            <button type="button"
+                    @click="open = !open"
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-l-full font-bold transition
+                    {{ request()->routeIs('pmi') || request()->routeIs('unitBankDarah') ? 'bg-white text-[#0f5c5c]' : 'text-white hover:bg-white/10' }}">
 
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="w-5 h-5"
-                     fill="none"
+                <div class="flex items-center gap-4">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M6 2h12a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2zm3 5h6v2H9V7zm0 4h6v2H9v-2zm0 4h4v2H9v-2z"/>
+                    </svg>
+
+                    <span class="text-left leading-tight">
+                        Input data Pendonor
+                    </span>
+                </div>
+
+                <svg class="w-4 h-4 transition-transform duration-200"
+                     :class="{ 'rotate-90': open }"
                      viewBox="0 0 24 24"
-                     stroke="currentColor">
-
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 4v16m8-8H4"/>
+                     fill="currentColor">
+                    <path d="M9 18l6-6-6-6v12z"/>
                 </svg>
+            </button>
 
-                <span>Input data Pendonor</span>
+            <div x-show="open" x-transition class="ml-12 mt-3 space-y-2">
 
-            </div>
-
-            {{-- SUB MENU --}}
-            <div class="ml-12 mt-2 space-y-2 text-sm">
-
-                <a href="#"
-                   class="block hover:text-gray-200 transition">
+                <a href="{{ route('pmi') }}"
+                   class="block px-3 py-2 rounded-l-full font-bold transition
+                   {{ request()->routeIs('pmi') ? 'bg-white/30 text-white' : 'text-white hover:bg-white/10' }}">
                     › PMI
                 </a>
 
-                <a href="#"
-                   class="block hover:text-gray-200 transition">
+                <a href="{{ route('unitBankDarah') }}"
+                   class="block px-3 py-2 rounded-l-full font-bold transition
+                   {{ request()->routeIs('unitBankDarah') ? 'bg-white/30 text-white' : 'text-white hover:bg-white/10' }}">
                     › Unit Bank Darah
                 </a>
 
             </div>
-
         </li>
 
-        {{-- STOK --}}
-        <li class="mt-4">
-
+        {{-- STOK DARAH --}}
+        <li>
             <a href="{{ route('stok') }}"
-               class="flex items-center gap-4 px-4 py-4 rounded-l-full transition-all duration-200
+               class="flex items-center gap-4 px-4 py-3 rounded-l-full font-bold transition
+               {{ request()->routeIs('stok') ? 'bg-white text-[#0f5c5c]' : 'text-white hover:bg-white/10' }}">
 
-               {{ request()->routeIs('stok')
-                    ? 'bg-white text-[#0f5c5c] font-semibold shadow-md'
-                    : 'hover:bg-white/10 text-white'
-               }}">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="w-5 h-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 3v10m0 0a4 4 0 100 8 4 4 0 000-8z"/>
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 2S5 10 5 15a7 7 0 0014 0c0-5-7-13-7-13z"/>
                 </svg>
 
                 <span>Stok Darah</span>
-
             </a>
-
         </li>
 
-        {{-- PERMINTAAN --}}
+        {{-- PERMINTAAN DARAH --}}
         <li>
-
             <a href="{{ route('permintaan') }}"
-               class="flex items-center gap-4 px-4 py-4 rounded-l-full transition-all duration-200
+               class="flex items-center gap-4 px-4 py-3 rounded-l-full font-bold transition
+               {{ request()->routeIs('permintaan') ? 'bg-white text-[#0f5c5c]' : 'text-white hover:bg-white/10' }}">
 
-               {{ request()->routeIs('permintaan')
-                    ? 'bg-white text-[#0f5c5c] font-semibold shadow-md'
-                    : 'hover:bg-white/10 text-white'
-               }}">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="w-5 h-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M8 10h8m-8 4h6m2 5H6a2 2 0 01-2-2V7
-                             a2 2 0 012-2h3.586a1 1 0 00.707-.293
-                             l1.414-1.414A1 1 0 0112.414 3H18
-                             a2 2 0 012 2v12a2 2 0 01-2 2z"/>
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5z"/>
                 </svg>
 
                 <span>Permintaan Darah</span>
-
             </a>
-
         </li>
 
-        {{-- LAPORAN --}}
+        {{-- CETAK LAPORAN --}}
         <li>
-
             <a href="{{ route('laporan') }}"
-               class="flex items-center gap-4 px-4 py-4 rounded-l-full transition-all duration-200
+               class="flex items-center gap-4 px-4 py-3 rounded-l-full font-bold transition
+               {{ request()->routeIs('laporan') ? 'bg-white text-[#0f5c5c]' : 'text-white hover:bg-white/10' }}">
 
-               {{ request()->routeIs('laporan')
-                    ? 'bg-white text-[#0f5c5c] font-semibold shadow-md'
-                    : 'hover:bg-white/10 text-white'
-               }}">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="w-5 h-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 17v-6h13M9 5v6h13M5 5h.01M5 12h.01M5 19h.01"/>
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M5 4h14v16H5V4zm3 3v2h8V7H8zm0 4v2h8v-2H8zm0 4v2h5v-2H8z"/>
                 </svg>
 
                 <span>Cetak laporan</span>
-
             </a>
-
         </li>
 
         {{-- LOGOUT --}}
-        <li class="mt-6">
-
+        <li>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
 
                 <button type="submit"
-                        class="flex items-center gap-4 px-4 py-4 w-full hover:bg-red-500/30 rounded-l-full transition">
+                        class="w-full flex items-center gap-4 px-4 py-3 rounded-l-full font-bold text-white hover:bg-white/10 transition">
 
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="w-5 h-5"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor">
-
-                        <path stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M17 16l4-4m0 0l-4-4m4 4H7"/>
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M10 17l5-5-5-5v10zM4 3h8v2H6v14h6v2H4V3z"/>
                     </svg>
 
                     <span>Log Out</span>
-
                 </button>
-
             </form>
-
         </li>
 
     </ul>
-
 </div>

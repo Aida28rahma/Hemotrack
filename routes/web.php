@@ -84,6 +84,69 @@ Route::middleware(['auth'])->group(function () {
             ->with('success', 'Permintaan berhasil dibuat!');
     })->name('permintaanDokter.store');
 
+    Route::get('/status-dokter', function () {
+
+        $requests = [
+            [
+                'no_rm' => '0025',
+                'nama' => 'Diani Pitasari',
+                'golongan' => 'O',
+                'komponen' => 'PRC',
+                'rhesus' => 'Negatif (-)',
+                'jumlah' => '3 Kantong',
+                'status' => 'Menunggu'
+            ],
+            [
+                'no_rm' => '0065',
+                'nama' => 'Alya Solei',
+                'golongan' => 'O',
+                'komponen' => 'PRC',
+                'rhesus' => 'Negatif (-)',
+                'jumlah' => '3 Kantong',
+                'status' => 'Menunggu'
+            ],
+            [
+                'no_rm' => '0071',
+                'nama' => 'Vina Tianda',
+                'golongan' => 'A',
+                'komponen' => 'PRC',
+                'rhesus' => 'Negatif (-)',
+                'jumlah' => '5 Kantong',
+                'status' => 'Disetujui'
+            ],
+            [
+                'no_rm' => '0101',
+                'nama' => 'Andini Vita',
+                'golongan' => 'AB',
+                'komponen' => 'PRC',
+                'rhesus' => 'Negatif (-)',
+                'jumlah' => '3 Kantong',
+                'status' => 'Disetujui'
+            ],
+            [
+                'no_rm' => '0032',
+                'nama' => 'Linda Arisa',
+                'golongan' => 'O',
+                'komponen' => 'PRC',
+                'rhesus' => 'Positif (+)',
+                'jumlah' => '3 Kantong',
+                'status' => 'Disetujui'
+            ],
+            [
+                'no_rm' => '0039',
+                'nama' => 'Lovita Cinta',
+                'golongan' => 'O',
+                'komponen' => 'PRC',
+                'rhesus' => 'Negatif (-)',
+                'jumlah' => '6 Kantong',
+                'status' => 'Disetujui'
+            ],
+        ];
+
+        return view('Dokter.statusDokter', compact('requests'));
+
+    })->middleware(['auth'])->name('statusDokter');
+
     /*
     |--------------------------------------------------------------------------
     | PROFILE
