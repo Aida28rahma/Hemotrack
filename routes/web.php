@@ -30,7 +30,33 @@ Route::middleware(['auth'])->group(function () {
 
     // HALAMAN PETUGAS
     Route::get('/stok', fn() => view('stok'))->name('stok');
-    Route::get('/permintaan', fn() => view('permintaan'))->name('permintaan');
+    Route::get('/permintaan', function () {
+
+        $data = PermintaanDokter::latest()->get();
+
+        return view('permintaan', compact('data'));
+
+    })->name('permintaan');
+    Route::post('/permintaan/{id}/approve', function ($id) {
+
+        $data = \App\Models\PermintaanDokter::find($id);
+        $data->status = 'disetujui';
+        $data->save();
+
+        return back()->with('success', 'Permintaan disetujui');
+
+    })->name('permintaan.approve');
+
+
+    Route::post('/permintaan/{id}/reject', function ($id) {
+
+        $data = \App\Models\PermintaanDokter::find($id);
+        $data->status = 'ditolak';
+        $data->save();
+
+        return back()->with('success', 'Permintaan ditolak');
+
+    })->name('permintaan.reject');
     Route::get('/distribusi', fn() => view('distribusi'))->name('distribusi');
     Route::get('/asalDarah', fn() => view('asalDarah'))->name('asalDarah');
     Route::get('/laporan', fn() => view('laporan'))->name('laporan');

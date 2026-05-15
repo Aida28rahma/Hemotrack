@@ -35,11 +35,31 @@
                 </select>
             </div>
 
-            <!-- POLI TUJUAN -->
+            <!-- POLI -->
             <div class="mb-4">
-                <label class="block text-sm font-medium">Poli Tujuan</label>
-                <input type="text" name="poli"
+                <label class="block text-sm font-medium">Poli</label>
+                <select name="poli"
                     class="w-full border rounded-lg px-3 py-2 mt-1">
+                    <option value="">-- Pilih --</option>
+                    <option value="Bedah">Bedah</option>
+                    <option value="PD">Penyakit Dalam</option>
+                    <option value="Anak">Anak</option>
+                    <option value="Obgyn">Obgyn</option>
+                    <option value="UGD">UGD</option>
+                </select>
+            </div>
+            
+            <!-- Golongan -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium">Golongan</label>
+                <select name="golongan"
+                    class="w-full border rounded-lg px-3 py-2 mt-1">
+                    <option value="">-- Pilih --</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="AB">AB</option>
+                    <option value="O">O</option>
+                </select>
             </div>
 
             <!-- RHESUS -->
@@ -63,6 +83,7 @@
                     <option value="PRC">PRC</option>
                     <option value="TC">Trombosit</option>
                     <option value="FFP">Plasma</option>
+                    <option value="Kriopresipitat">Kriopresipitat</option>
                 </select>
             </div>
 

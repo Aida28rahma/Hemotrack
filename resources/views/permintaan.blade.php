@@ -103,7 +103,11 @@
         </div>
 
     </div>
-
+    @if(session('success'))
+        <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
     <!-- Table -->
     <div class="bg-white rounded-3xl shadow-md border border-gray-200 p-5">
 
@@ -138,134 +142,98 @@
                 <!-- Body -->
                 <tbody class="divide-y divide-gray-200 bg-white text-center">
 
-                    @foreach ([
-                        ['dokter' => 'dr. Olivia', 'poli' => 'IGD', 'goldar' => 'A', 'rhesus' => 'Negatif (-)', 'komponen' => 'Whole Blood', 'jumlah' => 2, 'tanggal' => '04/05/2025', 'status' => 'Selesai'],
-                        ['dokter' => 'dr. Aida', 'poli' => 'Obgyn', 'goldar' => 'B', 'rhesus' => 'Negatif (-)', 'komponen' => 'Whole Blood', 'jumlah' => 1, 'tanggal' => '04/05/2025', 'status' => 'Ditolak'],
-                        ['dokter' => 'dr. Anisa', 'poli' => 'Bedah', 'goldar' => 'A', 'rhesus' => 'Positif (+)', 'komponen' => 'Whole Blood', 'jumlah' => 1, 'tanggal' => '30/05/2025', 'status' => 'Menunggu'],
-                        ['dokter' => 'dr. Olivia', 'poli' => 'IGD', 'goldar' => 'AB', 'rhesus' => 'Positif (+)', 'komponen' => 'Whole Blood', 'jumlah' => 5, 'tanggal' => '03/06/2025', 'status' => 'Selesai'],
-                        ['dokter' => 'dr. Olivia', 'poli' => 'IGD', 'goldar' => 'A', 'rhesus' => 'Negatif (-)', 'komponen' => 'Whole Blood', 'jumlah' => 3, 'tanggal' => '03/06/2025', 'status' => 'Ditolak'],
-                    ] as $index => $item)
+                    @foreach ($data as $index => $item)
 
-                        <tr class="hover:bg-gray-50 transition">
+                    <tr class="hover:bg-gray-50 transition">
 
-                            <td class="px-4 py-3">
-                                {{ $index + 1 }}
-                            </td>
+                        <td class="px-4 py-3">{{ $index + 1 }}</td>
 
-                            <td class="px-4 py-3">
-                                {{ $item['dokter'] }}
-                            </td>
+                        <td class="px-4 py-3">
+                            {{ $item->nama }}
+                        </td>
 
-                            <td class="px-4 py-3">
-                                {{ $item['poli'] }}
-                            </td>
+                        <td class="px-4 py-3">
+                            {{ $item->poli }}
+                        </td>
 
-                            <td class="px-4 py-3 font-semibold">
-                                {{ $item['goldar'] }}
-                            </td>
+                        <td class="px-4 py-3 font-semibold">
+                            {{ $item->golongan }}
+                        </td>
 
-                            <td class="px-4 py-3">
-                                {{ $item['rhesus'] }}
-                            </td>
+                        <td class="px-4 py-3">
+                            {{ $item->rhesus }}
+                        </td>
 
-                            <td class="px-4 py-3">
-                                {{ $item['komponen'] }}
-                            </td>
+                        <td class="px-4 py-3">
+                            {{ $item->komponen }}
+                        </td>
 
-                            <td class="px-4 py-3">
-                                {{ $item['jumlah'] }}
-                            </td>
+                        <td class="px-4 py-3">
+                            {{ $item->jumlah }}
+                        </td>
 
-                            <td class="px-4 py-3">
-                                {{ $item['tanggal'] }}
-                            </td>
+                        <td class="px-4 py-3">
+                            {{ $item->created_at->format('d/m/Y') }}
+                        </td>
 
-                           <!-- Status -->
-                            <td class="px-4 py-3 status-cell">
+                        <!-- STATUS -->
+                        <td class="px-4 py-3">
 
-                                @if ($item['status'] == 'Diproses')
+                            @if ($item->status == 'menunggu')
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                    Menunggu
+                                </span>
 
-                                    <!-- Bisa diklik -->
-                                    <button
-                                        onclick="finishProcess(this)"
-                                        class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold transition">
+                            @elseif ($item->status == 'disetujui')
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                    Disetujui
+                                </span>
 
-                                        Diproses
+                            @elseif ($item->status == 'ditolak')
+                                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                    Ditolak
+                                </span>
+                            @endif
 
+                        </td>
+                        <!-- AKSI -->
+                        <td class="px-4 py-3">
+
+                        @if ($item->status == 'menunggu')
+
+                            <div class="flex justify-center gap-2">
+
+                                <!-- SETUJUI -->
+                                <form action="{{ route('permintaan.approve', $item->id) }}" method="POST">
+                                    @csrf
+                                    <button class="bg-green-100 hover:bg-green-200 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                        ✔ Setujui
                                     </button>
+                                </form>
 
-                                @elseif ($item['status'] == 'Selesai')
+                                <!-- TOLAK -->
+                                <form action="{{ route('permintaan.reject', $item->id) }}" method="POST">
+                                    @csrf
+                                    <button class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                        ✖ Tolak
+                                    </button>
+                                </form>
 
-                                    <span
-                                        class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                            </div>
 
-                                        Selesai
+                        @else
 
-                                    </span>
+                            <span class="text-gray-400">-</span>
 
-                                @elseif ($item['status'] == 'Ditolak')
+                        @endif
 
-                                    <span
-                                        class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                        </td>
 
-                                        Ditolak
-
-                                    </span>
-
-                                @else
-
-                                    <span
-                                        class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-semibold">
-
-                                        Menunggu
-
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-                           <!-- Persetujuan -->
-                            <td class="px-4 py-3 action-cell">
-
-                                @if ($item['status'] == 'Menunggu')
-
-                                    <div class="flex justify-center gap-2">
-
-                                        <!-- Setujui -->
-                                        <button
-                                            onclick="approveRequest(this)"
-                                            class="bg-green-100 hover:bg-green-200 text-green-700 px-3 py-1 rounded-full text-xs font-semibold transition">
-
-                                            ✔ Disetujui
-
-                                        </button>
-
-                                        <!-- Tolak -->
-                                        <button
-                                            onclick="openRejectModal(this)"
-                                            class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-full text-xs font-semibold transition">
-
-                                            ✖ Ditolak
-
-                                        </button>
-
-                                    </div>
-
-                                @else
-
-                                    <span class="text-gray-400">
-                                        -
-                                    </span>
-
-                                @endif
-
-                            </td>
-                        </tr>
+                    </tr>
 
                     @endforeach
 
-                </tbody>
+                    </tbody>
 
             </table>
 
