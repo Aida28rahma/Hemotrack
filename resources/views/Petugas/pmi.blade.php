@@ -15,6 +15,12 @@
         </div>
     @endif
 
+    @if(session('success'))
+        <div class="mb-5 bg-green-100 border border-green-300 text-green-700 px-5 py-3 rounded-lg font-bold">
+            {{ session('success') }}
+        </div>
+    @endif
+
     {{-- CARD FORM --}}
     <div class="bg-white rounded-2xl shadow-md border border-gray-200 w-full">
 
