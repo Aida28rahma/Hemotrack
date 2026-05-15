@@ -95,12 +95,15 @@
 
                 <select
                     class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 outline-none">
-                    <option>Disetujui</option>
+
+                    <option>Semua</option>
+                    <option>Menunggu</option>
+                    <option>Diproses</option>
+                    <option>Selesai</option>
                     <option>Ditolak</option>
-                    <option>Pending</option>
+
                 </select>
             </div>
-
         </div>
 
         <!-- Button -->
@@ -245,14 +248,50 @@
 
                             <td class="px-4 py-3">
 
-                                <span
-                                    class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                            @php
+                                $statusList = ['Menunggu', 'Diproses', 'Selesai', 'Ditolak'];
+                                $status = $statusList[array_rand($statusList)];
+                            @endphp
 
-                                    Disetujui
+                            @if ($status == 'Diproses')
+
+                                <span
+                                    class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+
+                                    Diproses
 
                                 </span>
 
-                            </td>
+                            @elseif ($status == 'Selesai')
+
+                                <span
+                                    class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+
+                                    Selesai
+
+                                </span>
+
+                            @elseif ($status == 'Ditolak')
+
+                                <span
+                                    class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+
+                                    Ditolak
+
+                                </span>
+
+                            @else
+
+                                <span
+                                    class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-semibold">
+
+                                    Menunggu
+
+                                </span>
+
+                            @endif
+
+                             </td>
 
                         </tr>
 

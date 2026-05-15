@@ -2,55 +2,97 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Models\PermintaanDokter;
+
+/*
+|--------------------------------------------------------------------------
+| PUBLIC ROUTES
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-Route::get('/stok', function () {
-        return view('stok');
-    })->name('stok');
+/*
+|--------------------------------------------------------------------------
+| AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
 
-    Route::get('/permintaan', function () {
-        return view('permintaan');
-    })->name('permintaan');
+Route::middleware(['auth'])->group(function () {
 
-    Route::get('/distribusi', function () {
-        return view('distribusi');
-    })->name('distribusi');
+    // DASHBOARD
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-    Route::get('/asalDarah', function () {
-        return view('asalDarah');
-    })->name('asalDarah');
+    // HALAMAN PETUGAS
+    Route::get('/stok', fn() => view('stok'))->name('stok');
+    Route::get('/permintaan', fn() => view('permintaan'))->name('permintaan');
+    Route::get('/distribusi', fn() => view('distribusi'))->name('distribusi');
+    Route::get('/asalDarah', fn() => view('asalDarah'))->name('asalDarah');
+    Route::get('/laporan', fn() => view('laporan'))->name('laporan');
 
-    Route::get('/laporan', function () {
-        return view('laporan');
-    })->name('laporan');
+    // INPUT
+    Route::get('/inputDarah', function () {
+        session(['asal_darah' => 'PMI']);
+        return view('inputDarah');
+    })->name('inputDarah');
 
+    Route::get('/inputPendonor', function () {
+        session(['asal_darah' => 'Unit Bank Darah RS']);
+        return view('inputPendonor');
+    })->name('inputPendonor');
 
-Route::middleware('auth')->group(function () {
+    /*
+    |--------------------------------------------------------------------------
+    | DOKTER
+    |--------------------------------------------------------------------------
+    */
+
+    // Dashboard dokter
+    Route::get('/dashboardDokter', fn() => view('dashboardDokter'))->name('dashboardDokter');
+
+    // Form permintaan dokter (GET)
+    Route::get('/permintaanDokter', fn() => view('permintaanDokter'))->name('permintaanDokter');
+
+    // SIMPAN PERMINTAAN (POST)
+    Route::post('/permintaanDokter', function (Request $request) {
+
+        PermintaanDokter::create([
+            'no_rm' => $request->no_rm,
+            'nama' => $request->nama,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'golongan' => $request->golongan,
+            'rhesus' => $request->rhesus,
+            'komponen' => $request->komponen,
+            'jumlah' => $request->jumlah,
+            'poli' => $request->poli,
+            'status' => 'diproses',
+        ]);
+
+        return redirect()
+            ->route('permintaanDokter')
+            ->with('success', 'Permintaan berhasil dibuat!');
+    })->name('permintaan.store');
+
+    /*
+    |--------------------------------------------------------------------------
+    | PROFILE
+    |--------------------------------------------------------------------------
+    */
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+/*
+|--------------------------------------------------------------------------
+| AUTH (BREEZE)
+|--------------------------------------------------------------------------
+*/
+
 require __DIR__.'/auth.php';
-
-Route::get('/inputDarah', function () {
-
-    session(['asal_darah' => 'PMI']);
-
-    return view('inputDarah');
-
-})->name('inputDarah');
-
-Route::get('/inputPendonor', function () {
-
-    session(['asal_darah' => 'Unit Bank Darah RS']);
-
-    return view('inputPendonor');
-
-})->name('inputPendonor');

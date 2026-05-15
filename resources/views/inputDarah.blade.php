@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Input Data')
+@section('title', 'Input Darah')
 
 @section('content')
 

@@ -55,6 +55,14 @@
             </a>
         </li>
 
+        <li class="flex items-center gap-3 p-2 rounded-lg">
+            <a href="{{ route('dashboardDokter') }}"
+            class="block w-full p-2 rounded 
+            {{ request()->routeIs('dashboardDokter') ? 'bg-white/20' : 'hover:bg-white/10' }}">
+              📄 Permintaan Dokter
+            </a>
+        </li>
+
         <!-- Logout -->
         <form method="POST" action="{{ route('logout') }}">
             @csrf
