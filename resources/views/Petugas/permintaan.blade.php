@@ -48,11 +48,6 @@
                         Menunggu
                     </span>
 
-                    <span
-                        class="w-7 h-7 rounded-full bg-orange-400 text-white flex items-center justify-center text-sm font-bold">
-                        5
-                    </span>
-
                 </button>
 
                 <!-- Selesai -->
@@ -63,11 +58,6 @@
 
                     <span class="font-semibold text-gray-700">
                         Selesai
-                    </span>
-
-                    <span
-                        class="w-7 h-7 rounded-full bg-green-500 text-white flex items-center justify-center text-sm font-bold">
-                        7
                     </span>
 
                 </button>
@@ -103,6 +93,7 @@
         </div>
 
     </div>
+
     @if(session('success'))
         <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
             {{ session('success') }}
@@ -259,146 +250,5 @@
     </div>
 
 </div>
-
-<!-- Modal Tolak -->
-<div id="rejectModal"
-    class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
-
-    <div class="bg-white rounded-3xl shadow-xl w-full max-w-lg p-6">
-
-        <div class="flex justify-between items-center mb-5">
-
-            <h2 class="text-2xl font-bold text-red-600">
-                Alasan Penolakan
-            </h2>
-
-            <button
-                onclick="closeRejectModal()"
-                class="text-gray-400 hover:text-red-500 text-2xl">
-
-                ×
-
-            </button>
-
-        </div>
-
-        <textarea
-            id="rejectReason"
-            rows="5"
-            placeholder="Tulis alasan penolakan..."
-            class="w-full border border-gray-300 rounded-2xl p-4 focus:ring-2 focus:ring-red-400 outline-none resize-none"></textarea>
-
-        <div class="flex justify-end gap-3 mt-6">
-
-            <button
-                onclick="closeRejectModal()"
-                class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2 rounded-xl transition">
-
-                Batal
-
-            </button>
-
-            <button
-                onclick="submitReject()"
-                class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl transition">
-
-                Kirim
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<script>
-
-    let currentRejectButton = null;
-
-    // APPROVE
-    function approveRequest(button) {
-
-        let row = button.closest('tr');
-
-        // status cell
-        let statusCell = row.querySelector('.status-cell');
-
-        // ubah jadi diproses
-        statusCell.innerHTML = `
-            <button
-                onclick="finishProcess(this)"
-                class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold transition">
-
-                Diproses
-
-            </button>
-        `;
-
-        // hilangkan tombol persetujuan
-        row.querySelector('.action-cell').innerHTML = `
-            <span class="text-gray-400">-</span>
-        `;
-    }
-
-    // FINISH PROCESS
-    function finishProcess(button) {
-
-        let statusCell = button.parentElement;
-
-        statusCell.innerHTML = `
-            <span
-                class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-
-                Selesai
-
-            </span>
-        `;
-    }
-
-    // OPEN MODAL
-    function openRejectModal(button) {
-
-        currentRejectButton = button;
-
-        document.getElementById('rejectModal').classList.remove('hidden');
-        document.getElementById('rejectModal').classList.add('flex');
-    }
-
-    // CLOSE MODAL
-    function closeRejectModal() {
-
-    document.getElementById('rejectModal').classList.remove('flex');
-    document.getElementById('rejectModal').classList.add('hidden');
-
-    // reset textarea
-    document.getElementById('rejectReason').value = '';
-    }
-
-    // SUBMIT REJECT
-    function submitReject() {
-
-        let row = currentRejectButton.closest('tr');
-
-        // ubah status
-        row.querySelector('.status-cell').innerHTML = `
-            <span
-                class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-
-                Ditolak
-
-            </span>
-        `;
-
-        // hilangkan tombol
-        row.querySelector('.action-cell').innerHTML = `
-            <span class="text-gray-400">-</span>
-        `;
-
-        closeRejectModal();
-    }
-
-</script>
 
 @endsection
