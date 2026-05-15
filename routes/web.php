@@ -23,29 +23,35 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    // DASHBOARD
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return view('Petugas.dashboard');
     })->name('dashboard');
 
-    // HALAMAN PETUGAS
-    Route::get('/stok', fn() => view('stok'))->name('stok');
-    Route::get('/permintaan', fn() => view('permintaan'))->name('permintaan');
-    Route::get('/distribusi', fn() => view('distribusi'))->name('distribusi');
-    Route::get('/asalDarah', fn() => view('asalDarah'))->name('asalDarah');
-    Route::get('/laporan', fn() => view('laporan'))->name('laporan');
+    Route::get('/stok', function () {
+        return view('Petugas.stok');
+    })->name('stok');
 
-    // INPUT
-    Route::get('/inputDarah', function () {
-        session(['asal_darah' => 'PMI']);
-        return view('inputDarah');
-    })->name('inputDarah');
+    Route::get('/permintaan', function () {
+        return view('Petugas.permintaan');
+    })->name('permintaan');
 
-    Route::get('/inputPendonor', function () {
-        session(['asal_darah' => 'Unit Bank Darah RS']);
-        return view('inputPendonor');
-    })->name('inputPendonor');
+    Route::get('/distribusi', function () {
+        return view('Petugas.distribusi');
+    })->name('distribusi');
 
+    Route::get('/laporan', function () {
+        return view('Petugas.laporan');
+    })->name('laporan');
+
+    Route::get('/pmi', function () {
+        return view('Petugas.pmi');
+    })->name('pmi');
+
+    Route::get('/unit-bank-darah', function () {
+        return view('Petugas.unitBankDarah');
+    })->name('unitBankDarah');
+
+});
     /*
     |--------------------------------------------------------------------------
     | DOKTER
@@ -86,7 +92,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 /*
 |--------------------------------------------------------------------------
