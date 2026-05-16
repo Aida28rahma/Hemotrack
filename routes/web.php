@@ -29,7 +29,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', function () {
         return view('Petugas.dashboard');
+<<<<<<< Updated upstream
     })->name('dashboard');
+=======
+    })->middleware(['auth'])->name('dashboard');
+>>>>>>> Stashed changes
 
     Route::get('/stok', function () {
         return view('Petugas.stok');
@@ -43,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
         return view('Petugas.distribusi');
     })->name('distribusi');
 
+<<<<<<< Updated upstream
     Route::get('/laporan', function () {
         return view('Petugas.laporan');
     })->name('laporan');
@@ -151,6 +156,16 @@ Route::post('/unit-bank-darah/simpan-darah', function (Request $request) {
 })->name('unitBankDarah.simpanDarah');
 
 });
+=======
+    Route::get('/pmi', function () {
+        return view('petugas.pmi');
+    })->name('pmi');
+
+    Route::get('/unit-bank-darah', function () {
+        return view('Petugas.unitBankDarah');
+    })->name('unitBankDarah');
+
+>>>>>>> Stashed changes
     /*
     |--------------------------------------------------------------------------
     | DOKTER
