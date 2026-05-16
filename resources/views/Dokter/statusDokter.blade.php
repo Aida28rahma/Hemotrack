@@ -58,11 +58,11 @@
 
                 {{-- BADGE --}}
                 <div class="absolute top-5 right-5 px-3 py-1 rounded-md text-xs font-bold
-                    {{ $item['status'] == 'Menunggu'
+                    {{ strtolower($item->status) == 'Menunggu'
                         ? 'bg-orange-200 text-orange-700'
                         : 'bg-teal-200 text-teal-700'
                     }}">
-                    {{ $item['status'] }}
+                    {{ ucfirst($item->status) }}
                 </div>
 
                 <div class="mt-10 space-y-2 text-xs">

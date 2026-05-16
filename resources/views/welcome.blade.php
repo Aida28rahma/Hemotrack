@@ -49,7 +49,6 @@
               transition-all duration-500
               bg-teal-700 text-white w-32 h-32 rounded-full 
               flex flex-col items-center justify-center shadow-lg">
-        👨‍⚕️
         <span class="text-sm mt-1">Dokter</span>
     </a>
 
@@ -67,7 +66,6 @@
               transition-all duration-500
               bg-teal-700 text-white w-32 h-32 rounded-full 
               flex flex-col items-center justify-center shadow-lg">
-        🧑‍💼
         <span class="text-sm mt-1">Petugas</span>
     </a>
 

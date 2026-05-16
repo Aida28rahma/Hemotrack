@@ -91,7 +91,7 @@
                         <th class="px-4 py-3">Jumlah</th>
                         <th class="px-4 py-3">Tanggal Permintaan</th>
                         <th class="px-4 py-3">Status</th>
-                        <th class="px-4 py-3">Persetujuan</th>
+                        
 
                     </tr>
 
@@ -135,58 +135,33 @@
                         </td>
 
                         <!-- STATUS -->
-                        <td class="px-4 py-3">
+                      <td class="px-4 py-3">
 
-                            @if ($item->status == 'menunggu')
-                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
+                            @if (trim(strtolower($item->status)) == 'menunggu')
+
+                                <button type="button"
+                                    onclick="openStatusModal({{ $item->id }})"
+                                    class="relative z-50 cursor-pointer bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold transition">
+
                                     Menunggu
-                                </span>
 
-                            @elseif ($item->status == 'disetujui')
+                                </button>
+
+                            @elseif (trim(strtolower($item->status)) == 'disetujui')
+
                                 <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
                                     Disetujui
                                 </span>
 
-                            @elseif ($item->status == 'ditolak')
+                            @elseif (trim(strtolower($item->status)) == 'ditolak')
+
                                 <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
                                     Ditolak
                                 </span>
+
                             @endif
 
                         </td>
-                        <!-- AKSI -->
-                        <td class="px-4 py-3">
-
-                        @if ($item->status == 'menunggu')
-
-                            <div class="flex justify-center gap-2">
-
-                                <!-- SETUJUI -->
-                                <form action="{{ route('permintaan.approve', $item->id) }}" method="POST">
-                                    @csrf
-                                    <button class="bg-green-100 hover:bg-green-200 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        ✔ Setujui
-                                    </button>
-                                </form>
-
-                                <!-- TOLAK -->
-                                <form action="{{ route('permintaan.reject', $item->id) }}" method="POST">
-                                    @csrf
-                                    <button class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        ✖ Tolak
-                                    </button>
-                                </form>
-
-                            </div>
-
-                        @else
-
-                            <span class="text-gray-400">-</span>
-
-                        @endif
-
-                        </td>
-
                     </tr>
 
                     @endforeach
@@ -218,4 +193,61 @@
 
 </div>
 
+<div id="statusModal"
+    class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 text-center">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">
+            Konfirmasi Permintaan
+        </h2>
+
+        <p class="text-gray-600 mb-6">
+            Apakah permintaan akan disetujui atau ditolak?
+        </p>
+
+        <div class="flex justify-center gap-4">
+
+            <form id="approveForm" method="POST">
+                @csrf
+                <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl font-semibold">
+                    ✔ Disetujui
+                </button>
+            </form>
+
+            <form id="rejectForm" method="POST">
+                @csrf
+                <button class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl font-semibold">
+                    ✖ Ditolak
+                </button>
+            </form>
+
+        </div>
+
+        <button onclick="closeStatusModal()"
+            class="mt-5 text-gray-500 hover:text-gray-700 text-sm">
+            Batal
+        </button>
+    </div>
+</div>
+
+<script>
+    function openStatusModal(id) {
+        const modal = document.getElementById('statusModal');
+        const approveForm = document.getElementById('approveForm');
+        const rejectForm = document.getElementById('rejectForm');
+
+        approveForm.action = `/permintaan/${id}/approve`;
+        rejectForm.action = `/permintaan/${id}/reject`;
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeStatusModal() {
+        const modal = document.getElementById('statusModal');
+
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }
+</script>
 @endsection

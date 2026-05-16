@@ -59,6 +59,21 @@ Route::middleware(['auth'])->group(function () {
         return view('Petugas.permintaan', compact('data'));
 
     })->name('permintaan');
+    Route::post('/permintaan/{id}/approve', function ($id) {
+        $data = \App\Models\PermintaanDokter::findOrFail($id);
+        $data->status = 'disetujui';
+        $data->save();
+
+        return back()->with('success', 'Permintaan berhasil disetujui');
+    })->name('permintaan.approve');
+
+    Route::post('/permintaan/{id}/reject', function ($id) {
+        $data = \App\Models\PermintaanDokter::findOrFail($id);
+        $data->status = 'ditolak';
+        $data->save();
+
+        return back()->with('success', 'Permintaan berhasil ditolak');
+    })->name('permintaan.reject');
 
     Route::get('/distribusi', function () {
         if (auth()->user()->role != 'petugas') {
@@ -140,7 +155,7 @@ Route::middleware(['auth'])->group(function () {
             'komponen' => $request->komponen,
             'jumlah' => $request->jumlah,
             'poli' => $request->poli,
-            'status' => 'diproses',
+            'status' => 'menunggu',
         ]);
 
         return redirect()
