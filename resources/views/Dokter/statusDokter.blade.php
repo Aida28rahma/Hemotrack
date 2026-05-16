@@ -10,44 +10,70 @@
     </h1>
 
     {{-- FILTER BAR --}}
-    <div class="bg-white rounded-2xl shadow-md px-5 py-3 mb-10 flex items-center justify-between gap-4">
+    {{-- FILTER BAR --}}
+<form method="GET" action="{{ route('statusDokter') }}"
+      class="bg-white rounded-2xl shadow-md px-5 py-3 mb-10 flex items-center justify-between gap-4">
 
-        <div class="relative w-[420px]">
+    {{-- SEARCH --}}
+    <div class="relative w-[420px]">
 
-            <input type="text"
-                   placeholder="Cari nomor RM atau nama pasien"
-                   class="w-full h-10 border border-gray-300 rounded-xl pl-11 pr-4 text-sm outline-none">
+        <input type="text"
+               name="search"
+               value="{{ request('search') }}"
+               placeholder="Cari nomor RM atau nama pasien"
+               class="w-full h-10 border border-gray-300 rounded-xl pl-11 pr-4 text-sm outline-none">
 
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="w-4 h-4 text-gray-400 absolute left-4 top-3"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-4 h-4 text-gray-400 absolute left-4 top-3"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor">
 
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="m21 21-4.35-4.35m1.85-5.15a7 7 0 1 1-14 0
-                         7 7 0 0 1 14 0Z"/>
-            </svg>
-
-        </div>
-
-        <div class="flex items-center gap-3">
-
-            <select class="w-[220px] h-10 border border-gray-300 rounded-xl px-4 text-sm text-gray-500 outline-none">
-                <option>Semua Status</option>
-                <option>Menunggu</option>
-                <option>Disetujui</option>
-            </select>
-
-            <button class="w-[110px] h-10 border border-gray-300 rounded-xl text-sm text-gray-500 hover:bg-gray-100 transition">
-                Reset
-            </button>
-
-        </div>
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m21 21-4.35-4.35m1.85-5.15a7 7 0 1 1-14 0
+                     7 7 0 0 1 14 0Z"/>
+        </svg>
 
     </div>
+
+    {{-- FILTER --}}
+    <div class="flex items-center gap-3">
+
+        <select name="status"
+                onchange="this.form.submit()"
+                class="w-[220px] h-10 border border-gray-300 rounded-xl px-4 text-sm text-gray-500 outline-none">
+
+            <option value="">Semua Status</option>
+
+            <option value="menunggu"
+                {{ request('status') == 'menunggu' ? 'selected' : '' }}>
+                Menunggu
+            </option>
+
+            <option value="disetujui"
+                {{ request('status') == 'disetujui' ? 'selected' : '' }}>
+                Disetujui
+            </option>
+
+            <option value="ditolak"
+                {{ request('status') == 'ditolak' ? 'selected' : '' }}>
+                Ditolak
+            </option>
+
+        </select>
+
+        <a href="{{ route('statusDokter') }}"
+           class="w-[110px] h-10 border border-gray-300 rounded-xl text-sm text-gray-500 hover:bg-gray-100 transition flex items-center justify-center">
+
+            Reset
+
+        </a>
+
+    </div>
+
+</form>
 
     {{-- CARDS --}}
     <div class="grid grid-cols-3 gap-x-12 gap-y-10">

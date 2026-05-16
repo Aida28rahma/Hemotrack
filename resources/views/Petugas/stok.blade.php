@@ -180,6 +180,9 @@
                         <th class="border px-4 py-3">Tanggal Kadaluarsa</th>
                         <th class="border px-4 py-3">Asal Darah</th>
                         <th class="border px-4 py-3">Status</th>
+                        @if(auth()->user()->role == 'petugas')
+                        <th class="border px-4 py-3">Aksi</th>
+                        @endif
                     </tr>
 
                 </thead>
@@ -215,20 +218,31 @@
                                 {{ $item->asal_darah }}
                             </td>
 
+                        
                            <td class="border px-4 py-2 text-center">
 
                                 @if($item->status == 'Belum diuji')
 
-                                    <form action="{{ route('darah.uji', $item->id) }}" method="POST">
-                                        @csrf
+                                    @if(auth()->user()->role == 'petugas')
 
-                                        <button
-                                            class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold transition">
+                                        <form action="{{ route('darah.uji', $item->id) }}" method="POST">
+                                            @csrf
 
+                                            <button
+                                                class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold transition">
+
+                                                Belum Teruji
+
+                                            </button>
+                                        </form>
+
+                                    @else
+
+                                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
                                             Belum Teruji
+                                        </span>
 
-                                        </button>
-                                    </form>
+                                    @endif
 
                                 @elseif($item->status == 'Sudah Teruji')
 
@@ -238,25 +252,51 @@
                                             Sudah Teruji
                                         </span>
 
-                                        <a href="{{ route('darah.label', $item->id) }}"
-                                        class="text-xs text-teal-700 underline font-semibold">
+                                            <a href="{{ route('darah.label', $item->id) }}"
+                                            class="text-xs text-teal-700 underline font-semibold">
 
-                                            Cetak QR
+                                                Cetak QR
 
-                                        </a>
+                                            </a>
 
                                     </div>
-
-                                @else
-
-                                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        {{ $item->status }}
-                                    </span>
 
                                 @endif
 
                             </td>
+                            @if(auth()->user()->role == 'petugas')
+                            <td class="border px-4 py-2">
 
+                                <div class="flex justify-center gap-2">
+
+                                    {{-- EDIT --}}
+                                    <a href="{{ route('stok.edit', $item->id) }}"
+                                    class="rounded bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 hover:bg-blue-200">
+
+                                        Edit
+
+                                    </a>
+
+                                    {{-- HAPUS --}}
+                                    <form action="{{ route('stok.delete', $item->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin mau hapus data darah ini?')">
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button
+                                            class="rounded bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 hover:bg-red-200">
+
+                                            Hapus
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+                            @endif
                         </tr>
 
                     @empty

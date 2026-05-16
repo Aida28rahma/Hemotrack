@@ -63,7 +63,40 @@ Route::middleware(['auth'])->group(function () {
         return view('Petugas.stok', compact('data', 'ringkasan'));
 
     })->name('stok');
+    Route::get('/stok/{id}/edit', function ($id) {
 
+        $data = DataDarahPendonor::findOrFail($id);
+
+        return view('Petugas.editStok', compact('data'));
+
+    })->name('stok.edit');
+
+    Route::post('/stok/{id}/update', function (Request $request, $id) {
+
+        $data = DataDarahPendonor::findOrFail($id);
+
+        $data->update([
+            'golongan' => $request->golongan,
+            'rhesus' => $request->rhesus,
+            'jenis_komponen' => $request->jenis_komponen,
+            'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
+        ]);
+
+        return redirect()->route('stok');
+
+    })->name('stok.update');
+
+
+    Route::delete('/stok/{id}', function ($id) {
+
+        $data = DataDarahPendonor::findOrFail($id);
+
+        $data->delete();
+
+        return redirect()->route('stok');
+
+    })->name('stok.delete');
+    
     Route::get('/permintaan', function (Request $request) {
         if (auth()->user()->role != 'petugas') {
         abort(403);
@@ -102,7 +135,14 @@ Route::middleware(['auth'])->group(function () {
 
         return back()->with('success', 'Permintaan berhasil ditolak');
     })->name('permintaan.reject');
+    Route::delete('/permintaan/{id}', function ($id) {
+        $data = PermintaanDokter::findOrFail($id);
+        $data->delete();
 
+        return redirect()
+            ->route('permintaan')
+            ->with('success', 'Data permintaan berhasil dihapus.');
+    })->name('permintaan.delete');
     Route::get('/distribusi', function () {
         if (auth()->user()->role != 'petugas') {
         abort(403);
@@ -243,48 +283,65 @@ Route::post('/unit-bank-darah/simpan-pendonor', function (Request $request) {
     // SIMPAN PERMINTAAN (POST)
     Route::post('/permintaanDokter', function (Request $request) {
 
-    $request->validate([
-        'no_rm' => 'required',
-        'nama' => 'required',
-        'jenis_kelamin' => 'required',
-        'golongan' => 'required',
-        'rhesus' => 'required',
-        'jenis_komponen' => 'required',
-        'jumlah' => 'required|numeric',
-        'poli' => 'required',
-    ]);
+        $request->validate([
+            'no_rm' => 'required',
+            'nama' => 'required',
+            'jenis_kelamin' => 'required',
+            'golongan' => 'required',
+            'rhesus' => 'required',
+            'jenis_komponen' => 'required',
+            'jumlah' => 'required|numeric',
+            'poli' => 'required',
+        ]);
 
-    PermintaanDokter::create([
-        'no_rm' => $request->no_rm,
-        'nama' => $request->nama,
-        'jenis_kelamin' => $request->jenis_kelamin,
-        'golongan' => $request->golongan,
-        'rhesus' => $request->rhesus,
-        'jenis_komponen' => $request->jenis_komponen,
-        'jumlah' => $request->jumlah,
-        'poli' => $request->poli,
-        'status' => 'menunggu',
-    ]);
+        PermintaanDokter::create([
+            'no_rm' => $request->no_rm,
+            'nama' => $request->nama,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'golongan' => $request->golongan,
+            'rhesus' => $request->rhesus,
+            'jenis_komponen' => $request->jenis_komponen,
+            'jumlah' => $request->jumlah,
+            'poli' => $request->poli,
+            'status' => 'menunggu',
+        ]);
 
-    return redirect()
+        return redirect()
 
-        ->route('permintaanDokter')
-        ->with('success', 'Permintaan berhasil dibuat!');
-})->name('permintaanDokter.store');
+            ->route('permintaanDokter')
+            ->with('success', 'Permintaan berhasil dibuat!');
+    })->name('permintaanDokter.store');
 
 
-    Route::get('/status-dokter', function () {
+    Route::get('/status-dokter', function (Request $request) {
 
         if (auth()->user()->role != 'dokter') {
             abort(403);
         }
 
-        $requests = PermintaanDokter::latest()->get();
+        $query = PermintaanDokter::query();
+
+        // FILTER STATUS
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // SEARCH
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+
+                $q->where('nama', 'like', '%' . $request->search . '%')
+                ->orWhere('no_rm', 'like', '%' . $request->search . '%');
+
+            });
+        }
+
+        $requests = $query->latest()->get();
 
         return view('Dokter.statusDokter', compact('requests'));
-    })->name('statusDokter');
 
-    })->middleware(['auth'])->name('statusDokter');
+    })->name('statusDokter');
+    
 
     Route::get('/laporan', function (Request $request) {
 
@@ -335,3 +392,4 @@ Route::post('/unit-bank-darah/simpan-pendonor', function (Request $request) {
 */
 
 require __DIR__.'/auth.php';
+});

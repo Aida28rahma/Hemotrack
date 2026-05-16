@@ -91,6 +91,7 @@
                         <th class="px-4 py-3">Jumlah</th>
                         <th class="px-4 py-3">Tanggal Permintaan</th>
                         <th class="px-4 py-3">Status</th>
+                        <th class="px-4 py-3">Aksi</th>
                         
 
                     </tr>
@@ -161,6 +162,17 @@
 
                             @endif
 
+                        </td>
+                        <td class="px-4 py-3">
+                            <form action="{{ route('permintaan.delete', $item->id) }}" method="POST"
+                                onsubmit="return confirm('Yakin mau hapus permintaan ini?')">
+                                @csrf
+                                @method('DELETE')
+
+                                <button class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                    Hapus
+                                </button>
+                            </form>
                         </td>
                     </tr>
 
