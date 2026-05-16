@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\PermintaanDokter;
+use App\Models\DataDarahPendonor;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,16 +25,46 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
 
    Route::get('/dashboard', function () {
+        if (auth()->user()->role == 'dokter') {
+            return view('Dokter.dashboardDokter');
+        }
+        return view('Petugas.dashboard');
+        })->middleware(['auth'])->name('dashboard');
+    });
 
-    if (auth()->user()->role == 'dokter') {
-        return view('Dokter.dashboardDokter');
-    }
-    return view('Petugas.dashboard');
-    })->middleware(['auth'])->name('dashboard');
+    Route::get('/stok', function (Request $request) {
 
+        if (auth()->user()->role != 'petugas') {
+            abort(403);
+        }
 
-    Route::get('/stok', function () {
-        return view('Petugas.stok');
+        $query = DataDarahPendonor::query();
+
+        if ($request->golongan) {
+            $query->where('golongan', $request->golongan);
+        }
+
+        if ($request->jenis_komponen) {
+            $query->where('jenis_komponen', $request->jenis_komponen);
+        }
+
+        if ($request->rhesus) {
+            $query->where('rhesus', $request->rhesus);
+        }
+
+        $data = $query->latest()->get();
+
+        $ringkasan = DataDarahPendonor::selectRaw("
+        golongan,
+        SUM(CASE WHEN rhesus = '+' THEN 1 ELSE 0 END) as plus,
+        SUM(CASE WHEN rhesus = '-' THEN 1 ELSE 0 END) as minus
+    ")
+        ->groupBy('golongan')
+        ->get()
+        ->keyBy('golongan');
+
+        return view('Petugas.stok', compact('data', 'ringkasan'));
+
     })->name('stok');
 
     Route::get('/permintaan', function (Request $request) {
@@ -117,8 +148,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/unit-bank-darah/simpan', function () {
         return redirect()->route('unitBankDarah.darah')->with('success', 'Data berhasil disimpan.');
-    })->name('unitBankDarah.simpan');
-});
+    })->name('unitBankDarah.simpanPendonor');
     /*
     |--------------------------------------------------------------------------
     | DOKTER
@@ -152,7 +182,7 @@ Route::middleware(['auth'])->group(function () {
         'jenis_kelamin' => 'required',
         'golongan' => 'required',
         'rhesus' => 'required',
-        'komponen' => 'required',
+        'jenis_komponen' => 'required',
         'jumlah' => 'required|numeric',
         'poli' => 'required',
     ]);
@@ -163,7 +193,7 @@ Route::middleware(['auth'])->group(function () {
         'jenis_kelamin' => $request->jenis_kelamin,
         'golongan' => $request->golongan,
         'rhesus' => $request->rhesus,
-        'komponen' => $request->komponen,
+        'jenis_komponen' => $request->komponen,
         'jumlah' => $request->jumlah,
         'poli' => $request->poli,
         'status' => 'menunggu',

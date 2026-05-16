@@ -1,203 +1,167 @@
-
 @extends('layouts.app')
 
 @section('content')
 
-    <!-- Main Content -->
-    <main class="flex-1 p-6">
+<main class="flex-1 p-6">
 
-        <!-- Judul -->
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">
-            Ringkasan Stok Darah
-        </h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">
+        Ringkasan Stok Darah
+    </h1>
 
-        <!-- Card Golongan Darah -->
-        <div class="flex flex-wrap gap-5 mb-8">
+    <div class="flex flex-wrap gap-5 mb-8">
 
-            @foreach ([
-                ['golongan' => 'A', 'plus' => 20, 'minus' => 11],
-                ['golongan' => 'B', 'plus' => 20, 'minus' => 11],
-                ['golongan' => 'AB', 'plus' => 20, 'minus' => 11],
-                ['golongan' => 'O', 'plus' => 20, 'minus' => 11],
-            ] as $darah)
+        @foreach (['A', 'B', 'AB', 'O'] as $gol)
+            @php
+                $plus = $ringkasan[$gol]->plus ?? 0;
+                $minus = $ringkasan[$gol]->minus ?? 0;
+            @endphp
 
-                <div class="w-64 bg-white border-4 border-teal-700 shadow-md p-4"
-                    style="border-radius: 30px;">
+            <div class="w-64 bg-white border-4 border-teal-700 shadow-md p-4" style="border-radius: 30px;">
 
-                    <!-- Header -->
-                    <div class="flex items-center gap-3 mb-3">
-
-                        <!-- Icon -->
-                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                            <span class="text-red-700 text-xl">🩸</span>
-                        </div>
-
-                        <!-- Golongan -->
-                        <h2 class="text-2xl font-bold text-red-800">
-                            {{ $darah['golongan'] }}
-                        </h2>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                        <span class="text-red-700 text-xl">🩸</span>
                     </div>
 
-                    <!-- Isi -->
-                    <div class="flex justify-around text-center mb-4">
-
-                        <div>
-                            <p class="font-bold text-gray-800">
-                                {{ $darah['golongan'] }}+
-                            </p>
-                            <p class="text-lg font-semibold">
-                                {{ $darah['plus'] }}
-                            </p>
-                        </div>
-
-                        <div>
-                            <p class="font-bold text-gray-800">
-                                {{ $darah['golongan'] }}-
-                            </p>
-                            <p class="text-lg font-semibold">
-                                {{ $darah['minus'] }}
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <!-- Footer -->
-                    <div class="border-t pt-2 flex justify-between text-sm">
-                        <span class="text-gray-500">Total</span>
-
-                        <span class="font-bold text-red-700">
-                            {{ $darah['plus'] + $darah['minus'] }} Kantong
-                        </span>
-                    </div>
-
+                    <h2 class="text-2xl font-bold text-red-800">
+                        {{ $gol }}
+                    </h2>
                 </div>
 
-            @endforeach
+                <div class="flex justify-around text-center mb-4">
+                    <div>
+                        <p class="font-bold text-gray-800">{{ $gol }}+</p>
+                        <p class="text-lg font-semibold">{{ $plus }}</p>
+                    </div>
 
-        </div>
+                    <div>
+                        <p class="font-bold text-gray-800">{{ $gol }}-</p>
+                        <p class="text-lg font-semibold">{{ $minus }}</p>
+                    </div>
+                </div>
 
-        <!-- Detail Stok -->
-        <div class="bg-white rounded-2xl shadow-md p-6">
-
-            <!-- Judul -->
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-800">
-                    Detail Stok Darah
-                </h2>
-            </div>
-
-            <!-- Filter -->
-            <div class="flex flex-wrap gap-3 mb-5">
-
-                <select
-                    class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
-                    <option>Golongan Darah</option>
-                    <option>A</option>
-                    <option>B</option>
-                    <option>AB</option>
-                    <option>O</option>
-                </select>
-
-                <select
-                    class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
-                    <option>Komponen Darah</option>
-                    <option>Whole Blood</option>
-                    <option>Plasma</option>
-                    <option>Trombosit</option>
-                </select>
-
-                <select
-                    class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
-                    <option>Rhesus Darah</option>
-                    <option>Positif (+)</option>
-                    <option>Negatif (-)</option>
-                </select>
+                <div class="border-t pt-2 flex justify-between text-sm">
+                    <span class="text-gray-500">Total</span>
+                    <span class="font-bold text-red-700">
+                        {{ $plus + $minus }} Kantong
+                    </span>
+                </div>
 
             </div>
+        @endforeach
 
-            <!-- Table -->
-            <div class="overflow-x-auto">
+    </div>
 
-                <table class="w-full border-collapse overflow-hidden rounded-xl">
+    <div class="bg-white rounded-2xl shadow-md p-6">
 
-                    <!-- Head -->
-                    <thead class="bg-teal-700 text-white">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">
+            Detail Stok Darah
+        </h2>
 
-                        <tr class="text-sm">
-                            <th class="px-4 py-3 border">No</th>
-                            <th class="px-4 py-3 border">Golongan</th>
-                            <th class="px-4 py-3 border">Rhesus</th>
-                            <th class="px-4 py-3 border">Jenis Komponen</th>
-                            <th class="px-4 py-3 border">Tanggal Kadaluarsa</th>
-                            <th class="px-4 py-3 border">Asal Darah</th>
-                            <th class="px-4 py-3 border">Status</th>
+        <form method="GET" action="{{ route('stok') }}" class="flex flex-wrap gap-3 mb-5">
+
+            <select name="golongan" onchange="this.form.submit()"
+                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+                <option value="">Golongan Darah</option>
+                <option value="A" {{ request('golongan') == 'A' ? 'selected' : '' }}>A</option>
+                <option value="B" {{ request('golongan') == 'B' ? 'selected' : '' }}>B</option>
+                <option value="AB" {{ request('golongan') == 'AB' ? 'selected' : '' }}>AB</option>
+                <option value="O" {{ request('golongan') == 'O' ? 'selected' : '' }}>O</option>
+            </select>
+
+            <select name="komponen" onchange="this.form.submit()"
+                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+                <option value="">Komponen Darah</option>
+                <option value="Whole Blood" {{ request('komponen') == 'Whole Blood' ? 'selected' : '' }}>Whole Blood</option>
+                <option value="PRC" {{ request('komponen') == 'PRC' ? 'selected' : '' }}>PRC</option>
+                <option value="Trombosit" {{ request('komponen') == 'Trombosit' ? 'selected' : '' }}>Trombosit</option>
+                <option value="FFP" {{ request('komponen') == 'FFP' ? 'selected' : '' }}>FFP</option>
+            </select>
+
+            <select name="rhesus" onchange="this.form.submit()"
+                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+                <option value="">Rhesus Darah</option>
+                <option value="+" {{ request('rhesus') == '+' ? 'selected' : '' }}>Positif (+)</option>
+                <option value="-" {{ request('rhesus') == '-' ? 'selected' : '' }}>Negatif (-)</option>
+            </select>
+
+            <a href="{{ route('stok') }}"
+                class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm">
+                Reset
+            </a>
+
+        </form>
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full border-collapse overflow-hidden rounded-xl">
+
+                <thead class="bg-teal-700 text-white">
+                    <tr class="text-sm">
+                        <th class="px-4 py-3 border">No</th>
+                        <th class="px-4 py-3 border">Golongan</th>
+                        <th class="px-4 py-3 border">Rhesus</th>
+                        <th class="px-4 py-3 border">Jenis Komponen</th>
+                        <th class="px-4 py-3 border">Tanggal Kadaluarsa</th>
+                        <th class="px-4 py-3 border">Asal Darah</th>
+                        <th class="px-4 py-3 border">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody class="bg-white text-center text-sm">
+
+                    @forelse ($data as $index => $item)
+
+                        <tr class="hover:bg-gray-100 transition">
+
+                            <td class="border px-4 py-2">{{ $index + 1 }}</td>
+
+                            <td class="border px-4 py-2 font-semibold">
+                                {{ $item->golongan }}
+                            </td>
+
+                            <td class="border px-4 py-2">
+                                {{ $item->rhesus == '+' ? 'Positif (+)' : 'Negatif (-)' }}
+                            </td>
+
+                            <td class="border px-4 py-2">
+                                {{ $item->komponen }}
+                            </td>
+
+                            <td class="border px-4 py-2">
+                                {{ $item->tanggal_kadaluarsa }}
+                            </td>
+
+                            <td class="border px-4 py-2">
+                                {{ $item->asal_darah }}
+                            </td>
+
+                            <td class="border px-4 py-2">
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                    {{ $item->status }}
+                                </span>
+                            </td>
+
                         </tr>
 
-                    </thead>
+                    @empty
 
-                    <!-- Body -->
-                    <tbody class="bg-white text-center text-sm">
+                        <tr>
+                            <td colspan="7" class="border px-4 py-5 text-gray-500">
+                                Data stok darah belum tersedia.
+                            </td>
+                        </tr>
 
-                        @for ($i = 1; $i <= 9; $i++)
+                    @endforelse
 
-                            <tr class="hover:bg-gray-100 transition">
+                </tbody>
 
-                                <td class="border px-4 py-2">{{ $i }}</td>
-
-                                <td class="border px-4 py-2 font-semibold">
-                                    A
-                                </td>
-
-                                <td class="border px-4 py-2">
-                                    Negatif (-)
-                                </td>
-
-                                <td class="border px-4 py-2">
-                                    Whole Blood
-                                </td>
-
-                                <td class="border px-4 py-2">
-                                    10/10/2026
-                                </td>
-
-                                <td class="border px-4 py-2">
-                                    Unit Bank Darah
-                                </td>
-
-                                <td class="border px-4 py-2">
-                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Telah diuji
-                                    </span>
-                                </td>
-
-                            </tr>
-
-                        @endfor
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            <!-- Pagination Dummy -->
-            <div class="flex justify-end items-center gap-2 mt-4">
-
-                <button class="px-3 py-1 bg-gray-200 rounded">
-                    ‹
-                </button>
-
-                <button class="px-3 py-1 bg-teal-600 text-white rounded">
-                    1
-                </button>
-
-                <button class="px-3 py-1 bg-gray-200 rounded">
-                    ›
-                </button>
-
-            </div>
+            </table>
 
         </div>
 
-    </main>
+    </div>
+
+</main>
+
 @endsection
