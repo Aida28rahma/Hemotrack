@@ -141,19 +141,25 @@
 
                                 @if($item->status == 'Belum Teruji')
 
-                                    <button
-                                        onclick="ubahStatus(this)"
-                                        class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold transition">
-
-                                        Belum Teruji
-
-                                    </button>
+                                    <form action="{{ route('darah.uji', $item->id) }}" method="POST">
+                                        @csrf
+                                        <button class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                            Belum Teruji
+                                        </button>
+                                    </form>
 
                                 @else
 
-                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Sudah Teruji
-                                    </span>
+                                    <div class="flex flex-col items-center gap-2">
+                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                            Sudah Teruji
+                                        </span>
+
+                                        <a href="{{ route('darah.label', $item->id) }}"
+                                        class="text-xs text-teal-700 underline font-semibold">
+                                            Cetak QR
+                                        </a>
+                                    </div>
 
                                 @endif
 

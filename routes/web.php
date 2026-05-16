@@ -126,9 +126,22 @@ Route::middleware(['auth'])->group(function () {
         return view('Petugas.pmi');
     })->name('pmi');
 
-    Route::post('/pmi/simpan', function () {
-        return redirect()->route('pmi')->with('success', 'Data darah pendonor berhasil disimpan.');
-    })->name('pmi.simpan');
+    Route::post('/pmi/simpan', function (Request $request) {
+
+    DataDarahPendonor::create([
+        'golongan' => $request->golongan,
+        'rhesus' => $request->rhesus,
+        'jenis_komponen' => $request->jenis_komponen,
+        'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
+        'asal_darah' => 'PMI',
+        'status' => 'Sudah Teruji',
+    ]);
+
+    return redirect()
+        ->route('pmi')
+        ->with('success', 'Data darah PMI berhasil disimpan.');
+
+})->name('pmi.simpan');
 
     Route::get('/unit-bank-darah', function () {
     if (auth()->user()->role != 'petugas') {
@@ -175,7 +188,7 @@ Route::post('/unit-bank-darah/simpan-pendonor', function (Request $request) {
             'jenis_komponen' => $request->jenis_komponen,
             'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
             'asal_darah' => 'Unit Bank Darah',
-            'status' => 'Telah diuji',
+            'status' => 'Belum diuji',
         ]);
 
         return redirect()
@@ -183,6 +196,25 @@ Route::post('/unit-bank-darah/simpan-pendonor', function (Request $request) {
             ->with('success', 'Data darah berhasil disimpan.');
 
     })->name('unitBankDarah.simpanDarah');
+    Route::get('/darah/{id}/scan', function ($id) {
+    $darah = DataDarahPendonor::findOrFail($id);
+
+    return view('Petugas.scanDarah', compact('darah'));
+    })->name('darah.scan');
+
+    Route::get('/darah/{id}/label', function ($id) {
+        $darah = DataDarahPendonor::findOrFail($id);
+
+        return view('Petugas.labelDarah', compact('darah'));
+    })->name('darah.label');
+
+    Route::post('/darah/{id}/uji', function ($id) {
+        $darah = DataDarahPendonor::findOrFail($id);
+        $darah->status = 'Sudah Teruji';
+        $darah->save();
+
+        return back()->with('success', 'Darah berhasil ditandai sudah teruji.');
+    })->name('darah.uji');
     /*
     |--------------------------------------------------------------------------
     | DOKTER
