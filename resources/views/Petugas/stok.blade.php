@@ -113,15 +113,32 @@
 
             {{-- FILTER KOMPONEN --}}
             <select
-                name="komponen"
+                name="jenis_komponen"
                 onchange="this.form.submit()"
                 class="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
             >
                 <option value="">Komponen Darah</option>
-                <option value="Whole Blood" {{ request('komponen') == 'Whole Blood' ? 'selected' : '' }}>Whole Blood</option>
-                <option value="PRC" {{ request('komponen') == 'PRC' ? 'selected' : '' }}>PRC</option>
-                <option value="Trombosit" {{ request('komponen') == 'Trombosit' ? 'selected' : '' }}>Trombosit</option>
-                <option value="FFP" {{ request('komponen') == 'FFP' ? 'selected' : '' }}>FFP</option>
+
+                <option value="Whole Blood"
+                    {{ request('jenis_komponen') == 'Whole Blood' ? 'selected' : '' }}>
+                    Whole Blood
+                </option>
+
+                <option value="PRC"
+                    {{ request('jenis_komponen') == 'PRC' ? 'selected' : '' }}>
+                    PRC
+                </option>
+
+                <option value="Trombosit"
+                    {{ request('jenis_komponen') == 'Trombosit' ? 'selected' : '' }}>
+                    Trombosit
+                </option>
+
+                <option value="FFP"
+                    {{ request('jenis_komponen') == 'FFP' ? 'selected' : '' }}>
+                    FFP
+                </option>
+
             </select>
 
 
@@ -198,28 +215,42 @@
                                 {{ $item->asal_darah }}
                             </td>
 
-                            <td class="border px-4 py-2">
+                           <td class="border px-4 py-2 text-center">
 
-                                @php
-                                    $status = $item->status ?? 'Tersedia';
-                                @endphp
+                                @if($item->status == 'Belum diuji')
 
-                                @if ($status == 'Tersedia')
+                                    <form action="{{ route('darah.uji', $item->id) }}" method="POST">
+                                        @csrf
 
-                                    <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-                                        {{ $status }}
-                                    </span>
+                                        <button
+                                            class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold transition">
 
-                                @elseif ($status == 'Keluar')
+                                            Belum Teruji
 
-                                    <span class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
-                                        {{ $status }}
-                                    </span>
+                                        </button>
+                                    </form>
+
+                                @elseif($item->status == 'Sudah Teruji')
+
+                                    <div class="flex flex-col items-center gap-2">
+
+                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                            Sudah Teruji
+                                        </span>
+
+                                        <a href="{{ route('darah.label', $item->id) }}"
+                                        class="text-xs text-teal-700 underline font-semibold">
+
+                                            Cetak QR
+
+                                        </a>
+
+                                    </div>
 
                                 @else
 
-                                    <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
-                                        {{ $status }}
+                                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                        {{ $item->status }}
                                     </span>
 
                                 @endif
