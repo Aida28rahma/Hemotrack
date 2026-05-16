@@ -15,6 +15,15 @@
                 ✅ {{ session('success') }}
             </div>
         @endif
+        @if ($errors->any())
+    <div class="mb-6 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl">
+        <ul class="list-disc list-inside">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
         <form method="POST" action="{{ route('permintaanDokter.store') }}">
             @csrf
@@ -54,15 +63,35 @@
 
                 </div>
 
-                <!-- NAMA PASIEN -->
-                <div>
-                    <label class="block text-white text-sm mb-2">
-                        Nama Pasien
-                    </label>
-                    <input type="text" name="nama"
-                        class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
-                </div>
-            </div>
+               <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+
+    <!-- NAMA PASIEN -->
+<div class="md:col-span-2">
+        <label class="block text-white text-sm mb-2">
+            Nama Pasien
+        </label>
+
+        <input type="text" name="nama"
+            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+    </div>
+
+    <!-- JENIS KELAMIN -->
+    <div>
+        <label class="block text-white text-sm mb-2">
+            Jenis Kelamin
+        </label>
+
+        <select name="jenis_kelamin"
+            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+
+            <option value="">Pilih Jenis Kelamin</option>
+            <option value="L">Laki-laki</option>
+            <option value="P">Perempuan</option>
+
+        </select>
+    </div>
+</div>
+</div>
 
             <!-- DETAIL PERMINTAAN -->
             <div class="border border-white/70 rounded-md p-5 mb-6">
