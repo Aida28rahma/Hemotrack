@@ -4,64 +4,105 @@
 
 <main class="flex-1 p-6">
 
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">
+    {{-- JUDUL --}}
+    <h1 class="mb-6 text-2xl font-bold text-gray-800">
         Ringkasan Stok Darah
     </h1>
 
-    <div class="flex flex-wrap gap-5 mb-8">
+
+    {{-- RINGKASAN STOK --}}
+    <div class="mb-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
 
         @foreach (['A', 'B', 'AB', 'O'] as $gol)
+
             @php
                 $plus = $ringkasan[$gol]->plus ?? 0;
                 $minus = $ringkasan[$gol]->minus ?? 0;
+                $total = $plus + $minus;
             @endphp
 
-            <div class="w-64 bg-white border-4 border-teal-700 shadow-md p-4" style="border-radius: 30px;">
+            <div class="rounded-[30px] border-4 border-teal-700 bg-white p-5 shadow-md">
 
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                        <span class="text-red-700 text-xl">🩸</span>
+                {{-- HEADER CARD --}}
+                <div class="mb-5 flex items-center gap-3">
+
+                    {{-- ICON DARAH PERSIS DASHBOARD --}}
+                    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
+                        <svg class="h-5 w-5 text-red-700" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2S6 9.1 6 14a6 6 0 0012 0c0-4.9-6-12-6-12z"/>
+                        </svg>
                     </div>
 
                     <h2 class="text-2xl font-bold text-red-800">
                         {{ $gol }}
                     </h2>
+
                 </div>
 
-                <div class="flex justify-around text-center mb-4">
+
+                {{-- RHESUS --}}
+                <div class="mb-5 flex justify-around text-center">
+
                     <div>
-                        <p class="font-bold text-gray-800">{{ $gol }}+</p>
-                        <p class="text-lg font-semibold">{{ $plus }}</p>
+                        <p class="font-bold text-gray-800">
+                            {{ $gol }}+
+                        </p>
+
+                        <p class="text-lg font-semibold text-gray-900">
+                            {{ $plus }}
+                        </p>
                     </div>
 
                     <div>
-                        <p class="font-bold text-gray-800">{{ $gol }}-</p>
-                        <p class="text-lg font-semibold">{{ $minus }}</p>
+                        <p class="font-bold text-gray-800">
+                            {{ $gol }}-
+                        </p>
+
+                        <p class="text-lg font-semibold text-gray-900">
+                            {{ $minus }}
+                        </p>
                     </div>
+
                 </div>
 
-                <div class="border-t pt-2 flex justify-between text-sm">
-                    <span class="text-gray-500">Total</span>
-                    <span class="font-bold text-red-700">
-                        {{ $plus + $minus }} Kantong
+
+                {{-- TOTAL --}}
+                <div class="flex justify-between border-t pt-3 text-sm">
+
+                    <span class="text-gray-500">
+                        Total
                     </span>
+
+                    <span class="font-bold text-red-700">
+                        {{ $total }} Kantong
+                    </span>
+
                 </div>
 
             </div>
+
         @endforeach
 
     </div>
 
-    <div class="bg-white rounded-2xl shadow-md p-6">
 
-        <h2 class="text-xl font-bold text-gray-800 mb-4">
+    {{-- DETAIL STOK DARAH --}}
+    <div class="rounded-2xl bg-white p-6 shadow-md">
+
+        <h2 class="mb-4 text-xl font-bold text-gray-800">
             Detail Stok Darah
         </h2>
 
-        <form method="GET" action="{{ route('stok') }}" class="flex flex-wrap gap-3 mb-5">
 
-            <select name="golongan" onchange="this.form.submit()"
-                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+        {{-- FILTER --}}
+        <form method="GET" action="{{ route('stok') }}" class="mb-5 flex flex-wrap gap-3">
+
+            {{-- FILTER GOLONGAN --}}
+            <select
+                name="golongan"
+                onchange="this.form.submit()"
+                class="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
+            >
                 <option value="">Golongan Darah</option>
                 <option value="A" {{ request('golongan') == 'A' ? 'selected' : '' }}>A</option>
                 <option value="B" {{ request('golongan') == 'B' ? 'selected' : '' }}>B</option>
@@ -69,68 +110,88 @@
                 <option value="O" {{ request('golongan') == 'O' ? 'selected' : '' }}>O</option>
             </select>
 
-            <select name="jenis_komponen" onchange="this.form.submit()"
-                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+
+            {{-- FILTER KOMPONEN --}}
+            <select
+                name="komponen"
+                onchange="this.form.submit()"
+                class="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
+            >
                 <option value="">Komponen Darah</option>
-                <option value="Whole Blood" {{ request('jenis_komponen') == 'Whole Blood' ? 'selected' : '' }}>Whole Blood</option>
-                <option value="PRC" {{ request('jenis_komponen') == 'PRC' ? 'selected' : '' }}>PRC</option>
-                <option value="Trombosit" {{ request('jenis_komponen') == 'Trombosit' ? 'selected' : '' }}>Trombosit</option>
-                <option value="FFP" {{ request('jenis_komponen') == 'FFP' ? 'selected' : '' }}>FFP</option>
-                <option value="Kriopresipitasi" {{ request('jenis_komponen') == 'Kriopresipitasi' ? 'selected' : '' }}>Kriopresipitasi</option>
+                <option value="Whole Blood" {{ request('komponen') == 'Whole Blood' ? 'selected' : '' }}>Whole Blood</option>
+                <option value="PRC" {{ request('komponen') == 'PRC' ? 'selected' : '' }}>PRC</option>
+                <option value="Trombosit" {{ request('komponen') == 'Trombosit' ? 'selected' : '' }}>Trombosit</option>
+                <option value="FFP" {{ request('komponen') == 'FFP' ? 'selected' : '' }}>FFP</option>
             </select>
 
-            <select name="rhesus" onchange="this.form.submit()"
-                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+
+            {{-- FILTER RHESUS --}}
+            <select
+                name="rhesus"
+                onchange="this.form.submit()"
+                class="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
+            >
                 <option value="">Rhesus Darah</option>
                 <option value="+" {{ request('rhesus') == '+' ? 'selected' : '' }}>Positif (+)</option>
                 <option value="-" {{ request('rhesus') == '-' ? 'selected' : '' }}>Negatif (-)</option>
             </select>
 
-            <a href="{{ route('stok') }}"
-                class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm">
+
+            {{-- RESET --}}
+            <a
+                href="{{ route('stok') }}"
+                class="rounded-lg bg-gray-200 px-4 py-2 text-sm hover:bg-gray-300"
+            >
                 Reset
             </a>
 
         </form>
 
+
+        {{-- TABEL --}}
         <div class="overflow-x-auto">
 
-            <table class="w-full border-collapse overflow-hidden rounded-xl">
+            <table class="w-full overflow-hidden rounded-xl border-collapse">
 
                 <thead class="bg-teal-700 text-white">
+
                     <tr class="text-sm">
-                        <th class="px-4 py-3 border">No</th>
-                        <th class="px-4 py-3 border">Golongan</th>
-                        <th class="px-4 py-3 border">Rhesus</th>
-                        <th class="px-4 py-3 border">Jenis Komponen</th>
-                        <th class="px-4 py-3 border">Tanggal Kadaluarsa</th>
-                        <th class="px-4 py-3 border">Asal Darah</th>
-                        <th class="px-4 py-3 border">Status</th>
+                        <th class="border px-4 py-3">No</th>
+                        <th class="border px-4 py-3">Golongan</th>
+                        <th class="border px-4 py-3">Rhesus</th>
+                        <th class="border px-4 py-3">Jenis Komponen</th>
+                        <th class="border px-4 py-3">Tanggal Kadaluarsa</th>
+                        <th class="border px-4 py-3">Asal Darah</th>
+                        <th class="border px-4 py-3">Status</th>
                     </tr>
+
                 </thead>
+
 
                 <tbody class="bg-white text-center text-sm">
 
                     @forelse ($data as $index => $item)
 
-                        <tr class="hover:bg-gray-100 transition">
+                        <tr class="transition hover:bg-gray-100">
 
-                            <td class="border px-4 py-2">{{ $index + 1 }}</td>
+                            <td class="border px-4 py-2">
+                                {{ $index + 1 }}
+                            </td>
 
                             <td class="border px-4 py-2 font-semibold">
                                 {{ $item->golongan }}
                             </td>
 
                             <td class="border px-4 py-2">
-                                {{ $item->rhesus == '+' ? 'Positif (+)' : 'Negatif (-)' }}
+                                {{ $item->rhesus == '+' || $item->rhesus == 'Positif (+)' ? 'Positif (+)' : 'Negatif (-)' }}
                             </td>
 
                             <td class="border px-4 py-2">
-                               {{ $item->jenis_komponen }}
+                                {{ $item->jenis_komponen ?? $item->komponen }}
                             </td>
 
                             <td class="border px-4 py-2">
-                                {{ $item->tanggal_kedaluwarsa }}
+                                {{ $item->tanggal_kedaluwarsa ?? $item->tanggal_kadaluarsa }}
                             </td>
 
                             <td class="border px-4 py-2">
@@ -139,27 +200,27 @@
 
                             <td class="border px-4 py-2">
 
-                                @if($item->status == 'Belum Teruji')
+                                @php
+                                    $status = $item->status ?? 'Tersedia';
+                                @endphp
 
-                                    <form action="{{ route('darah.uji', $item->id) }}" method="POST">
-                                        @csrf
-                                        <button class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                            Belum Teruji
-                                        </button>
-                                    </form>
+                                @if ($status == 'Tersedia')
+
+                                    <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                                        {{ $status }}
+                                    </span>
+
+                                @elseif ($status == 'Keluar')
+
+                                    <span class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+                                        {{ $status }}
+                                    </span>
 
                                 @else
 
-                                    <div class="flex flex-col items-center gap-2">
-                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                            Sudah Teruji
-                                        </span>
-
-                                        <a href="{{ route('darah.label', $item->id) }}"
-                                        class="text-xs text-teal-700 underline font-semibold">
-                                            Cetak QR
-                                        </a>
-                                    </div>
+                                    <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+                                        {{ $status }}
+                                    </span>
 
                                 @endif
 
@@ -186,17 +247,5 @@
     </div>
 
 </main>
-<script>
 
-function ubahStatus(button) {
-
-    button.outerHTML = `
-        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-            Sudah Teruji
-        </span>
-    `;
-
-}
-
-</script>
 @endsection

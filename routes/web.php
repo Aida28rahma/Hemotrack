@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PermintaanDokter;
 use App\Models\Pendonor;
 use App\Models\DataDarahPendonor;
+
 /*
 |--------------------------------------------------------------------------
 | PUBLIC ROUTES
@@ -266,9 +267,11 @@ Route::post('/unit-bank-darah/simpan-pendonor', function (Request $request) {
     ]);
 
     return redirect()
+
         ->route('permintaanDokter')
         ->with('success', 'Permintaan berhasil dibuat!');
 })->name('permintaanDokter.store');
+
 
     Route::get('/status-dokter', function () {
 
@@ -279,8 +282,43 @@ Route::post('/unit-bank-darah/simpan-pendonor', function (Request $request) {
         $requests = PermintaanDokter::latest()->get();
 
         return view('Dokter.statusDokter', compact('requests'));
-
     })->name('statusDokter');
+
+    })->middleware(['auth'])->name('statusDokter');
+
+    Route::get('/laporan', function (Request $request) {
+
+    $tanggalAwal = $request->tanggal_awal;
+    $tanggalAkhir = $request->tanggal_akhir;
+    $golongan = $request->golongan;
+    $komponen = $request->jenis_komponen;
+
+    $darahMasuk = DataDarahPendonor::query()
+        ->when($tanggalAwal, fn($q) => $q->whereDate('created_at', '>=', $tanggalAwal))
+        ->when($tanggalAkhir, fn($q) => $q->whereDate('created_at', '<=', $tanggalAkhir))
+        ->when($golongan, fn($q) => $q->where('golongan', $golongan))
+        ->when($komponen, fn($q) => $q->where('jenis_komponen', $komponen))
+        ->get();
+
+    $darahKeluar = PermintaanDokter::query()
+        ->when($tanggalAwal, fn($q) => $q->whereDate('created_at', '>=', $tanggalAwal))
+        ->when($tanggalAkhir, fn($q) => $q->whereDate('created_at', '<=', $tanggalAkhir))
+        ->when($golongan, fn($q) => $q->where('golongan', $golongan))
+        ->when($komponen, fn($q) => $q->where('jenis_komponen', $komponen))
+        ->get();
+
+    return view('Petugas.laporan', compact(
+        'darahMasuk',
+        'darahKeluar',
+        'tanggalAwal',
+        'tanggalAkhir',
+        'golongan',
+        'komponen'
+    ));
+
+    })->name('laporan');
+
+    
     /*
     |---------------------------------------------------------------------------
     | PROFILE
@@ -295,5 +333,5 @@ Route::post('/unit-bank-darah/simpan-pendonor', function (Request $request) {
 | AUTH (BREEZE)
 |--------------------------------------------------------------------------
 */
-  });
+
 require __DIR__.'/auth.php';
