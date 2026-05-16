@@ -43,18 +43,34 @@
            href="{{ route('login') }}"
            class="absolute right-[220px] w-44 h-44 rounded-full bg-[#0f8378] text-white flex flex-col items-center justify-center shadow-2xl hover:scale-105 transition">
 
-            <svg class="w-14 h-14 mb-3 fill-current" viewBox="0 0 24 24">
-                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-            </svg>
+
+    <!-- DOKTER -->
+    <a href="{{ route('login') }}"
+       class="absolute 
+              scale-0 opacity-0 
+              peer-checked:scale-100 peer-checked:-translate-x-40 peer-checked:opacity-100
+              transition-all duration-500
+              bg-teal-700 text-white w-32 h-32 rounded-full 
+              flex flex-col items-center justify-center shadow-lg">
+        <span class="text-sm mt-1">Dokter</span>
+    </a>
 
             <span class="text-xl font-bold">
                 Dokter
             </span>
         </a>
 
-        {{-- LOGO BUTTON --}}
-        <button @click="open = !open"
-                class="w-64 h-64 bg-white rounded-full flex flex-col items-center justify-center shadow-2xl hover:scale-105 transition">
+
+    <!-- PETUGAS -->
+    <a href="{{ route('login') }}"
+       class="absolute 
+              scale-0 opacity-0 
+              peer-checked:scale-100 peer-checked:translate-x-40 peer-checked:opacity-100
+              transition-all duration-500
+              bg-teal-700 text-white w-32 h-32 rounded-full 
+              flex flex-col items-center justify-center shadow-lg">
+        <span class="text-sm mt-1">Petugas</span>
+    </a>
 
             <img src="/logo.png" class="w-32 mb-4">
 

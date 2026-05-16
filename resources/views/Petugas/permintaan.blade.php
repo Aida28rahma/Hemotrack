@@ -11,14 +11,11 @@
             Permintaan Darah
         </h1>
 
-<<<<<<< Updated upstream
-=======
         <button
             class="bg-teal-500 hover:bg-teal-600 text-white px-5 py-3 rounded-xl shadow transition">
             + Tambah Permintaan
         </button>
 
->>>>>>> Stashed changes
     </div>
 
     <!-- Filter -->
@@ -26,34 +23,7 @@
 
         <div class="flex justify-between items-end flex-wrap gap-4">
 
-<<<<<<< Updated upstream
-          <!-- Status Filter -->
-            <div class="flex flex-wrap gap-4">
 
-                <!-- Semua -->
-                <a href="{{ route('permintaan', ['search' => request('search')]) }}"
-                class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50">
-                    📋 Semua
-                </a>
-
-                <!-- Menunggu -->
-                <a href="{{ route('permintaan', ['status' => 'menunggu', 'search' => request('search')]) }}"
-                class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50">
-                    ◉ Menunggu
-                </a>
-
-                <!-- Disetujui -->
-                <a href="{{ route('permintaan', ['status' => 'disetujui', 'search' => request('search')]) }}"
-                class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50">
-                    ◉ Disetujui
-                </a>
-
-                <!-- Ditolak -->
-                <a href="{{ route('permintaan', ['status' => 'ditolak', 'search' => request('search')]) }}"
-                class="bg-white border border-gray-200 shadow rounded-xl px-6 py-4 flex items-center gap-3 hover:bg-gray-50">
-                    ◉ Ditolak
-                </a>
-=======
             <!-- Status Filter -->
             <div class="flex flex-wrap gap-4">
 
@@ -119,40 +89,22 @@
                     </span>
 
                 </button>
->>>>>>> Stashed changes
 
             </div>
 
             <!-- Search -->
             <div>
-<<<<<<< Updated upstream
-                <form method="GET" action="{{ route('permintaan') }}">
-                    <input type="text" name="search"
-                        value="{{ request('search') }}"
-                        placeholder="Cari nama / poli..."
-                        class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-64 focus:ring-2 focus:ring-teal-500 outline-none">
-                </form>
-=======
 
                 <input type="text"
                     placeholder="Cari Data"
                     class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-64 focus:ring-2 focus:ring-teal-500 outline-none">
 
->>>>>>> Stashed changes
             </div>
 
         </div>
 
     </div>
 
-<<<<<<< Updated upstream
-    @if(session('success'))
-        <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-=======
->>>>>>> Stashed changes
     <!-- Table -->
     <div class="bg-white rounded-3xl shadow-md border border-gray-200 p-5">
 
@@ -178,7 +130,7 @@
                         <th class="px-4 py-3">Jumlah</th>
                         <th class="px-4 py-3">Tanggal Permintaan</th>
                         <th class="px-4 py-3">Status</th>
-                        <th class="px-4 py-3">Persetujuan</th>
+                        
 
                     </tr>
 
@@ -187,100 +139,7 @@
                 <!-- Body -->
                 <tbody class="divide-y divide-gray-200 bg-white text-center">
 
-<<<<<<< Updated upstream
-                    @foreach ($data as $index => $item)
 
-                    <tr class="hover:bg-gray-50 transition">
-
-                        <td class="px-4 py-3">{{ $index + 1 }}</td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->nama }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->poli }}
-                        </td>
-
-                        <td class="px-4 py-3 font-semibold">
-                            {{ $item->golongan }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->rhesus }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->komponen }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->jumlah }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->created_at->format('d/m/Y') }}
-                        </td>
-
-                        <!-- STATUS -->
-                        <td class="px-4 py-3">
-
-                            @if ($item->status == 'menunggu')
-                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                    Menunggu
-                                </span>
-
-                            @elseif ($item->status == 'disetujui')
-                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                    Disetujui
-                                </span>
-
-                            @elseif ($item->status == 'ditolak')
-                                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                    Ditolak
-                                </span>
-                            @endif
-
-                        </td>
-                        <!-- AKSI -->
-                        <td class="px-4 py-3">
-
-                        @if ($item->status == 'menunggu')
-
-                            <div class="flex justify-center gap-2">
-
-                                <!-- SETUJUI -->
-                                <form action="{{ route('permintaan.approve', $item->id) }}" method="POST">
-                                    @csrf
-                                    <button class="bg-green-100 hover:bg-green-200 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        ✔ Setujui
-                                    </button>
-                                </form>
-
-                                <!-- TOLAK -->
-                                <form action="{{ route('permintaan.reject', $item->id) }}" method="POST">
-                                    @csrf
-                                    <button class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        ✖ Tolak
-                                    </button>
-                                </form>
-
-                            </div>
-
-                        @else
-
-                            <span class="text-gray-400">-</span>
-
-                        @endif
-
-                        </td>
-
-                    </tr>
-
-                    @endforeach
-
-                    </tbody>
-=======
                     @foreach ([
                         ['dokter' => 'dr. Olivia', 'poli' => 'IGD', 'goldar' => 'A', 'rhesus' => 'Negatif (-)', 'komponen' => 'Whole Blood', 'jumlah' => 2, 'tanggal' => '04/05/2025', 'status' => 'Selesai'],
                         ['dokter' => 'dr. Aida', 'poli' => 'Obgyn', 'goldar' => 'B', 'rhesus' => 'Negatif (-)', 'komponen' => 'Whole Blood', 'jumlah' => 1, 'tanggal' => '04/05/2025', 'status' => 'Ditolak'],
@@ -409,7 +268,6 @@
                     @endforeach
 
                 </tbody>
->>>>>>> Stashed changes
 
             </table>
 
@@ -436,8 +294,6 @@
 
 </div>
 
-<<<<<<< Updated upstream
-=======
 <!-- Modal Tolak -->
 <div id="rejectModal"
     class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
@@ -579,5 +435,61 @@
 
 </script>
 
->>>>>>> Stashed changes
+<div id="statusModal"
+    class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 text-center">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">
+            Konfirmasi Permintaan
+        </h2>
+
+        <p class="text-gray-600 mb-6">
+            Apakah permintaan akan disetujui atau ditolak?
+        </p>
+
+        <div class="flex justify-center gap-4">
+
+            <form id="approveForm" method="POST">
+                @csrf
+                <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl font-semibold">
+                    ✔ Disetujui
+                </button>
+            </form>
+
+            <form id="rejectForm" method="POST">
+                @csrf
+                <button class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl font-semibold">
+                    ✖ Ditolak
+                </button>
+            </form>
+
+        </div>
+
+        <button onclick="closeStatusModal()"
+            class="mt-5 text-gray-500 hover:text-gray-700 text-sm">
+            Batal
+        </button>
+    </div>
+</div>
+
+<script>
+    function openStatusModal(id) {
+        const modal = document.getElementById('statusModal');
+        const approveForm = document.getElementById('approveForm');
+        const rejectForm = document.getElementById('rejectForm');
+
+        approveForm.action = `/permintaan/${id}/approve`;
+        rejectForm.action = `/permintaan/${id}/reject`;
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeStatusModal() {
+        const modal = document.getElementById('statusModal');
+
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }
+</script>
 @endsection

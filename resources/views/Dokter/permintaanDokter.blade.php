@@ -2,7 +2,6 @@
 
 @section('content')
 
-<<<<<<< Updated upstream
 <div class="min-h-screen flex items-center justify-center p-6">
 
     <div class="w-full max-w-5xl bg-gradient-to-br from-[#063b3a] via-[#0d7770] to-[#20b8b0] rounded-xl shadow-2xl p-10">
@@ -16,17 +15,19 @@
                 ✅ {{ session('success') }}
             </div>
         @endif
-=======
-<div class="p-6 max-w-2xl mx-auto">
-
-    <div class="bg-white p-6 rounded-xl shadow">
-        <h2 class="text-xl font-bold mb-6">Form Permintaan Darah</h2>
->>>>>>> Stashed changes
+        @if ($errors->any())
+    <div class="mb-6 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl">
+        <ul class="list-disc list-inside">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
         <form method="POST" action="{{ route('permintaanDokter.store') }}">
             @csrf
 
-<<<<<<< Updated upstream
             <!-- DATA PASIEN -->
             <div class="border border-white/70 rounded-md p-5 mb-6">
                 <h2 class="text-2xl font-bold text-white mb-3">
@@ -62,15 +63,35 @@
 
                 </div>
 
-                <!-- NAMA PASIEN -->
-                <div>
-                    <label class="block text-white text-sm mb-2">
-                        Nama Pasien
-                    </label>
-                    <input type="text" name="nama"
-                        class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
-                </div>
-            </div>
+               <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+
+    <!-- NAMA PASIEN -->
+<div class="md:col-span-2">
+        <label class="block text-white text-sm mb-2">
+            Nama Pasien
+        </label>
+
+        <input type="text" name="nama"
+            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+    </div>
+
+    <!-- JENIS KELAMIN -->
+    <div>
+        <label class="block text-white text-sm mb-2">
+            Jenis Kelamin
+        </label>
+
+        <select name="jenis_kelamin"
+            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+
+            <option value="">Pilih Jenis Kelamin</option>
+            <option value="L">Laki-laki</option>
+            <option value="P">Perempuan</option>
+
+        </select>
+    </div>
+</div>
+</div>
 
             <!-- DETAIL PERMINTAAN -->
             <div class="border border-white/70 rounded-md p-5 mb-6">
@@ -143,75 +164,6 @@
                     Ajukan Permintaan
                 </button>
             </div>
-=======
-            <!-- NO RM -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">No RM</label>
-                <input type="text" name="no_rm"
-                    class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring focus:ring-teal-200">
-            </div>
-
-            <!-- NAMA PASIEN -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Nama Pasien</label>
-                <input type="text" name="nama"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-            </div>
-
-            <!-- JENIS KELAMIN -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Jenis Kelamin</label>
-                <select name="jenis_kelamin"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-                    <option value="">-- Pilih --</option>
-                    <option value="L">Laki-laki</option>
-                    <option value="P">Perempuan</option>
-                </select>
-            </div>
-
-            <!-- POLI TUJUAN -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Poli Tujuan</label>
-                <input type="text" name="poli"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-            </div>
-
-            <!-- RHESUS -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Rhesus</label>
-                <select name="rhesus"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-                    <option value="">-- Pilih --</option>
-                    <option value="+">Positif (+)</option>
-                    <option value="-">Negatif (-)</option>
-                </select>
-            </div>
-
-            <!-- KOMPONEN DARAH -->
-            <div class="mb-4">
-                <label class="block text-sm font-medium">Komponen Darah</label>
-                <select name="komponen"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-                    <option value="">-- Pilih --</option>
-                    <option value="WB">Whole Blood</option>
-                    <option value="PRC">PRC</option>
-                    <option value="TC">Trombosit</option>
-                    <option value="FFP">Plasma</option>
-                </select>
-            </div>
-
-            <!-- JUMLAH -->
-            <div class="mb-6">
-                <label class="block text-sm font-medium">Jumlah (kantong)</label>
-                <input type="number" name="jumlah"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-            </div>
-
-            <!-- BUTTON -->
-            <button class="w-full bg-teal-600 text-white py-2 rounded-lg font-semibold hover:bg-teal-700 transition">
-                Kirim Permintaan
-            </button>
->>>>>>> Stashed changes
 
         </form>
     </div>
