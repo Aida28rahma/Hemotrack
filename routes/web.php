@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\PermintaanDokter;
 use App\Models\DataDarahPendonor;
+use App\Models\PermintaanDarah;
 
 /*
 |--------------------------------------------------------------------------
@@ -200,9 +201,9 @@ Route::middleware(['auth'])->group(function () {
     ]);
 
     return redirect()
-        ->route('permintaanDokter')
-        ->with('success', 'Permintaan berhasil dibuat!');
-})->name('permintaanDokter.store');
+            ->route('permintaanDokter')
+            ->with('success', 'Permintaan berhasil dibuat!');
+        })->name('permintaanDokter.store');
     Route::get('/status-dokter', function () {
 
         if (auth()->user()->role != 'dokter') {
@@ -214,6 +215,38 @@ Route::middleware(['auth'])->group(function () {
         return view('Dokter.statusDokter', compact('requests'));
 
     })->middleware(['auth'])->name('statusDokter');
+
+    Route::get('/laporan', function (Request $request) {
+
+    $tanggalAwal = $request->tanggal_awal;
+    $tanggalAkhir = $request->tanggal_akhir;
+    $golongan = $request->golongan;
+    $komponen = $request->jenis_komponen;
+
+    $darahMasuk = DataDarahPendonor::query()
+        ->when($tanggalAwal, fn($q) => $q->whereDate('created_at', '>=', $tanggalAwal))
+        ->when($tanggalAkhir, fn($q) => $q->whereDate('created_at', '<=', $tanggalAkhir))
+        ->when($golongan, fn($q) => $q->where('golongan', $golongan))
+        ->when($komponen, fn($q) => $q->where('jenis_komponen', $komponen))
+        ->get();
+
+    $darahKeluar = PermintaanDarah::query()
+        ->when($tanggalAwal, fn($q) => $q->whereDate('created_at', '>=', $tanggalAwal))
+        ->when($tanggalAkhir, fn($q) => $q->whereDate('created_at', '<=', $tanggalAkhir))
+        ->when($golongan, fn($q) => $q->where('golongan', $golongan))
+        ->when($komponen, fn($q) => $q->where('jenis_komponen', $komponen))
+        ->get();
+
+    return view('Petugas.laporan', compact(
+        'darahMasuk',
+        'darahKeluar',
+        'tanggalAwal',
+        'tanggalAkhir',
+        'golongan',
+        'komponen'
+    ));
+
+    })->name('laporan');
     /*
     |---------------------------------------------------------------------------
     | PROFILE
