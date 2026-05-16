@@ -2,383 +2,154 @@
 
 @section('content')
 
-<div class="bg-gray-100 min-h-screen p-5">
+<div class="min-h-screen bg-gray-100 p-5">
 
-<div class="
-bg-[#f4f4f4]
-rounded-[25px]
-shadow-[0_8px_25px_rgba(0,0,0,0.18)]
-p-5
-w-full">
+    <div class="w-full rounded-[25px] bg-[#f4f4f4] p-5 shadow-[0_8px_25px_rgba(0,0,0,0.18)]">
 
+        {{-- NOTIFIKASI STOK --}}
+        <div class="mb-5 flex items-center justify-between rounded-xl bg-white px-5 py-3 shadow-[0_4px_12px_rgba(0,0,0,0.18)]">
 
-<!-- NOTIFIKASI -->
+            <div class="flex items-center gap-2 font-bold">
+                <svg class="h-5 w-5 text-[#0f5c5c]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a3 3 0 006 0"/>
+                </svg>
 
-<div class="
-bg-white
-rounded-xl
-shadow-[0_4px_12px_rgba(0,0,0,0.18)]
-px-5
-py-3
-mb-5
-flex
-justify-between">
+                <span>Notifikasi Stok</span>
+            </div>
 
-<span class="font-bold">
-🔔 Notifikasi Stok
-</span>
+            <span class="font-semibold text-red-500">
+                *Stok O hampir habis
+            </span>
 
-<span class="text-red-500 font-semibold">
-*Stok O hampir habis
-</span>
+        </div>
 
-</div>
+        {{-- CARD RINGKASAN --}}
+        <div class="mb-5 grid grid-cols-4 gap-4">
 
+            @foreach([
+                ['title' => 'Total Pendonor', 'value' => 80],
+                ['title' => 'Distribusi Hari Ini', 'value' => 20],
+                ['title' => 'Stok Darah', 'value' => 80],
+                ['title' => 'Permintaan', 'value' => 10],
+            ] as $card)
 
+                <div class="flex items-center justify-between rounded-2xl bg-white p-4 shadow-[0_6px_15px_rgba(0,0,0,0.2)]">
 
-<!-- CARD -->
+                    <div>
+                        <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-100">
+                            <svg class="h-5 w-5 text-red-700" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2S6 9.1 6 14a6 6 0 0012 0c0-4.9-6-12-6-12z"/>
+                            </svg>
+                        </div>
 
-<div class="grid grid-cols-4 gap-4 mb-5">
+                        <p class="text-sm font-bold text-red-800">
+                            {{ $card['title'] }}
+                        </p>
+                    </div>
 
-@foreach([
-['title'=>'Total Pendonor','value'=>80],
-['title'=>'Distribusi Hari Ini','value'=>20],
-['title'=>'Stok Darah','value'=>80],
-['title'=>'Permintaan','value'=>10]
-] as $card)
+                    <div class="rounded bg-teal-800 px-3 py-1 font-bold text-white">
+                        {{ $card['value'] }}
+                    </div>
 
-<div class="
-bg-white
-rounded-2xl
-shadow-[0_6px_15px_rgba(0,0,0,0.2)]
-p-4
-flex
-justify-between
-items-center">
+                </div>
 
-<div>
+            @endforeach
 
-<p class="text-red-700 text-xl">
-🩸
-</p>
+        </div>
 
-<p class="font-bold text-red-800 text-sm">
-{{ $card['title'] }}
-</p>
+        {{-- GRAFIK DAN DATA --}}
+        <div class="grid grid-cols-5 items-stretch gap-5">
 
-</div>
+            {{-- GRAFIK STOK DARAH --}}
+            <div class="col-span-2 rounded-2xl bg-white p-5 shadow-[0_8px_20px_rgba(0,0,0,0.18)]">
 
+                <h2 class="mb-8 text-2xl font-bold">
+                    Grafik Stok Darah
+                </h2>
 
-<div class="
-bg-teal-800
-text-white
-px-3
-py-1
-rounded">
+                <div class="flex h-[420px] items-end justify-evenly">
 
-{{ $card['value'] }}
+                    <div class="h-[220px] w-12 rounded-sm bg-red-800"></div>
+                    <div class="h-[330px] w-12 rounded-sm bg-red-800"></div>
+                    <div class="h-[260px] w-12 rounded-sm bg-red-800"></div>
+                    <div class="h-[150px] w-12 rounded-sm bg-red-800"></div>
 
-</div>
+                </div>
 
-</div>
+                <div class="mt-5 flex justify-evenly">
+                    <span>A</span>
+                    <span>B</span>
+                    <span>AB</span>
+                    <span>O</span>
+                </div>
 
-@endforeach
+            </div>
 
-</div>
+            {{-- DISTRIBUSI DAN PERMINTAAN --}}
+            <div class="col-span-3 flex flex-col gap-5">
 
+                {{-- DISTRIBUSI --}}
+                <div class="flex-1 rounded-2xl bg-white p-5 shadow-[0_8px_20px_rgba(0,0,0,0.18)]">
 
+                    <h2 class="mb-5 text-2xl font-bold">
+                        Distribusi
+                    </h2>
 
+                    <div class="space-y-4">
 
+                        <div class="flex items-center justify-between border-b pb-4">
+                            <p>dr. Fajri Alfahri - B+ - 3 Kantong</p>
+                            <span class="font-bold text-green-500">Diterima</span>
+                        </div>
 
+                        <div class="flex items-center justify-between border-b pb-4">
+                            <p>dr. Diska Fatiha - AB+ - 1 Kantong</p>
+                            <span class="font-bold text-red-500">Ditolak</span>
+                        </div>
 
-<!-- GRAFIK + KANAN -->
+                        <div class="flex items-center justify-between">
+                            <p>dr. Rizky Saputra - O+ - 2 Kantong</p>
+                            <span class="font-bold text-yellow-500">Diproses</span>
+                        </div>
 
-<div class="grid grid-cols-5 gap-5 items-stretch">
+                    </div>
 
+                </div>
 
+                {{-- PERMINTAAN --}}
+                <div class="flex-1 rounded-2xl bg-white p-5 shadow-[0_8px_20px_rgba(0,0,0,0.18)]">
 
-<!-- GRAFIK -->
+                    <h2 class="mb-5 text-2xl font-bold">
+                        Permintaan
+                    </h2>
 
-<div class="
-col-span-2
-bg-white
-rounded-2xl
-shadow-[0_8px_20px_rgba(0,0,0,0.18)]
-p-5
-h-full">
+                    <div class="space-y-4">
 
-<h2 class="
-font-bold
-text-2xl
-mb-8">
+                        <div class="flex items-center justify-between border-b pb-4">
+                            <p>dr. Bayu Bimasena - A+ - 2 Kantong</p>
+                            <span class="font-bold text-yellow-500">Diproses</span>
+                        </div>
 
-Grafik Stok Darah
+                        <div class="flex items-center justify-between border-b pb-4">
+                            <p>dr. Budi Utomo - O− - 1 Kantong</p>
+                            <span class="font-bold text-green-500">Diterima</span>
+                        </div>
 
-</h2>
+                        <div class="flex items-center justify-between">
+                            <p>dr. Andini Putri - AB+ - 4 Kantong</p>
+                            <span class="font-bold text-red-500">Ditolak</span>
+                        </div>
 
+                    </div>
 
+                </div>
 
-<div class="
-flex
-items-end
-justify-evenly
-h-[420px]">
+            </div>
 
+        </div>
 
-<div class="
-bg-red-800
-w-12
-h-[220px]
-rounded-sm">
-</div>
-
-
-<div class="
-bg-red-800
-w-12
-h-[330px]
-rounded-sm">
-</div>
-
-
-<div class="
-bg-red-800
-w-12
-h-[260px]
-rounded-sm">
-</div>
-
-
-<div class="
-bg-red-800
-w-12
-h-[150px]
-rounded-sm">
-</div>
-
-
-</div>
-
-
-
-
-<div class="
-flex
-justify-evenly
-mt-5">
-
-<span>A</span>
-<span>B</span>
-<span>AB</span>
-<span>O</span>
-
-</div>
-
-</div>
-
-
-
-
-
-
-
-
-<!-- DISTRIBUSI + PERMINTAAN -->
-
-<div class="
-col-span-3
-flex
-flex-col
-gap-5
-h-full">
-
-
-
-<!-- DISTRIBUSI -->
-
-<div class="
-bg-white
-rounded-2xl
-shadow-[0_8px_20px_rgba(0,0,0,0.18)]
-p-5
-flex-1">
-
-<h2 class="
-font-bold
-text-2xl
-mb-5">
-
-Distribusi
-
-</h2>
-
-
-<div class="flex justify-between items-center">
-
-<p>
-dr. Fajri Alfahri - B+ - 3 Kantong
-</p>
-
-<span class="text-green-500 font-bold">
-
-Diterima
-
-</span>
-
-</div>
-
-<hr class="my-4">
-
-
-<div class="flex justify-between items-center">
-
-<p>
-dr. Diska Fatiha - AB+ - 1 Kantong
-</p>
-
-<span class="text-red-500 font-bold">
-
-Ditolak
-
-</span>
-
-</div>
-
-
-<hr class="my-4">
-
-
-<div class="flex justify-between items-center">
-
-<p>
-dr. Rizky Saputra - O+ - 2 Kantong
-</p>
-
-<span class="text-yellow-500 font-bold">
-
-Diproses
-
-</span>
-
-</div>
-
-</div>
-
-
-
-
-
-
-
-
-<!-- PERMINTAAN -->
-
-<div class="
-bg-white
-rounded-2xl
-shadow-[0_8px_20px_rgba(0,0,0,0.18)]
-p-5
-flex-1">
-
-
-<h2 class="
-font-bold
-text-2xl
-mb-5">
-
-Permintaan
-
-</h2>
-
-
-
-<div class="
-flex
-justify-between
-items-center">
-
-<p>
-
-dr. Bayu Bimasena - A+ - 2 Kantong
-
-</p>
-
-<span class="
-text-yellow-500
-font-bold">
-
-Diproses
-
-</span>
-
-</div>
-
-
-
-<hr class="my-4">
-
-
-
-
-<div class="
-flex
-justify-between
-items-center">
-
-<p>
-
-dr. Budi Utomo - O− - 1 Kantong
-
-</p>
-
-<span class="
-text-green-500
-font-bold">
-
-Diterima
-
-</span>
-
-</div>
-
-
-
-<hr class="my-4">
-
-
-
-
-<div class="
-flex
-justify-between
-items-center">
-
-<p>
-
-dr. Andini Putri - AB+ - 4 Kantong
-
-</p>
-
-<span class="
-text-red-500
-font-bold">
-
-Ditolak
-
-</span>
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-</div>
-
-
+    </div>
 
 </div>
 
