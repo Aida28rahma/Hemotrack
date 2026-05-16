@@ -5,7 +5,6 @@
 <style>
 
 /* ====================
-<<<<<<< Updated upstream
 NORMAL (HALAMAN PERTAMA)
 ==================== */
 
@@ -34,29 +33,6 @@ color:white;
 font-size:15px;
 font-weight:600;
 
-=======
-PREVIEW (HALAMAN PERTAMA)
-KECILKAN FONT
-==================== */
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-table th,
-table td{
-border:1px solid #ddd;
-padding:8px;
-font-size:9px;
-}
-
-table th{
-background:#16b5aa;
-color:white;
-font-size:9px;
-font-weight:500;
->>>>>>> Stashed changes
 }
 
 
@@ -64,10 +40,6 @@ font-weight:500;
 /* ====================
 KHUSUS PRINT
 HALAMAN KEDUA
-<<<<<<< Updated upstream
-=======
-JANGAN DIUBAH
->>>>>>> Stashed changes
 ==================== */
 
 @media print{
@@ -79,7 +51,6 @@ footer,
 .sidebar,
 .hide-print,
 button{
-<<<<<<< Updated upstream
 
 display:none !important;
 
@@ -174,59 +145,6 @@ padding:8px !important;
 
 
 
-=======
-display:none !important;
-}
-
-body *{
-visibility:hidden;
-}
-
-.print-area,
-.print-area *{
-visibility:visible;
-}
-
-.print-area{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-padding:10px;
-background:white;
-zoom:75%;
-}
-
-
-/* ukuran print tetap */
-
-.print-area h1{
-font-size:24px !important;
-}
-
-.print-area h2{
-font-size:18px !important;
-}
-
-.print-area p,
-.print-area td,
-.print-area th{
-font-size:11px !important;
-}
-
-.print-area img{
-width:50px !important;
-height:50px !important;
-}
-
-.print-area table th,
-.print-area table td{
-padding:8px !important;
-}
-
-}
-
->>>>>>> Stashed changes
 </style>
 
 
@@ -239,23 +157,15 @@ padding:8px !important;
 
 <div class="bg-white rounded-3xl shadow p-5 mb-5 hide-print">
 
-<<<<<<< Updated upstream
 
 <h1 class="text-3xl font-bold text-teal-700">
-=======
-<h1 class="text-2xl font-bold text-teal-700">
->>>>>>> Stashed changes
 
 Cetak Laporan
 
 </h1>
 
 
-<<<<<<< Updated upstream
 <p class="text-gray-500">
-=======
-<p class="text-gray-500 text-sm">
->>>>>>> Stashed changes
 
 Pilih periode laporan
 
@@ -288,10 +198,6 @@ class="border rounded p-2">
 </select>
 
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 <select class="border rounded p-2">
 
 <option>PRC</option>
@@ -322,10 +228,7 @@ class="bg-teal-600 text-white px-5 py-2 rounded-xl">
 
 
 
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 <!-- LAPORAN -->
 
 <div class="print-area bg-white rounded-[35px] shadow border p-8">
@@ -333,17 +236,10 @@ class="bg-teal-600 text-white px-5 py-2 rounded-xl">
 
 <h2 class="
 
-<<<<<<< Updated upstream
 text-2xl
 font-bold
 text-teal-700
 mb-6
-=======
-text-lg
-font-bold
-text-teal-700
-mb-5
->>>>>>> Stashed changes
 hide-print
 
 ">
@@ -358,20 +254,12 @@ Preview Laporan
 
 <!-- HEADER -->
 
-<<<<<<< Updated upstream
 <div class="grid grid-cols-3 border-b pb-6">
-=======
-<div class="grid grid-cols-3 border-b pb-5">
->>>>>>> Stashed changes
 
 
 <!-- kiri -->
 
-<<<<<<< Updated upstream
 <div class="flex gap-4">
-=======
-<div class="flex gap-3">
->>>>>>> Stashed changes
 
 
 <img
@@ -379,7 +267,6 @@ Preview Laporan
 src="{{ asset('logo.png') }}"
 
 style="
-<<<<<<< Updated upstream
 
 width:70px;
 height:70px;
@@ -390,31 +277,14 @@ object-fit:contain;
 >
 
 
-=======
-width:45px;
-height:45px;
-object-fit:contain;
-"
-
-
->
-
-
-
->>>>>>> Stashed changes
 <div>
 
 
 <h2 class="
 
 font-bold
-<<<<<<< Updated upstream
 text-teal-700
 text-[22px]
-=======
-text-teal-600
-text-[13px]
->>>>>>> Stashed changes
 
 ">
 
@@ -423,44 +293,28 @@ UNIT BANK DARAH
 </h2>
 
 
-<<<<<<< Updated upstream
 <p class="font-bold text-[16px]">
-=======
-<p class="font-bold text-[10px]">
->>>>>>> Stashed changes
 
 RSUD KELOMPOK 4 KKPMT
 
 </p>
 
 
-<<<<<<< Updated upstream
 <p class="text-[14px]">
-=======
-<p class="text-[9px]">
->>>>>>> Stashed changes
 
 Jl.Regu Tulip no 666
 
 </p>
 
 
-<<<<<<< Updated upstream
 <p class="text-[14px]">
-=======
-<p class="text-[9px]">
->>>>>>> Stashed changes
 
 Kabupaten Jember
 
 </p>
 
 
-<<<<<<< Updated upstream
 <p class="text-[14px]">
-=======
-<p class="text-[9px]">
->>>>>>> Stashed changes
 
 Telp.0211234567
 
@@ -476,10 +330,6 @@ Telp.0211234567
 
 
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 <!-- tengah -->
 
 <div class="text-center">
@@ -488,11 +338,7 @@ Telp.0211234567
 <h1 class="
 
 font-bold
-<<<<<<< Updated upstream
 text-[34px]
-=======
-text-[18px]
->>>>>>> Stashed changes
 leading-tight
 
 ">
@@ -508,11 +354,7 @@ BANK DARAH
 
 
 
-<<<<<<< Updated upstream
 <p class="text-[15px] mt-3">
-=======
-<p class="text-[10px] mt-2">
->>>>>>> Stashed changes
 
 Periode :
 
@@ -533,16 +375,9 @@ Periode :
 
 
 
-<<<<<<< Updated upstream
 <!-- kanan -->
 
 <div class="text-right text-[14px]">
-=======
-
-<!-- kanan -->
-
-<div class="text-right text-[9px]">
->>>>>>> Stashed changes
 
 
 Tanggal Cetak:
@@ -570,30 +405,17 @@ Waktu:
 
 
 
-<<<<<<< Updated upstream
 <!-- TABEL MASUK -->
 
 <div class="mt-10">
-=======
-
-<!-- TABEL MASUK -->
-
-<div class="mt-8">
->>>>>>> Stashed changes
 
 
 <h2 class="
 
 font-bold
-<<<<<<< Updated upstream
 text-[28px]
 text-teal-700
 mb-5
-=======
-text-[15px]
-text-teal-700
-mb-4
->>>>>>> Stashed changes
 
 ">
 
@@ -664,15 +486,9 @@ mb-4
 <h2 class="
 
 font-bold
-<<<<<<< Updated upstream
 text-[28px]
 text-teal-700
 mb-5
-=======
-text-[15px]
-text-teal-700
-mb-4
->>>>>>> Stashed changes
 
 ">
 
@@ -732,11 +548,6 @@ mb-4
 
 
 
-<<<<<<< Updated upstream
-=======
-
-
->>>>>>> Stashed changes
 <div class="flex justify-end mt-8 hide-print">
 
 
