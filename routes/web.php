@@ -4,8 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\PermintaanDokter;
+use App\Models\Pendonor;
 use App\Models\DataDarahPendonor;
-
 /*
 |--------------------------------------------------------------------------
 | PUBLIC ROUTES
@@ -29,14 +29,10 @@ Route::middleware(['auth'])->group(function () {
             return view('Dokter.dashboardDokter');
         }
         return view('Petugas.dashboard');
-        })->middleware(['auth'])->name('dashboard');
-    });
+        })->name('dashboard');
+  
 
     Route::get('/stok', function (Request $request) {
-
-        if (auth()->user()->role != 'petugas') {
-            abort(403);
-        }
 
         $query = DataDarahPendonor::query();
 
@@ -135,20 +131,58 @@ Route::middleware(['auth'])->group(function () {
     })->name('pmi.simpan');
 
     Route::get('/unit-bank-darah', function () {
-        if (auth()->user()->role != 'petugas') {
+    if (auth()->user()->role != 'petugas') {
         abort(403);
-        }
+    }
 
-        return view('Petugas.unitBankDarah');
-    })->name('unitBankDarah');
+    return view('Petugas.unitBankDarah');
+})->name('unitBankDarah');
+
+Route::post('/unit-bank-darah/simpan-pendonor', function (Request $request) {
+
+    Pendonor::create([
+        'nama_pendonor' => $request->nama_pendonor,
+        'nik_pendonor' => $request->nik_pendonor,
+        'jenis_kelamin' => $request->jenis_kelamin,
+        'tanggal_lahir' => $request->tanggal_lahir,
+        'usia' => $request->usia,
+        'alamat_pendonor' => $request->alamat_pendonor,
+        'nomor_telpon_pendonor' => $request->nomor_telpon_pendonor,
+        'tekanan_darah' => $request->tekanan_darah,
+        'berat_badan' => $request->berat_badan,
+        'suhu_badan' => $request->suhu_badan,
+    ]);
+
+    return redirect()
+        ->route('unitBankDarah.darah')
+        ->with('success', 'Data pendonor berhasil disimpan. Lanjut isi data darah.');
+
+})->name('unitBankDarah.simpanPendonor');
 
     Route::get('/unit-bank-darah/darah', function () {
+        if (auth()->user()->role != 'petugas') {
+            abort(403);
+        }
+
         return view('Petugas.unitBankDarah2');
     })->name('unitBankDarah.darah');
 
-    Route::post('/unit-bank-darah/simpan', function () {
-        return redirect()->route('unitBankDarah.darah')->with('success', 'Data berhasil disimpan.');
-    })->name('unitBankDarah.simpanPendonor');
+    Route::post('/unit-bank-darah/simpan-darah', function (Request $request) {
+
+        DataDarahPendonor::create([
+            'golongan' => $request->golongan,
+            'rhesus' => $request->rhesus,
+            'jenis_komponen' => $request->jenis_komponen,
+            'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
+            'asal_darah' => 'Unit Bank Darah',
+            'status' => 'Telah diuji',
+        ]);
+
+        return redirect()
+            ->route('unitBankDarah.darah')
+            ->with('success', 'Data darah berhasil disimpan.');
+
+    })->name('unitBankDarah.simpanDarah');
     /*
     |--------------------------------------------------------------------------
     | DOKTER
@@ -161,7 +195,7 @@ Route::middleware(['auth'])->group(function () {
         abort(403);
         }
 
-        return view('dashboardDokter');
+        return view('Dokter.dashboardDokter');
     })->name('Dokter.dashboardDokter');
 
     // Form permintaan dokter (GET)
@@ -193,7 +227,7 @@ Route::middleware(['auth'])->group(function () {
         'jenis_kelamin' => $request->jenis_kelamin,
         'golongan' => $request->golongan,
         'rhesus' => $request->rhesus,
-        'jenis_komponen' => $request->komponen,
+        'jenis_komponen' => $request->jenis_komponen,
         'jumlah' => $request->jumlah,
         'poli' => $request->poli,
         'status' => 'menunggu',
@@ -203,6 +237,7 @@ Route::middleware(['auth'])->group(function () {
         ->route('permintaanDokter')
         ->with('success', 'Permintaan berhasil dibuat!');
 })->name('permintaanDokter.store');
+
     Route::get('/status-dokter', function () {
 
         if (auth()->user()->role != 'dokter') {
@@ -213,7 +248,7 @@ Route::middleware(['auth'])->group(function () {
 
         return view('Dokter.statusDokter', compact('requests'));
 
-    })->middleware(['auth'])->name('statusDokter');
+    })->name('statusDokter');
     /*
     |---------------------------------------------------------------------------
     | PROFILE
@@ -228,5 +263,5 @@ Route::middleware(['auth'])->group(function () {
 | AUTH (BREEZE)
 |--------------------------------------------------------------------------
 */
-
+  });
 require __DIR__.'/auth.php';

@@ -20,7 +20,7 @@
         </div>
     @endif
 
-    <form action="{{ route('unitBankDarah.simpanPendonor') }}" method="POST">
+    <form method="POST" action="{{ route('unitBankDarah.simpanPendonor') }}">
         @csrf
 
         {{-- CARD A - DATA PENDONOR --}}

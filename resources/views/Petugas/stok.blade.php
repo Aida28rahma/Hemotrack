@@ -69,13 +69,14 @@
                 <option value="O" {{ request('golongan') == 'O' ? 'selected' : '' }}>O</option>
             </select>
 
-            <select name="komponen" onchange="this.form.submit()"
+            <select name="jenis_komponen" onchange="this.form.submit()"
                 class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
                 <option value="">Komponen Darah</option>
-                <option value="Whole Blood" {{ request('komponen') == 'Whole Blood' ? 'selected' : '' }}>Whole Blood</option>
-                <option value="PRC" {{ request('komponen') == 'PRC' ? 'selected' : '' }}>PRC</option>
-                <option value="Trombosit" {{ request('komponen') == 'Trombosit' ? 'selected' : '' }}>Trombosit</option>
-                <option value="FFP" {{ request('komponen') == 'FFP' ? 'selected' : '' }}>FFP</option>
+                <option value="Whole Blood" {{ request('jenis_komponen') == 'Whole Blood' ? 'selected' : '' }}>Whole Blood</option>
+                <option value="PRC" {{ request('jenis_komponen') == 'PRC' ? 'selected' : '' }}>PRC</option>
+                <option value="Trombosit" {{ request('jenis_komponen') == 'Trombosit' ? 'selected' : '' }}>Trombosit</option>
+                <option value="FFP" {{ request('jenis_komponen') == 'FFP' ? 'selected' : '' }}>FFP</option>
+                <option value="Kriopresipitasi" {{ request('jenis_komponen') == 'Kriopresipitasi' ? 'selected' : '' }}>Kriopresipitasi</option>
             </select>
 
             <select name="rhesus" onchange="this.form.submit()"
@@ -125,11 +126,11 @@
                             </td>
 
                             <td class="border px-4 py-2">
-                                {{ $item->komponen }}
+                               {{ $item->jenis_komponen }}
                             </td>
 
                             <td class="border px-4 py-2">
-                                {{ $item->tanggal_kadaluarsa }}
+                                {{ $item->tanggal_kedaluwarsa }}
                             </td>
 
                             <td class="border px-4 py-2">
