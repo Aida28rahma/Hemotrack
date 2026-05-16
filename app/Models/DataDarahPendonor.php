@@ -12,5 +12,6 @@ class DataDarahPendonor extends Model
         'jenis_komponen',
         'tanggal_kedaluwarsa',
         'asal_darah',
+        'status',
     ];
 }
