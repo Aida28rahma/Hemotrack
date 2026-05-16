@@ -138,9 +138,25 @@
                             </td>
 
                             <td class="border px-4 py-2">
-                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                    {{ $item->status }}
-                                </span>
+
+                                @if($item->status == 'Belum Teruji')
+
+                                    <button
+                                        onclick="ubahStatus(this)"
+                                        class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold transition">
+
+                                        Belum Teruji
+
+                                    </button>
+
+                                @else
+
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                        Sudah Teruji
+                                    </span>
+
+                                @endif
+
                             </td>
 
                         </tr>
@@ -164,5 +180,17 @@
     </div>
 
 </main>
+<script>
 
+function ubahStatus(button) {
+
+    button.outerHTML = `
+        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+            Sudah Teruji
+        </span>
+    `;
+
+}
+
+</script>
 @endsection
