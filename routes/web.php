@@ -3,7 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Models\Pendonor;
+use App\Models\DataDarahPendonor;
 use App\Models\PermintaanDokter;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,41 +27,16 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
 
-   Route::get('/dashboard', function () {
-
-    if (auth()->user()->role == 'dokter') {
-        return view('Dokter.dashboardDokter');
-    }
-    return view('Petugas.dashboard');
-    })->middleware(['auth'])->name('dashboard');
-
+    Route::get('/dashboard', function () {
+        return view('Petugas.dashboard');
+    })->name('dashboard');
 
     Route::get('/stok', function () {
         return view('Petugas.stok');
     })->name('stok');
 
-    Route::get('/permintaan', function (Request $request) {
-        if (auth()->user()->role != 'petugas') {
-        abort(403);
-        }
-
-        $query = PermintaanDokter::query();
-
-        if ($request->status) {
-            $query->where('status', $request->status);
-        }
-
-        if ($request->search) {
-            $query->where(function ($q) use ($request) {
-                $q->where('nama', 'like', '%' . $request->search . '%')
-                ->orWhere('poli', 'like', '%' . $request->search . '%');
-            });
-        }
-
-        $data = $query->latest()->get();
-
-        return view('Petugas.permintaan', compact('data'));
-
+    Route::get('/permintaan', function () {
+        return view('Petugas.permintaan');
     })->name('permintaan');
     Route::post('/permintaan/{id}/approve', function ($id) {
         $data = \App\Models\PermintaanDokter::findOrFail($id);
@@ -76,48 +55,116 @@ Route::middleware(['auth'])->group(function () {
     })->name('permintaan.reject');
 
     Route::get('/distribusi', function () {
-        if (auth()->user()->role != 'petugas') {
-        abort(403);
-        }
-
         return view('Petugas.distribusi');
     })->name('distribusi');
 
     Route::get('/laporan', function () {
-        if (auth()->user()->role != 'petugas') {
-        abort(403);
-        }
-
         return view('Petugas.laporan');
     })->name('laporan');
 
-    Route::get('/pmi', function () {
-        if (auth()->user()->role != 'petugas') {
-        abort(403);
-        }
+    // ===============================
+// PMI
+// ===============================
+Route::get('/pmi', function () {
+    return view('Petugas.pmi');
+})->name('pmi');
 
-        return view('Petugas.pmi');
-    })->name('pmi');
+Route::post('/pmi/simpan', function (Request $request) {
 
-    Route::post('/pmi/simpan', function () {
-        return redirect()->route('pmi')->with('success', 'Data darah pendonor berhasil disimpan.');
-    })->name('pmi.simpan');
+    $request->validate([
+        'golongan' => 'required',
+        'rhesus' => 'required',
+        'jenis_komponen' => 'required',
+        'tanggal_kedaluwarsa' => 'required|date',
+    ]);
 
-    Route::get('/unit-bank-darah', function () {
-        if (auth()->user()->role != 'petugas') {
-        abort(403);
-        }
+    DataDarahPendonor::create([
+        'golongan' => $request->golongan,
+        'rhesus' => $request->rhesus,
+        'jenis_komponen' => $request->jenis_komponen,
+        'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
+        'asal_darah' => 'PMI',
+    ]);
 
-        return view('Petugas.unitBankDarah');
-    })->name('unitBankDarah');
+    return redirect()->route('pmi')
+        ->with('success', 'Data darah pendonor berhasil disimpan.');
 
-    Route::get('/unit-bank-darah/darah', function () {
-        return view('Petugas.unitBankDarah2');
-    })->name('unitBankDarah.darah');
+})->name('pmi.simpan');
 
-    Route::post('/unit-bank-darah/simpan', function () {
-        return redirect()->route('unitBankDarah.darah')->with('success', 'Data berhasil disimpan.');
-    })->name('unitBankDarah.simpan');
+
+// ===============================
+// UNIT BANK DARAH - TAHAP 1
+// Data Pendonor + Data Skrining
+// ===============================
+Route::get('/unit-bank-darah', function () {
+    return view('Petugas.unitBankDarah');
+})->name('unitBankDarah');
+
+Route::post('/unit-bank-darah/simpan-pendonor', function (Request $request) {
+
+    $request->validate([
+        'nama_pendonor' => 'required',
+        'nik_pendonor' => 'required',
+        'jenis_kelamin' => 'required',
+        'tanggal_lahir' => 'required|date',
+        'usia' => 'required|numeric',
+        'alamat_pendonor' => 'required',
+        'nomor_telpon_pendonor' => 'required',
+        'tekanan_darah' => 'required',
+        'berat_badan' => 'required',
+        'suhu_badan' => 'required',
+    ]);
+
+    Pendonor::create([
+        'nama_pendonor' => $request->nama_pendonor,
+        'nik_pendonor' => $request->nik_pendonor,
+        'jenis_kelamin' => $request->jenis_kelamin,
+        'tanggal_lahir' => $request->tanggal_lahir,
+        'usia' => $request->usia,
+        'alamat_pendonor' => $request->alamat_pendonor,
+        'nomor_telpon_pendonor' => $request->nomor_telpon_pendonor,
+        'tekanan_darah' => $request->tekanan_darah,
+        'berat_badan' => $request->berat_badan,
+        'suhu_badan' => $request->suhu_badan,
+        'asal_darah' => 'Unit Bank Darah',
+    ]);
+
+    return redirect()->route('unitBankDarah.darah')
+        ->with('success', 'Data pendonor berhasil disimpan. Silakan lanjut input data darah.');
+
+})->name('unitBankDarah.simpanPendonor');
+
+
+// ===============================
+// UNIT BANK DARAH - TAHAP 2
+// Data Darah Pendonor
+// ===============================
+Route::get('/unit-bank-darah/darah', function () {
+    return view('Petugas.unitBankDarah2');
+})->name('unitBankDarah.darah');
+
+Route::post('/unit-bank-darah/simpan-darah', function (Request $request) {
+
+    $request->validate([
+        'golongan' => 'required',
+        'rhesus' => 'required',
+        'jenis_komponen' => 'required',
+        'tanggal_kedaluwarsa' => 'required|date',
+    ]);
+
+    DataDarahPendonor::create([
+        'golongan' => $request->golongan,
+        'rhesus' => $request->rhesus,
+        'jenis_komponen' => $request->jenis_komponen,
+        'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
+        'asal_darah' => 'Unit Bank Darah',
+    ]);
+
+    return redirect()->route('unitBankDarah.darah')
+        ->with('success', 'Data darah pendonor berhasil disimpan.');
+
+})->name('unitBankDarah.simpanDarah');
+
 });
     /*
     |--------------------------------------------------------------------------
@@ -126,22 +173,10 @@ Route::middleware(['auth'])->group(function () {
     */
 
     // Dashboard dokter
-    Route::get('/dashboardDokter', function () {
-        if (auth()->user()->role != 'dokter') {
-        abort(403);
-        }
-
-        return view('dashboardDokter');
-    })->name('Dokter.dashboardDokter');
+    Route::get('/dashboardDokter', fn() => view('dashboardDokter'))->name('dashboardDokter');
 
     // Form permintaan dokter (GET)
-    Route::get('/permintaanDokter', function () {
-        if (auth()->user()->role != 'dokter') {
-        abort(403);
-        }
-
-        return view('Dokter.permintaanDokter');
-    })->name('permintaanDokter');
+    Route::get('/permintaanDokter', fn() => view('permintaanDokter'))->name('permintaanDokter');
 
     // SIMPAN PERMINTAAN (POST)
     Route::post('/permintaanDokter', function (Request $request) {
