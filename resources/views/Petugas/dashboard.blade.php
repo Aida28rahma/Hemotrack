@@ -6,21 +6,30 @@
 
     <div class="w-full rounded-[25px] bg-[#f4f4f4] p-5 shadow-[0_8px_25px_rgba(0,0,0,0.18)]">
 
-        {{-- NOTIFIKASI STOK --}}
-        <div class="mb-5 flex items-center justify-between rounded-xl bg-white px-5 py-3 shadow-[0_4px_12px_rgba(0,0,0,0.18)]">
+        {{-- NOTIFIKASI --}}
+        <div class="bg-white rounded-3xl shadow-md p-6 mt-6 mb-8">
 
-            <div class="flex items-center gap-2 font-bold">
-                <svg class="h-5 w-5 text-[#0f5c5c]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a3 3 0 006 0"/>
-                </svg>
+            <h2 class="text-2xl font-bold mb-5">
+                Notifikasi
+            </h2>
 
-                <span>Notifikasi Stok</span>
-            </div>
+            @forelse($notif as $item)
 
-            <span class="font-semibold text-red-500">
-                *Stok O hampir habis
-            </span>
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 px-4 py-3 mb-3 rounded">
+
+                    {{ $item }}
+
+                </div>
+
+            @empty
+
+                <div class="text-gray-400">
+
+                    Tidak ada notifikasi
+
+                </div>
+
+            @endforelse
 
         </div>
 
@@ -28,10 +37,22 @@
         <div class="mb-5 grid grid-cols-4 gap-4">
 
             @foreach([
-                ['title' => 'Total Pendonor', 'value' => 80],
-                ['title' => 'Distribusi Hari Ini', 'value' => 20],
-                ['title' => 'Stok Darah', 'value' => 80],
-                ['title' => 'Permintaan', 'value' => 10],
+                [
+                    'title' => 'Total Pendonor',
+                    'value' => $totalPendonor
+                ],
+                [
+                    'title' => 'Distribusi Hari Ini',
+                    'value' => $distribusiHariIni
+                ],
+                [
+                    'title' => 'Stok Darah',
+                    'value' => $totalStok
+                ],
+                [
+                    'title' => 'Permintaan',
+                    'value' => $totalPermintaan
+                ],
             ] as $card)
 
                 <div class="flex items-center justify-between rounded-2xl bg-white p-4 shadow-[0_6px_15px_rgba(0,0,0,0.2)]">
@@ -58,93 +79,165 @@
 
         </div>
 
-        {{-- GRAFIK DAN DATA --}}
-        <div class="grid grid-cols-5 items-stretch gap-5">
+                        {{-- BAGIAN TENGAH --}}
+                <div class="grid grid-cols-2 gap-5 mt-6">
 
-            {{-- GRAFIK STOK DARAH --}}
-            <div class="col-span-2 rounded-2xl bg-white p-5 shadow-[0_8px_20px_rgba(0,0,0,0.18)]">
+                  {{-- GRAFIK --}}
+                    <div class="bg-white rounded-3xl shadow-md p-6">
 
-                <h2 class="mb-8 text-2xl font-bold">
-                    Grafik Stok Darah
-                </h2>
+                        <h2 class="text-2xl font-bold mb-5">
+                            Grafik Stok Darah
+                        </h2>
 
-                <div class="flex h-[420px] items-end justify-evenly">
+                        <div class="flex items-end justify-center gap-10 h-[420px]">
 
-                    <div class="h-[220px] w-12 rounded-sm bg-red-800"></div>
-                    <div class="h-[330px] w-12 rounded-sm bg-red-800"></div>
-                    <div class="h-[260px] w-12 rounded-sm bg-red-800"></div>
-                    <div class="h-[150px] w-12 rounded-sm bg-red-800"></div>
+                            {{-- A --}}
+                            <div class="flex flex-col items-center">
 
-                </div>
+                                <div
+                                    style="height: {{ max($grafik['A'] * 30, 20) }}px"
+                                    class="w-14 bg-red-700 rounded-sm transition-all">
 
-                <div class="mt-5 flex justify-evenly">
-                    <span>A</span>
-                    <span>B</span>
-                    <span>AB</span>
-                    <span>O</span>
-                </div>
+                                </div>
+
+                                <span class="mt-2 text-sm font-bold">
+                                    {{ $grafik['A'] }}
+                                </span>
+
+                                <span class="mt-2 text-2xl">
+                                    A
+                                </span>
+
+                            </div>
+
+
+                            {{-- B --}}
+                            <div class="flex flex-col items-center">
+
+                                <div
+                                    style="height: {{ max($grafik['B'] * 30, 20) }}px"
+                                    class="w-14 bg-red-700 rounded-sm transition-all">
+
+                                </div>
+
+                                <span class="mt-2 text-sm font-bold">
+                                    {{ $grafik['B'] }}
+                                </span>
+
+                                <span class="mt-2 text-2xl">
+                                    B
+                                </span>
+
+                            </div>
+
+
+                            {{-- AB --}}
+                            <div class="flex flex-col items-center">
+
+                                <div
+                                    style="height: {{ max($grafik['AB'] * 30, 20) }}px"
+                                    class="w-14 bg-red-700 rounded-sm transition-all">
+
+                                </div>
+
+                                <span class="mt-2 text-sm font-bold">
+                                    {{ $grafik['AB'] }}
+                                </span>
+
+                                <span class="mt-2 text-2xl">
+                                    AB
+                                </span>
+
+                            </div>
+
+
+                            {{-- O --}}
+                            <div class="flex flex-col items-center">
+
+                                <div
+                                    style="height: {{ max($grafik['O'] * 30, 20) }}px"
+                                    class="w-14 bg-red-700 rounded-sm transition-all">
+
+                                </div>
+
+                                <span class="mt-2 text-sm font-bold">
+                                    {{ $grafik['O'] }}
+                                </span>
+
+                                <span class="mt-2 text-2xl">
+                                    O
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {{-- PERMINTAAN TERBARU --}}
+<div class="bg-white rounded-3xl shadow-md p-6">
+
+    <h2 class="text-2xl font-bold mb-5">
+        Permintaan Terbaru
+    </h2>
+
+    @forelse($permintaanTerbaru as $item)
+
+        <div class="flex justify-between items-center py-5 border-b">
+
+            <div>
+
+                <p class="font-semibold text-lg">
+                    {{ $item->nama }}
+                </p>
+
+                <p class="text-sm text-gray-500">
+
+                    {{ $item->golongan }}
+                    {{ $item->rhesus }}
+
+                    •
+
+                    {{ $item->jumlah }}
+                    Kantong
+
+                </p>
 
             </div>
 
-            {{-- DISTRIBUSI DAN PERMINTAAN --}}
-            <div class="col-span-3 flex flex-col gap-5">
+            <span class="
+                px-3 py-1 rounded-full text-xs font-bold
 
-                {{-- DISTRIBUSI --}}
-                <div class="flex-1 rounded-2xl bg-white p-5 shadow-[0_8px_20px_rgba(0,0,0,0.18)]">
+                @if($item->status=='disetujui')
+                    bg-green-100 text-green-700
 
-                    <h2 class="mb-5 text-2xl font-bold">
-                        Distribusi
-                    </h2>
+                @elseif($item->status=='ditolak')
+                    bg-red-100 text-red-700
 
-                    <div class="space-y-4">
+                @else
+                    bg-yellow-100 text-yellow-700
+                @endif
+            ">
 
-                        <div class="flex items-center justify-between border-b pb-4">
-                            <p>dr. Fajri Alfahri - B+ - 3 Kantong</p>
-                            <span class="font-bold text-green-500">Diterima</span>
-                        </div>
+                {{ ucfirst($item->status) }}
 
-                        <div class="flex items-center justify-between border-b pb-4">
-                            <p>dr. Diska Fatiha - AB+ - 1 Kantong</p>
-                            <span class="font-bold text-red-500">Ditolak</span>
-                        </div>
+            </span>
 
-                        <div class="flex items-center justify-between">
-                            <p>dr. Rizky Saputra - O+ - 2 Kantong</p>
-                            <span class="font-bold text-yellow-500">Diproses</span>
-                        </div>
+        </div>
 
-                    </div>
+    @empty
 
-                </div>
+        <div class="h-[250px] flex items-center justify-center text-gray-400">
 
-                {{-- PERMINTAAN --}}
-                <div class="flex-1 rounded-2xl bg-white p-5 shadow-[0_8px_20px_rgba(0,0,0,0.18)]">
+            Belum ada permintaan darah
 
-                    <h2 class="mb-5 text-2xl font-bold">
-                        Permintaan
-                    </h2>
+        </div>
 
-                    <div class="space-y-4">
+    @endforelse
 
-                        <div class="flex items-center justify-between border-b pb-4">
-                            <p>dr. Bayu Bimasena - A+ - 2 Kantong</p>
-                            <span class="font-bold text-yellow-500">Diproses</span>
-                        </div>
-
-                        <div class="flex items-center justify-between border-b pb-4">
-                            <p>dr. Budi Utomo - O− - 1 Kantong</p>
-                            <span class="font-bold text-green-500">Diterima</span>
-                        </div>
-
-                        <div class="flex items-center justify-between">
-                            <p>dr. Andini Putri - AB+ - 4 Kantong</p>
-                            <span class="font-bold text-red-500">Ditolak</span>
-                        </div>
-
-                    </div>
+</div>
 
                 </div>
-
             </div>
 
         </div>

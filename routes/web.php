@@ -33,13 +33,97 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/dashboard', function () {
+ Route::get('/dashboard', function () {
         if (auth()->user()->role == 'dokter') {
             return view('Dokter.dashboardDokter');
         }
+       $totalPendonor = Pendonor::whereDate(
+            'created_at',
+            today()
+        )->count();
+        $totalStok = DataDarahPendonor::count();
+        $totalPermintaan = PermintaanDokter::whereDate(
+            'created_at',
+            today()
+        )->count();
+        $belumDiuji = DataDarahPendonor::where(
+            'status',
+            'Belum diuji'
+        )->count();
+        $distribusiHariIni = PermintaanDokter::where(
+            'status',
+            'disetujui'
+        )
+        ->whereDate(
+            'updated_at',
+            today()
+        )
+        ->sum('jumlah');
 
-        return view('Petugas.dashboard');
-    })->name('dashboard');
+        $grafik = [
+            'A' => DataDarahPendonor::where('golongan','A')->count(),
+            'B' => DataDarahPendonor::where('golongan','B')->count(),
+            'AB' => DataDarahPendonor::where('golongan','AB')->count(),
+            'O' => DataDarahPendonor::where('golongan','O')->count(),
+        ];
+        $notif = [];
+
+        foreach (['A','B','AB','O'] as $gol) {
+
+            $jumlah = DataDarahPendonor::where(
+                'golongan',
+                $gol
+            )->count();
+
+            if ($jumlah == 0) {
+
+                $notif[] = "Stok darah $gol habis";
+
+            }
+            elseif ($jumlah <= 3) {
+
+                $notif[] = "Stok darah $gol hampir habis";
+
+            }
+
+        }
+        $belumDiuji = DataDarahPendonor::where(
+            'status',
+            'Belum diuji'
+        )->count();
+
+        if ($belumDiuji > 0) {
+            $notif[] = $belumDiuji . " kantong belum diuji";
+        }
+
+        $menunggu = PermintaanDokter::where(
+            'status',
+            'menunggu'
+        )->count();
+
+        if ($menunggu > 0) {
+            $notif[] = $menunggu . " permintaan menunggu";
+        }
+        $permintaanTerbaru = PermintaanDokter::latest()
+            ->take(5)
+            ->get();
+            
+
+            return view(
+                'Petugas.dashboard',
+               compact(
+                    'totalPendonor',
+                    'totalStok',
+                    'totalPermintaan',
+                    'belumDiuji',
+                    'permintaanTerbaru',
+                    'distribusiHariIni',
+                    'grafik',
+                    'notif'
+                )
+            );
+
+        })->name('dashboard');
 
 
     /*
