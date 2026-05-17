@@ -4,13 +4,10 @@
 
 <main class="flex-1 p-6">
 
-    {{-- JUDUL --}}
     <h1 class="mb-6 text-2xl font-bold text-gray-800">
         Ringkasan Stok Darah
     </h1>
 
-
-    {{-- RINGKASAN STOK --}}
     <div class="mb-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
 
         @foreach (['A', 'B', 'AB', 'O'] as $gol)
@@ -23,10 +20,7 @@
 
             <div class="rounded-[30px] border-4 border-teal-700 bg-white p-5 shadow-md">
 
-                {{-- HEADER CARD --}}
                 <div class="mb-5 flex items-center gap-3">
-
-                    {{-- ICON DARAH PERSIS DASHBOARD --}}
                     <div class="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
                         <svg class="h-5 w-5 text-red-700" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2S6 9.1 6 14a6 6 0 0012 0c0-4.9-6-12-6-12z"/>
@@ -36,47 +30,26 @@
                     <h2 class="text-2xl font-bold text-red-800">
                         {{ $gol }}
                     </h2>
-
                 </div>
 
-
-                {{-- RHESUS --}}
                 <div class="mb-5 flex justify-around text-center">
-
                     <div>
-                        <p class="font-bold text-gray-800">
-                            {{ $gol }}+
-                        </p>
-
-                        <p class="text-lg font-semibold text-gray-900">
-                            {{ $plus }}
-                        </p>
+                        <p class="font-bold text-gray-800">{{ $gol }}+</p>
+                        <p class="text-lg font-semibold text-gray-900">{{ $plus }}</p>
                     </div>
 
                     <div>
-                        <p class="font-bold text-gray-800">
-                            {{ $gol }}-
-                        </p>
-
-                        <p class="text-lg font-semibold text-gray-900">
-                            {{ $minus }}
-                        </p>
+                        <p class="font-bold text-gray-800">{{ $gol }}-</p>
+                        <p class="text-lg font-semibold text-gray-900">{{ $minus }}</p>
                     </div>
-
                 </div>
 
-
-                {{-- TOTAL --}}
                 <div class="flex justify-between border-t pt-3 text-sm">
-
-                    <span class="text-gray-500">
-                        Total
-                    </span>
+                    <span class="text-gray-500">Total</span>
 
                     <span class="font-bold text-red-700">
                         {{ $total }} Kantong
                     </span>
-
                 </div>
 
             </div>
@@ -85,93 +58,72 @@
 
     </div>
 
-
-    {{-- DETAIL STOK DARAH --}}
     <div class="rounded-2xl bg-white p-6 shadow-md">
 
-        <h2 class="mb-4 text-xl font-bold text-gray-800">
+        <h2 class="mb-5 text-xl font-bold text-gray-800">
             Detail Stok Darah
         </h2>
 
-
         {{-- FILTER --}}
-        <form method="GET" action="{{ route('stok') }}" class="mb-5 flex flex-wrap gap-3">
+        <form method="GET" action="{{ route('stok') }}" class="mb-6">
 
-            {{-- FILTER GOLONGAN --}}
-            <select
-                name="golongan"
-                onchange="this.form.submit()"
-                class="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
-            >
-                <option value="">Golongan Darah</option>
-                <option value="A" {{ request('golongan') == 'A' ? 'selected' : '' }}>A</option>
-                <option value="B" {{ request('golongan') == 'B' ? 'selected' : '' }}>B</option>
-                <option value="AB" {{ request('golongan') == 'AB' ? 'selected' : '' }}>AB</option>
-                <option value="O" {{ request('golongan') == 'O' ? 'selected' : '' }}>O</option>
-            </select>
+            <div class="flex flex-wrap items-center gap-4">
 
+                <select
+                    name="golongan"
+                    class="w-48 rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-teal-500"
+                >
+                    <option value="">Golongan Darah</option>
+                    <option value="A" {{ request('golongan') == 'A' ? 'selected' : '' }}>A</option>
+                    <option value="B" {{ request('golongan') == 'B' ? 'selected' : '' }}>B</option>
+                    <option value="AB" {{ request('golongan') == 'AB' ? 'selected' : '' }}>AB</option>
+                    <option value="O" {{ request('golongan') == 'O' ? 'selected' : '' }}>O</option>
+                </select>
 
-            {{-- FILTER KOMPONEN --}}
-            <select
-                name="jenis_komponen"
-                onchange="this.form.submit()"
-                class="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
-            >
-                <option value="">Komponen Darah</option>
+                <select
+                    name="jenis_komponen"
+                    class="w-56 rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-teal-500"
+                >
+                    <option value="">Komponen Darah</option>
+                    <option value="Whole Blood" {{ request('jenis_komponen') == 'Whole Blood' ? 'selected' : '' }}>Whole Blood</option>
+                    <option value="PRC" {{ request('jenis_komponen') == 'PRC' ? 'selected' : '' }}>PRC</option>
+                    <option value="Trombosit" {{ request('jenis_komponen') == 'Trombosit' ? 'selected' : '' }}>Trombosit</option>
+                    <option value="FFP" {{ request('jenis_komponen') == 'FFP' ? 'selected' : '' }}>FFP</option>
+                    <option value="Kriopresipitasi" {{ request('jenis_komponen') == 'Kriopresipitasi' ? 'selected' : '' }}>Kriopresipitasi</option>
+                </select>
 
-                <option value="Whole Blood"
-                    {{ request('jenis_komponen') == 'Whole Blood' ? 'selected' : '' }}>
-                    Whole Blood
-                </option>
+                <select
+                    name="rhesus"
+                    class="w-48 rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-teal-500"
+                >
+                    <option value="">Rhesus Darah</option>
+                    <option value="+" {{ request('rhesus') == '+' ? 'selected' : '' }}>Positif (+)</option>
+                    <option value="-" {{ request('rhesus') == '-' ? 'selected' : '' }}>Negatif (-)</option>
+                </select>
 
-                <option value="PRC"
-                    {{ request('jenis_komponen') == 'PRC' ? 'selected' : '' }}>
-                    PRC
-                </option>
+                <button
+                    type="submit"
+                    class="rounded-xl bg-[#0f5c5c] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#0b4444]"
+                >
+                    Filter
+                </button>
 
-                <option value="Trombosit"
-                    {{ request('jenis_komponen') == 'Trombosit' ? 'selected' : '' }}>
-                    Trombosit
-                </option>
+                <a
+                    href="{{ route('stok') }}"
+                    class="rounded-xl bg-gray-200 px-6 py-3 text-sm font-bold text-gray-700 transition hover:bg-gray-300"
+                >
+                    Reset
+                </a>
 
-                <option value="FFP"
-                    {{ request('jenis_komponen') == 'FFP' ? 'selected' : '' }}>
-                    FFP
-                </option>
-
-            </select>
-
-
-            {{-- FILTER RHESUS --}}
-            <select
-                name="rhesus"
-                onchange="this.form.submit()"
-                class="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
-            >
-                <option value="">Rhesus Darah</option>
-                <option value="+" {{ request('rhesus') == '+' ? 'selected' : '' }}>Positif (+)</option>
-                <option value="-" {{ request('rhesus') == '-' ? 'selected' : '' }}>Negatif (-)</option>
-            </select>
-
-
-            {{-- RESET --}}
-            <a
-                href="{{ route('stok') }}"
-                class="rounded-lg bg-gray-200 px-4 py-2 text-sm hover:bg-gray-300"
-            >
-                Reset
-            </a>
+            </div>
 
         </form>
 
-
-        {{-- TABEL --}}
         <div class="overflow-x-auto">
 
-            <table class="w-full overflow-hidden rounded-xl border-collapse">
+            <table class="w-full border-collapse overflow-hidden rounded-xl">
 
                 <thead class="bg-teal-700 text-white">
-
                     <tr class="text-sm">
                         <th class="border px-4 py-3">No</th>
                         <th class="border px-4 py-3">Golongan</th>
@@ -180,13 +132,12 @@
                         <th class="border px-4 py-3">Tanggal Kadaluarsa</th>
                         <th class="border px-4 py-3">Asal Darah</th>
                         <th class="border px-4 py-3">Status</th>
+
                         @if(auth()->user()->role == 'petugas')
-                        <th class="border px-4 py-3">Aksi</th>
+                            <th class="border px-4 py-3">Aksi</th>
                         @endif
                     </tr>
-
                 </thead>
-
 
                 <tbody class="bg-white text-center text-sm">
 
@@ -218,8 +169,7 @@
                                 {{ $item->asal_darah }}
                             </td>
 
-                        
-                           <td class="border px-4 py-2 text-center">
+                            <td class="border px-4 py-2 text-center">
 
                                 @if($item->status == 'Belum diuji')
 
@@ -229,16 +179,14 @@
                                             @csrf
 
                                             <button
-                                                class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold transition">
-
+                                                class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700 transition hover:bg-yellow-200">
                                                 Belum Teruji
-
                                             </button>
                                         </form>
 
                                     @else
 
-                                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                        <span class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700">
                                             Belum Teruji
                                         </span>
 
@@ -247,62 +195,62 @@
                                 @elseif($item->status == 'Sudah Teruji')
 
                                     <div class="flex flex-col items-center gap-2">
-
-                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                        <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
                                             Sudah Teruji
                                         </span>
 
-                                            <a href="{{ route('darah.label', $item->id) }}"
-                                            class="text-xs text-teal-700 underline font-semibold">
-
-                                                Cetak QR
-
-                                            </a>
-
+                                        <a href="{{ route('darah.label', $item->id) }}"
+                                           class="text-xs font-semibold text-teal-700 underline">
+                                            Cetak QR
+                                        </a>
                                     </div>
+
+                                @else
+
+                                    <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+                                        {{ $item->status ?? 'Tersedia' }}
+                                    </span>
 
                                 @endif
 
                             </td>
+
                             @if(auth()->user()->role == 'petugas')
-                            <td class="border px-4 py-2">
+                                <td class="border px-4 py-2">
 
-                                <div class="flex justify-center gap-2">
+                                    <div class="flex justify-center gap-2">
 
-                                    {{-- EDIT --}}
-                                    <a href="{{ route('stok.edit', $item->id) }}"
-                                    class="rounded bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 hover:bg-blue-200">
+                                        <a href="{{ route('stok.edit', $item->id) }}"
+                                           class="rounded bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 hover:bg-blue-200">
+                                            Edit
+                                        </a>
 
-                                        Edit
+                                        <form action="{{ route('stok.delete', $item->id) }}"
+                                              method="POST"
+                                              onsubmit="return confirm('Yakin mau hapus data darah ini?')">
 
-                                    </a>
+                                            @csrf
+                                            @method('DELETE')
 
-                                    {{-- HAPUS --}}
-                                    <form action="{{ route('stok.delete', $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin mau hapus data darah ini?')">
+                                            <button
+                                                class="rounded bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 hover:bg-red-200">
+                                                Hapus
+                                            </button>
 
-                                        @csrf
-                                        @method('DELETE')
+                                        </form>
 
-                                        <button
-                                            class="rounded bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 hover:bg-red-200">
+                                    </div>
 
-                                            Hapus
-
-                                        </button>
-
-                                    </form>
-
-                                </div>
-
-                            </td>
+                                </td>
                             @endif
+
                         </tr>
 
                     @empty
 
                         <tr>
-                            <td colspan="7" class="border px-4 py-5 text-gray-500">
+                            <td colspan="{{ auth()->user()->role == 'petugas' ? 8 : 7 }}"
+                                class="border px-4 py-5 text-gray-500">
                                 Data stok darah belum tersedia.
                             </td>
                         </tr>

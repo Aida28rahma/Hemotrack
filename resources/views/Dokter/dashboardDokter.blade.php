@@ -2,112 +2,178 @@
 
 @section('content')
 
-<div class="p-6 space-y-6">
+<div class="w-full px-8 py-6">
 
-    {{-- HEADER --}}
-    <div class="bg-white p-4 rounded-xl shadow flex justify-between items-center">
+    {{-- STATUS PERMINTAAN --}}
+    <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-5 mb-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
-            <img src="/logo.png" class="w-10">
-            <h2 class="text-lg font-bold text-gray-800">dr. Bayu Bimasena</h2>
-        </div>
-
-        <div class="flex items-center gap-2 text-sm text-gray-500 font-semibold">
-            <svg class="w-5 h-5 text-[#075b55]" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
+            <svg class="w-6 h-6 text-[#0f5c5c]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2a7 7 0 00-7 7v4.5L3 16v1h18v-1l-2-2.5V9a7 7 0 00-7-7zm0 20a3 3 0 003-3H9a3 3 0 003 3z"/>
             </svg>
-            <span>Halo Dokter</span>
-        </div>
-    </div>
 
-    {{-- STATUS --}}
-    <div class="bg-white p-5 rounded-xl shadow">
-        <h3 class="font-bold text-gray-700 mb-4">Status Permintaan Terakhir</h3>
-
-        <div class="grid grid-cols-3 gap-4 text-center">
-            <div class="bg-yellow-100 rounded-lg py-3">
-                <p class="text-lg font-bold text-yellow-600">1</p>
-                <p class="text-sm text-yellow-700">Diproses</p>
-            </div>
-
-            <div class="bg-green-100 rounded-lg py-3">
-                <p class="text-lg font-bold text-green-600">2</p>
-                <p class="text-sm text-green-700">Diterima</p>
-            </div>
-
-            <div class="bg-red-100 rounded-lg py-3">
-                <p class="text-lg font-bold text-red-600">1</p>
-                <p class="text-sm text-red-700">Ditolak</p>
-            </div>
-        </div>
-    </div>
-
-    {{-- KONTEN UTAMA --}}
-    <div class="bg-white p-6 rounded-xl shadow space-y-6">
-
-        {{-- PERMINTAAN DARAH --}}
-        <div class="bg-gradient-to-br from-teal-600 to-teal-500 p-6 rounded-xl shadow text-white">
-            <div>
-                <h2 class="text-xl font-bold mb-2 flex items-center gap-3 text-white">
-                    <span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C12 2 6 9.3 6 14.2C6 18.1 8.7 21 12 21C15.3 21 18 18.1 18 14.2C18 9.3 12 2 12 2Z"/>
-                        </svg>
-                    </span>
-
-                    <span>Permintaan Darah</span>
-                </h2>
-
-                <p class="text-sm text-white/90">
-                    Ajukan permintaan darah untuk pasien
-                </p>
-            </div>
-
-            <a href="{{ route('permintaanDokter') }}"
-               class="mt-6 block bg-white text-teal-700 px-5 py-3 rounded-lg font-bold shadow text-center hover:bg-gray-100 transition">
-                + Ajukan Permintaan
-            </a>
-        </div>
-
-        {{-- STOK DARAH --}}
-        <div class="bg-white p-6 rounded-xl shadow">
-            <h2 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-3">
-                <span class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-red-700" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C12 2 6 9.3 6 14.2C6 18.1 8.7 21 12 21C15.3 21 18 18.1 18 14.2C18 9.3 12 2 12 2Z"/>
-                    </svg>
-                </span>
-
-                <span>Stok Darah</span>
+            <h2 class="text-xl font-bold text-[#0f5c5c]">
+                Status Permintaan
             </h2>
+        </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                @foreach([
-                    ['A', 20],
-                    ['B', 15],
-                    ['AB', 10],
-                    ['O', 3],
-                ] as $item)
+        <a href="{{ route('statusDokter') }}"
+           class="bg-[#0f5c5c] text-white px-6 py-2 rounded-md font-bold hover:bg-[#0b4444] transition">
+            Lihat
+        </a>
+    </div>
 
-                    <div class="border rounded-xl p-4 flex justify-between items-center shadow-sm hover:shadow transition">
-                        <div class="flex items-center gap-3">
-                            <span class="w-9 h-9 rounded-full bg-red-100 flex items-center justify-center">
-                                <svg class="w-4 h-4 text-red-700" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C12 2 6 9.3 6 14.2C6 18.1 8.7 21 12 21C15.3 21 18 18.1 18 14.2C18 9.3 12 2 12 2Z"/>
-                                </svg>
-                            </span>
 
-                            <span class="font-bold text-gray-700">
-                                Gol. {{ $item[0] }}
-                            </span>
-                        </div>
+    {{-- PERMINTAAN DARAH --}}
+    <div class="bg-gradient-to-r from-[#0f8f86] to-[#13b7aa] rounded-xl shadow-md px-5 py-4 mb-5 flex items-center justify-between">
 
-                        <span class="text-lg font-bold {{ $item[1] < 5 ? 'text-red-500' : 'text-gray-800' }}">
-                            {{ $item[1] }}
-                        </span>
+        <div class="flex items-center gap-3">
+            <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+
+            <h2 class="text-2xl font-bold text-white">
+                Permintaan Darah
+            </h2>
+        </div>
+
+        <a href="{{ route('permintaanDokter') }}"
+        class="bg-white text-[#0f5c5c] px-6 py-2 rounded-lg font-bold text-sm shadow hover:bg-gray-100 transition">
+            Isi Form Permintaan Darah
+        </a>
+
+    </div>
+
+    {{-- STOK DARAH --}}
+    <h2 class="text-xl font-bold text-[#0f5c5c] mb-3">
+        Stok Darah
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-6">
+
+        @foreach([
+            ['title' => 'Total Pendonor', 'value' => 80],
+            ['title' => 'Distribusi Hari Ini', 'value' => 20],
+            ['title' => 'Stok Darah', 'value' => 80],
+            ['title' => 'Permintaan', 'value' => 10],
+        ] as $card)
+
+            <div class="bg-white rounded-2xl shadow-md px-5 py-4 flex items-center justify-between">
+
+                <div>
+                    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 mb-3">
+                        <svg class="h-5 w-5 text-red-700" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2S6 9.1 6 14a6 6 0 0012 0c0-4.9-6-12-6-12z"/>
+                        </svg>
                     </div>
 
-                @endforeach
+                    <p class="text-[#8b1118] font-bold text-sm">
+                        {{ $card['title'] }}
+                    </p>
+                </div>
+
+                <span class="bg-[#0f5c5c] text-white font-bold px-3 py-2 rounded-md">
+                    {{ $card['value'] }}
+                </span>
+
             </div>
+
+        @endforeach
+
+    </div>
+
+
+    {{-- DETAIL STOK DARAH --}}
+    <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6">
+
+        <h2 class="text-xl font-bold text-[#0f5c5c] mb-4">
+            Detail Stok Darah
+        </h2>
+
+        {{-- FILTER --}}
+        <div class="flex flex-wrap gap-3 mb-5">
+
+            <select class="w-48 border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                <option>Golongan Darah</option>
+                <option>A</option>
+                <option>B</option>
+                <option>AB</option>
+                <option>O</option>
+            </select>
+
+            <select class="w-52 border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                <option>Komponen Darah</option>
+                <option>Whole Blood</option>
+                <option>PRC</option>
+                <option>Trombosit</option>
+                <option>FFP</option>
+            </select>
+
+            <select class="w-48 border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                <option>Rhesus Darah</option>
+                <option>Positif (+)</option>
+                <option>Negatif (-)</option>
+            </select>
+
+        </div>
+
+        {{-- TABEL --}}
+        <div class="overflow-x-auto">
+
+            <table class="w-full border-collapse text-center">
+
+                <thead class="bg-[#19b5aa] text-white">
+                    <tr>
+                        <th class="border px-4 py-3">No</th>
+                        <th class="border px-4 py-3">Golongan</th>
+                        <th class="border px-4 py-3">Rhesus</th>
+                        <th class="border px-4 py-3">Jenis Komponen</th>
+                        <th class="border px-4 py-3">Tanggal Kadaluarsa</th>
+                        <th class="border px-4 py-3">Asal Darah</th>
+                        <th class="border px-4 py-3">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="border px-4 py-3">1</td>
+                        <td class="border px-4 py-3">A</td>
+                        <td class="border px-4 py-3">Negatif (-)</td>
+                        <td class="border px-4 py-3">Whole Blood</td>
+                        <td class="border px-4 py-3">10/10/2026</td>
+                        <td class="border px-4 py-3">Unit Bank Darah</td>
+                        <td class="border px-4 py-3">Telah diuji</td>
+                    </tr>
+
+                    <tr>
+                        <td class="border px-4 py-3">2</td>
+                        <td class="border px-4 py-3">A</td>
+                        <td class="border px-4 py-3">Negatif (-)</td>
+                        <td class="border px-4 py-3">Whole Blood</td>
+                        <td class="border px-4 py-3">10/10/2026</td>
+                        <td class="border px-4 py-3">Unit Bank Darah</td>
+                        <td class="border px-4 py-3">Telah diuji</td>
+                    </tr>
+
+                    <tr>
+                        <td class="border px-4 py-3">3</td>
+                        <td class="border px-4 py-3">A</td>
+                        <td class="border px-4 py-3">Negatif (-)</td>
+                        <td class="border px-4 py-3">Whole Blood</td>
+                        <td class="border px-4 py-3">10/10/2026</td>
+                        <td class="border px-4 py-3">Unit Bank Darah</td>
+                        <td class="border px-4 py-3">Telah diuji</td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="flex justify-end mt-5">
+            <a href="{{ route('stok') }}"
+               class="border border-gray-300 px-6 py-2 rounded-lg text-sm font-bold text-[#0f5c5c] hover:bg-gray-100 transition">
+                Lihat Detail Stok
+            </a>
         </div>
 
     </div>
