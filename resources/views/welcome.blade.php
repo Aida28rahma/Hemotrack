@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <title>Hemotrack</title>
@@ -54,13 +54,10 @@
 
         {{-- LOGO BUTTON --}}
         <button @click="open = !open"
-                class="w-64 h-64 bg-white rounded-full flex flex-col items-center justify-center shadow-2xl hover:scale-105 transition">
+                class="w-64 h-64 bg-white rounded-full flex items-center justify-center shadow-2xl hover:scale-105 transition">
 
-            <img src="/logo.png" class="w-32 mb-4">
+            <img src="/logo.png" class="w-36 h-36 object-contain">
 
-            <span class="text-red-600 font-extrabold text-xl tracking-wide">
-                HEMOTRACK
-            </span>
         </button>
 
         {{-- PETUGAS --}}
