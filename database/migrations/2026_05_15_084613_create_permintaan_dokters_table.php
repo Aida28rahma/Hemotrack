@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('jenis_kelamin');
             $table->string('golongan');
             $table->string('rhesus');
-            $table->string('komponen');
+            $table->string('jenis_komponen');
             $table->integer('jumlah');
             $table->string('poli');
             $table->string('status')->default('menunggu');

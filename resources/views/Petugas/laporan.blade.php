@@ -118,7 +118,7 @@
                 </select>
 
                 <select name="jenis_komponen" class="rounded border p-2">
-                    <option value="">Semua Komponen</option>
+                    <option value="">Semua jenis_komponen</option>
                     <option value="PRC" {{ request('jenis_komponen') == 'PRC' ? 'selected' : '' }}>PRC</option>
                     <option value="Whole Blood" {{ request('jenis_komponen') == 'Whole Blood' ? 'selected' : '' }}>Whole Blood</option>
                     <option value="TC" {{ request('jenis_komponen') == 'TC' ? 'selected' : '' }}>TC</option>
@@ -224,7 +224,7 @@
                         <th>No</th>
                         <th>Golongan</th>
                         <th>Rhesus</th>
-                        <th>Jenis Komponen</th>
+                        <th>Jenis jenis_komponen</th>
                         <th>Asal Darah</th>
                         <th>Jumlah</th>
                     </tr>
@@ -265,7 +265,7 @@
                         <th>No</th>
                         <th>Golongan</th>
                         <th>Rhesus</th>
-                        <th>Jenis Komponen</th>
+                        <th>Jenis jenis_komponen</th>
                         <th>Poli</th>
                         <th>Jumlah</th>
                     </tr>

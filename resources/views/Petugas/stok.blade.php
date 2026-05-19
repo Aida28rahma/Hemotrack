@@ -111,13 +111,13 @@
             </select>
 
 
-            {{-- FILTER KOMPONEN --}}
+            {{-- FILTER jenis_komponen --}}
             <select
                 name="jenis_komponen"
                 onchange="this.form.submit()"
                 class="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
             >
-                <option value="">Komponen Darah</option>
+                <option value="">Komponen</option>
 
                 <option value="Whole Blood"
                     {{ request('jenis_komponen') == 'Whole Blood' ? 'selected' : '' }}>
@@ -176,7 +176,7 @@
                         <th class="border px-4 py-3">No</th>
                         <th class="border px-4 py-3">Golongan</th>
                         <th class="border px-4 py-3">Rhesus</th>
-                        <th class="border px-4 py-3">Jenis Komponen</th>
+                        <th class="border px-4 py-3">Komponen</th>
                         <th class="border px-4 py-3">Tanggal Kadaluarsa</th>
                         <th class="border px-4 py-3">Asal Darah</th>
                         <th class="border px-4 py-3">Status</th>
@@ -207,7 +207,7 @@
                             </td>
 
                             <td class="border px-4 py-2">
-                                {{ $item->jenis_komponen ?? $item->komponen }}
+                                {{ $item->jenis_komponen ?? $item->jenis_komponen }}
                             </td>
 
                             <td class="border px-4 py-2">

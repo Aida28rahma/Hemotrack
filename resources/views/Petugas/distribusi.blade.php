@@ -54,9 +54,9 @@
                 </select>
             </div>
 
-            <!-- Komponen -->
+            <!-- jenis_komponen -->
             <div>
-                <label class="text-sm text-gray-600">Komponen Darah</label>
+                <label class="text-sm text-gray-600">jenis_komponen Darah</label>
 
                 <select
                     class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 outline-none">
@@ -221,7 +221,7 @@
                         <th class="px-4 py-3">Nama Dokter</th>
                         <th class="px-4 py-3">Golongan Darah</th>
                         <th class="px-4 py-3">Rhesus</th>
-                        <th class="px-4 py-3">Jenis Komponen</th>
+                        <th class="px-4 py-3">Jenis jenis_komponen</th>
                         <th class="px-4 py-3">Jumlah</th>
                         <th class="px-4 py-3">Poli Tujuan</th>
                         <th class="px-4 py-3">Status</th>

@@ -49,9 +49,9 @@
                     </select>
                 </div>
 
-                {{-- Jenis Komponen --}}
+                {{-- Jenis jenis_komponen --}}
                 <div class="form-group-custom">
-                    <label>Jenis Komponen Darah</label>
+                    <label>Jenis jenis_komponen Darah</label>
 
                     <select class="form-control-custom">
                         <option selected disabled></option>

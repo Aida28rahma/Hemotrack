@@ -129,12 +129,12 @@
                         </select>
                     </div>
 
-                    <!-- KOMPONEN -->
+                    <!-- jenis_komponen -->
                     <div>
                         <label class="block text-white text-sm mb-2">
                             Jenis Komponen
                         </label>
-                        <select name="komponen"
+                        <select name="jenis_komponen"
                             class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
                             <option value="">Pilih</option>
                             <option value="Whole Blood">Whole Blood</option>

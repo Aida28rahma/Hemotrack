@@ -49,9 +49,9 @@
                 </div>
 
                 <div>
-                    <label class="block font-bold text-base mb-2">Jenis Komponen</label>
+                    <label class="block font-bold text-base mb-2">Jenis komponen</label>
                     <select name="jenis_komponen" class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
-                        <option value="">Pilih Jenis Komponen</option>
+                        <option value="">Pilih Jenin komponen</option>
                         <option value="Whole Blood">Whole Blood</option>
                         <option value="PRC">PRC</option>
                         <option value="Trombosit">Trombosit</option>
@@ -62,7 +62,7 @@
 
                 <div>
                     <label class="block font-bold text-base mb-2">Tanggal Kedaluwarsa</label>
-                    <input type="date" name="tanggal_ka]edaluwarsa"
+                    <input type="date" name="tanggal_kedaluwarsa"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
                 </div>
 

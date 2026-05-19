@@ -63,11 +63,11 @@
                 </div>
 
 
-                {{-- JENIS KOMPONEN --}}
+                {{-- JENIS jenis_komponen --}}
                 <div>
 
                     <label class="mb-2 block font-semibold">
-                        Jenis Komponen
+                        Jenis jenis_komponen
                     </label>
 
                     <select

@@ -35,7 +35,54 @@ Route::middleware(['auth'])->group(function () {
 
  Route::get('/dashboard', function () {
         if (auth()->user()->role == 'dokter') {
-            return view('Dokter.dashboardDokter');
+
+            $menunggu = PermintaanDokter::where(
+                'dokter_id',
+                auth()->id()
+            )
+            ->where(
+                'status',
+                'menunggu'
+            )
+            ->count();
+
+            $diterima = PermintaanDokter::where(
+                'dokter_id',
+                auth()->id()
+            )
+            ->where(
+                'status',
+                'disetujui'
+            )
+            ->count();
+
+            $ditolak = PermintaanDokter::where(
+                'dokter_id',
+                auth()->id()
+            )
+            ->where(
+                'status',
+                'ditolak'
+            )
+            ->count();
+
+            $stok = [
+                'A' => DataDarahPendonor::where('golongan','A')->count(),
+                'B' => DataDarahPendonor::where('golongan','B')->count(),
+                'AB' => DataDarahPendonor::where('golongan','AB')->count(),
+                'O' => DataDarahPendonor::where('golongan','O')->count(),
+            ];
+
+            return view(
+            'Dokter.dashboardDokter',
+            compact(
+                'menunggu',
+                'diterima',
+                'ditolak',
+                'stok'
+            )
+        );
+
         }
        $totalPendonor = Pendonor::whereDate(
             'created_at',
@@ -109,21 +156,21 @@ Route::middleware(['auth'])->group(function () {
             ->get();
             
 
-            return view(
-                'Petugas.dashboard',
-               compact(
-                    'totalPendonor',
-                    'totalStok',
-                    'totalPermintaan',
-                    'belumDiuji',
-                    'permintaanTerbaru',
-                    'distribusiHariIni',
-                    'grafik',
-                    'notif'
-                )
-            );
+          return view(
+        'Petugas.dashboard',
+        compact(
+            'totalPendonor',
+            'totalStok',
+            'totalPermintaan',
+            'belumDiuji',
+            'permintaanTerbaru',
+            'distribusiHariIni',
+            'grafik',
+            'notif'
+        )
+    );
 
-        })->name('dashboard');
+    })->name('dashboard');
 
 
     /*
@@ -140,8 +187,8 @@ Route::middleware(['auth'])->group(function () {
             $query->where('golongan', $request->golongan);
         }
 
-        if ($request->jenis_komponen) {
-            $query->where('jenis_komponen', $request->jenis_komponen);
+        if ($request->jenis_jenis_komponen) {
+            $query->where('jenis_komponen', $request->jenis_jenis_komponen);
         }
 
         if ($request->rhesus) {
@@ -177,7 +224,7 @@ Route::middleware(['auth'])->group(function () {
         $data->update([
             'golongan' => $request->golongan,
             'rhesus' => $request->rhesus,
-            'jenis_komponen' => $request->jenis_komponen,
+            'jenis_jenis_komponen' => $request->jenis_jenis_komponen,
             'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
         ]);
 
@@ -285,13 +332,13 @@ Route::middleware(['auth'])->group(function () {
         $tanggalAwal = $request->tanggal_awal;
         $tanggalAkhir = $request->tanggal_akhir;
         $golongan = $request->golongan;
-        $komponen = $request->jenis_komponen;
+        $jenis_komponen = $request->jenis_jenis_komponen;
 
         $darahMasuk = DataDarahPendonor::query()
             ->when($tanggalAwal, fn ($q) => $q->whereDate('created_at', '>=', $tanggalAwal))
             ->when($tanggalAkhir, fn ($q) => $q->whereDate('created_at', '<=', $tanggalAkhir))
             ->when($golongan, fn ($q) => $q->where('golongan', $golongan))
-            ->when($komponen, fn ($q) => $q->where('jenis_komponen', $komponen))
+            ->when($jenis_komponen, fn ($q) => $q->where('jenis_komponen', $jenis_komponen))
             ->latest()
             ->get();
 
@@ -300,7 +347,7 @@ Route::middleware(['auth'])->group(function () {
             ->when($tanggalAwal, fn ($q) => $q->whereDate('created_at', '>=', $tanggalAwal))
             ->when($tanggalAkhir, fn ($q) => $q->whereDate('created_at', '<=', $tanggalAkhir))
             ->when($golongan, fn ($q) => $q->where('golongan', $golongan))
-            ->when($komponen, fn ($q) => $q->where('jenis_komponen', $komponen))
+            ->when($jenis_komponen, fn ($q) => $q->where('jenis_komponen', $jenis_komponen))
             ->latest()
             ->get();
 
@@ -310,7 +357,7 @@ Route::middleware(['auth'])->group(function () {
             'tanggalAwal',
             'tanggalAkhir',
             'golongan',
-            'komponen'
+            'jenis_komponen'
         ));
     })->name('laporan');
 
@@ -338,19 +385,32 @@ Route::middleware(['auth'])->group(function () {
         $request->validate([
             'golongan' => 'required',
             'rhesus' => 'required',
-            'jenis_komponen' => 'required',
+           'jenis_komponen' => 'required',
             'tanggal_kedaluwarsa' => 'required|date',
         ]);
 
-        DataDarahPendonor::create([
-            'golongan' => $request->golongan,
-            'rhesus' => $request->rhesus,
-            'jenis_komponen' => $request->jenis_komponen,
-            'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
-            'asal_darah' => 'PMI',
-            'status' => 'Sudah Teruji',
-        ]);
+        $nomor = str_pad(
+        DataDarahPendonor::count() + 1,
+        4,
+        '0',
+        STR_PAD_LEFT
+    );
 
+    $kodeKantong =
+        'PMI-' .
+        strtoupper($request->golongan) .
+        '-' .
+        $nomor;
+        
+    DataDarahPendonor::create([
+        'kode_kantong' => $kodeKantong,
+        'golongan' => $request->golongan,
+        'rhesus' => $request->rhesus,
+        'jenis_komponen' => $request->jenis_komponen,
+        'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
+        'asal_darah' => 'PMI',
+        'status' => 'Belum diuji',
+    ]);
         return redirect()
             ->route('pmi')
             ->with('success', 'Data darah PMI berhasil disimpan.');
@@ -390,18 +450,22 @@ Route::middleware(['auth'])->group(function () {
             'suhu_badan' => 'required',
         ]);
 
-        Pendonor::create([
-            'nama_pendonor' => $request->nama_pendonor,
-            'nik_pendonor' => $request->nik_pendonor,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'usia' => $request->usia,
-            'alamat_pendonor' => $request->alamat_pendonor,
-            'nomor_telpon_pendonor' => $request->nomor_telpon_pendonor,
-            'tekanan_darah' => $request->tekanan_darah,
-            'berat_badan' => $request->berat_badan,
-            'suhu_badan' => $request->suhu_badan,
-        ]);
+        $pendonor = Pendonor::create([
+        'nama_pendonor' => $request->nama_pendonor,
+        'nik_pendonor' => $request->nik_pendonor,
+        'jenis_kelamin' => $request->jenis_kelamin,
+        'tanggal_lahir' => $request->tanggal_lahir,
+        'usia' => $request->usia,
+        'alamat_pendonor' => $request->alamat_pendonor,
+        'nomor_telpon_pendonor' => $request->nomor_telpon_pendonor,
+        'tekanan_darah' => $request->tekanan_darah,
+        'berat_badan' => $request->berat_badan,
+        'suhu_badan' => $request->suhu_badan,
+    ]);
+    session([
+        'nik_pendonor' => $pendonor->nik_pendonor
+    ]);
+        
 
         return redirect()
             ->route('unitBankDarah.darah')
@@ -430,14 +494,29 @@ Route::middleware(['auth'])->group(function () {
             'tanggal_kedaluwarsa' => 'required|date',
         ]);
 
-        DataDarahPendonor::create([
-            'golongan' => $request->golongan,
-            'rhesus' => $request->rhesus,
-            'jenis_komponen' => $request->jenis_komponen,
-            'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
-            'asal_darah' => 'Unit Bank Darah',
-            'status' => 'Belum diuji',
-        ]);
+        $nomor = str_pad(
+    DataDarahPendonor::count() + 1,
+    4,
+    '0',
+    STR_PAD_LEFT
+);
+
+$kodeKantong =
+    'UBD-' .
+    strtoupper($request->golongan) .
+    '-' .
+    $nomor;
+
+    DataDarahPendonor::create([
+        'nik_pendonor' => session('nik_pendonor'),
+        'kode_kantong' => $kodeKantong,
+        'golongan' => $request->golongan,
+        'rhesus' => $request->rhesus,
+        'jenis_komponen' => $request->jenis_komponen,
+        'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
+        'asal_darah' => 'Unit Bank Darah',
+        'status' => 'Belum diuji',
+    ]);
 
         return redirect()
             ->route('unitBankDarah.darah')
@@ -492,12 +571,36 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/dashboardDokter', function () {
+   Route::get('/dashboardDokter', function () {
         if (auth()->user()->role != 'dokter') {
             abort(403);
         }
 
-        return view('Dokter.dashboardDokter');
+        $menunggu = PermintaanDokter::where('dokter_id', auth()->id())
+            ->where('status', 'menunggu')
+            ->count();
+
+        $diterima = PermintaanDokter::where('dokter_id', auth()->id())
+            ->where('status', 'disetujui')
+            ->count();
+
+        $ditolak = PermintaanDokter::where('dokter_id', auth()->id())
+            ->where('status', 'ditolak')
+            ->count();
+
+        $stok = [
+            'A' => DataDarahPendonor::where('golongan', 'A')->count(),
+            'B' => DataDarahPendonor::where('golongan', 'B')->count(),
+            'AB' => DataDarahPendonor::where('golongan', 'AB')->count(),
+            'O' => DataDarahPendonor::where('golongan', 'O')->count(),
+        ];
+
+        return view('Dokter.dashboardDokter', compact(
+            'menunggu',
+            'diterima',
+            'ditolak',
+            'stok'
+        ));
     })->name('Dokter.dashboardDokter');
 
 
@@ -525,8 +628,17 @@ Route::middleware(['auth'])->group(function () {
             'jumlah' => 'required|numeric',
             'poli' => 'required',
         ]);
+        $nomor = str_pad(
+            PermintaanDokter::count() + 1,
+            4,
+            '0',
+            STR_PAD_LEFT
+        );
 
+$kodePermintaan = 'REQ-' . $nomor;
         PermintaanDokter::create([
+            'kode_permintaan' => $kodePermintaan,
+            'dokter_id' => auth()->id(),
             'no_rm' => $request->no_rm,
             'nama' => $request->nama,
             'jenis_kelamin' => $request->jenis_kelamin,

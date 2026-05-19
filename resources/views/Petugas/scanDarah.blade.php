@@ -11,7 +11,7 @@
 
         <p><b>Golongan:</b> {{ $darah->golongan }}</p>
         <p><b>Rhesus:</b> {{ $darah->rhesus }}</p>
-        <p><b>Jenis Komponen:</b> {{ $darah->jenis_komponen }}</p>
+        <p><b>Jenis jenis_komponen:</b> {{ $darah->jenis_komponen }}</p>
         <p><b>Tanggal Kedaluwarsa:</b> {{ $darah->tanggal_kedaluwarsa }}</p>
         <p><b>Asal Darah:</b> {{ $darah->asal_darah }}</p>
         <p><b>Status:</b> {{ $darah->status }}</p>

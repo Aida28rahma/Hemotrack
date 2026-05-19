@@ -83,11 +83,12 @@
                     <tr class="text-sm">
 
                         <th class="px-4 py-3">No</th>
-                        <th class="px-4 py-3">Nama Dokter</th>
+                        <th class="px-4 py-3">Dokter Pengaju</th>
+                        <th class="px-4 py-3">Nama Pasien</th>
                         <th class="px-4 py-3">Poli</th>
                         <th class="px-4 py-3">Golongan Darah</th>
                         <th class="px-4 py-3">Rhesus</th>
-                        <th class="px-4 py-3">Komponen</th>
+                        <th class="px-4 py-3">jenis_komponen</th>
                         <th class="px-4 py-3">Jumlah</th>
                         <th class="px-4 py-3">Tanggal Permintaan</th>
                         <th class="px-4 py-3">Status</th>
@@ -106,34 +107,14 @@
                     <tr class="hover:bg-gray-50 transition">
 
                         <td class="px-4 py-3">{{ $index + 1 }}</td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->nama }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->poli }}
-                        </td>
-
-                        <td class="px-4 py-3 font-semibold">
-                            {{ $item->golongan }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->rhesus }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->komponen }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->jumlah }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $item->created_at->format('d/m/Y') }}
-                        </td>
+                        <td class="px-4 py-3">{{ $item->dokter->name ?? '-' }}</td>
+                        <td class="px-4 py-3">{{ $item->nama }}</td>
+                        <td class="px-4 py-3">{{ $item->poli }}</td>
+                        <td class="px-4 py-3 font-semibold">{{ $item->golongan }}</td>
+                        <td class="px-4 py-3">{{ $item->rhesus }}</td>
+                        <td class="px-4 py-3">{{ $item->jenis_komponen }}</td>
+                        <td class="px-4 py-3">{{ $item->jumlah }}</td>
+                        <td class="px-4 py-3">{{ $item->created_at->format('d/m/Y') }}</td>
 
                         <!-- STATUS -->
                       <td class="px-4 py-3">

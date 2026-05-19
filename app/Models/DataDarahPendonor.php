@@ -13,5 +13,7 @@ class DataDarahPendonor extends Model
         'tanggal_kedaluwarsa',
         'asal_darah',
         'status',
+        'nik_pendonor',
+        'kode_kantong',
     ];
 }

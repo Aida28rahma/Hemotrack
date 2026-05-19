@@ -130,8 +130,8 @@
                     <hr class="my-4">
 
                     <div class="grid grid-cols-[110px_1fr] gap-2">
-                        <span class="text-gray-500 font-semibold">Komponen</span>
-                        <span class="font-bold text-black text-right">{{ $item['komponen'] }}</span>
+                        <span class="text-gray-500 font-semibold">jenis_komponen</span>
+                        <span class="font-bold text-black text-right">{{ $item['jenis_komponen'] }}</span>
                     </div>
 
                     <div class="grid grid-cols-[110px_1fr] gap-2">

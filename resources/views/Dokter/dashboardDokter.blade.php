@@ -25,17 +25,17 @@
 
         <div class="grid grid-cols-3 gap-4 text-center">
             <div class="bg-yellow-100 rounded-lg py-3">
-                <p class="text-lg font-bold text-yellow-600">1</p>
-                <p class="text-sm text-yellow-700">Diproses</p>
+                <p class="text-lg font-bold text-yellow-600">{{ $menunggu }}</p>
+                <p class="text-sm text-yellow-700">Menunggu</p>
             </div>
 
             <div class="bg-green-100 rounded-lg py-3">
-                <p class="text-lg font-bold text-green-600">2</p>
+                <p class="text-lg font-bold text-green-600">{{ $diterima }}</p>
                 <p class="text-sm text-green-700">Diterima</p>
             </div>
 
             <div class="bg-red-100 rounded-lg py-3">
-                <p class="text-lg font-bold text-red-600">1</p>
+                <p class="text-lg font-bold text-red-600">{{ $ditolak }}</p>
                 <p class="text-sm text-red-700">Ditolak</p>
             </div>
         </div>
@@ -69,46 +69,68 @@
         </div>
 
         {{-- STOK DARAH --}}
-        <div class="bg-white p-6 rounded-xl shadow">
-            <h2 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-3">
-                <span class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-red-700" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C12 2 6 9.3 6 14.2C6 18.1 8.7 21 12 21C15.3 21 18 18.1 18 14.2C18 9.3 12 2 12 2Z"/>
-                    </svg>
+<div class="bg-white p-6 rounded-2xl shadow-md">
+
+    <div class="flex items-center gap-3 mb-6">
+
+        <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+            <span class="text-red-600 text-lg">🩸</span>
+        </div>
+
+        <h3 class="font-bold text-2xl text-[#0F5B57]">
+            Stok Darah
+        </h3>
+
+    </div>
+
+    <div class="grid grid-cols-2 gap-5">
+
+        @foreach($stok as $gol => $jumlah)
+
+        <div class="
+            bg-[#F5FBFA]
+            border-2
+            border-[#D7ECE9]
+            rounded-2xl
+            px-5
+            py-5
+            flex
+            justify-between
+            items-center
+            hover:shadow-md
+            transition
+        ">
+
+            <div class="flex items-center gap-4">
+
+                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                    <span class="text-red-600">🩸</span>
+                </div>
+
+                <span class="font-bold text-[#154B4B] text-lg">
+                    Gol. {{ $gol }}
                 </span>
 
-                <span>Stok Darah</span>
-            </h2>
-
-            <div class="grid grid-cols-2 gap-4">
-                @foreach([
-                    ['A', 20],
-                    ['B', 15],
-                    ['AB', 10],
-                    ['O', 3],
-                ] as $item)
-
-                    <div class="border rounded-xl p-4 flex justify-between items-center shadow-sm hover:shadow transition">
-                        <div class="flex items-center gap-3">
-                            <span class="w-9 h-9 rounded-full bg-red-100 flex items-center justify-center">
-                                <svg class="w-4 h-4 text-red-700" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C12 2 6 9.3 6 14.2C6 18.1 8.7 21 12 21C15.3 21 18 18.1 18 14.2C18 9.3 12 2 12 2Z"/>
-                                </svg>
-                            </span>
-
-                            <span class="font-bold text-gray-700">
-                                Gol. {{ $item[0] }}
-                            </span>
-                        </div>
-
-                        <span class="text-lg font-bold {{ $item[1] < 5 ? 'text-red-500' : 'text-gray-800' }}">
-                            {{ $item[1] }}
-                        </span>
-                    </div>
-
-                @endforeach
             </div>
+
+            <div class="
+                px-4 py-2 rounded-xl font-bold text-lg
+                {{ $jumlah <= 3
+                    ? 'bg-red-100 text-red-600'
+                    : 'bg-teal-100 text-teal-700'
+                }}
+            ">
+                {{ $jumlah }}
+            </div>
+
         </div>
+
+        @endforeach
+
+    </div>
+
+</div>
+        
 
     </div>
 

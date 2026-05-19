@@ -10,7 +10,7 @@
     {!! QrCode::size(180)->generate(route('darah.scan', $darah->id)) !!}
 
     <p><b>Golongan:</b> {{ $darah->golongan }}{{ $darah->rhesus }}</p>
-    <p><b>Komponen:</b> {{ $darah->jenis_komponen }}</p>
+    <p><b>Komponen:</b> {{ $darah->komponen }}</p>
     <p><b>Asal:</b> {{ $darah->asal_darah }}</p>
     <p><b>Kedaluwarsa:</b> {{ $darah->tanggal_kedaluwarsa }}</p>
 
