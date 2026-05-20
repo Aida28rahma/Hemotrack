@@ -54,11 +54,13 @@
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-6">
 
         @foreach([
-            ['title' => 'Total Pendonor', 'value' => 80],
-            ['title' => 'Distribusi Hari Ini', 'value' => 20],
-            ['title' => 'Stok Darah', 'value' => 80],
-            ['title' => 'Permintaan', 'value' => 10],
-        ] as $card)
+
+    ['title' => 'Total Pendonor', 'value' => \App\Models\Pendonor::count()],
+    ['title' => 'Distribusi Hari Ini', 'value' => \App\Models\PermintaanDokter::where('status','disetujui')->whereDate('updated_at', today())->sum('jumlah')],
+    ['title' => 'Stok Darah', 'value' => \App\Models\DataDarahPendonor::count()],
+    ['title' => 'Permintaan', 'value' => \App\Models\PermintaanDokter::count()],
+] as $card)
+
 
             <div class="bg-white rounded-2xl shadow-md px-5 py-4 flex items-center justify-between">
 
@@ -139,38 +141,56 @@
 
                 <tbody>
 
-                    <tr>
-                        <td class="border px-4 py-3">1</td>
-                        <td class="border px-4 py-3">A</td>
-                        <td class="border px-4 py-3">Negatif (-)</td>
-                        <td class="border px-4 py-3">Whole Blood</td>
-                        <td class="border px-4 py-3">10/10/2026</td>
-                        <td class="border px-4 py-3">Unit Bank Darah</td>
-                        <td class="border px-4 py-3">Telah diuji</td>
-                    </tr>
 
-                    <tr>
-                        <td class="border px-4 py-3">2</td>
-                        <td class="border px-4 py-3">A</td>
-                        <td class="border px-4 py-3">Negatif (-)</td>
-                        <td class="border px-4 py-3">Whole Blood</td>
-                        <td class="border px-4 py-3">10/10/2026</td>
-                        <td class="border px-4 py-3">Unit Bank Darah</td>
-                        <td class="border px-4 py-3">Telah diuji</td>
-                    </tr>
+@foreach(\App\Models\DataDarahPendonor::latest()->take(10)->get() as $item)
 
-                    <tr>
-                        <td class="border px-4 py-3">3</td>
-                        <td class="border px-4 py-3">A</td>
-                        <td class="border px-4 py-3">Negatif (-)</td>
-                        <td class="border px-4 py-3">Whole Blood</td>
-                        <td class="border px-4 py-3">10/10/2026</td>
-                        <td class="border px-4 py-3">Unit Bank Darah</td>
-                        <td class="border px-4 py-3">Telah diuji</td>
-                    </tr>
+<tr>
 
-                </tbody>
+    <td class="border px-4 py-3">
+        {{ $loop->iteration }}
+    </td>
 
+    <td class="border px-4 py-3">
+        {{ $item->golongan }}
+    </td>
+
+    <td class="border px-4 py-3">
+        {{ $item->rhesus }}
+    </td>
+
+    <td class="border px-4 py-3">
+        {{ $item->jenis_komponen }}
+    </td>
+
+    <td class="border px-4 py-3">
+        {{ \Carbon\Carbon::parse($item->tanggal_kedaluwarsa)->format('d/m/Y') }}
+    </td>
+
+    <td class="border px-4 py-3">
+        {{ $item->asal_darah }}
+    </td>
+
+    <td class="border px-4 py-3">
+
+        <span class="
+            px-3 py-1 rounded-full text-sm font-bold
+            {{ $item->status == 'Sudah Teruji'
+                ? 'bg-green-100 text-green-700'
+                : 'bg-yellow-100 text-yellow-700'
+            }}
+        ">
+
+            {{ $item->status }}
+
+        </span>
+
+    </td>
+
+</tr>
+
+@endforeach
+
+</tbody>
             </table>
 
         </div>

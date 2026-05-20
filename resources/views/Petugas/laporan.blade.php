@@ -171,7 +171,7 @@
                     </h2>
 
                     <p class="text-[16px] font-bold">
-                        RSUD KELOMPOK 4 KKPMT
+                        RSUD Budi Rahayu
                     </p>
 
                     <p class="text-[14px]">Jl.Regu Tulip no 666</p>

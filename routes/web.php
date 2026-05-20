@@ -72,7 +72,7 @@ Route::middleware(['auth'])->group(function () {
                 'AB' => DataDarahPendonor::where('golongan','AB')->count(),
                 'O' => DataDarahPendonor::where('golongan','O')->count(),
             ];
-
+            
             return view(
             'Dokter.dashboardDokter',
             compact(
