@@ -6,43 +6,79 @@
 
     {{-- STATUS PERMINTAAN --}}
     <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-5 mb-6 flex items-center justify-between">
+
         <div class="flex items-center gap-3">
             <svg class="w-6 h-6 text-[#0f5c5c]" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2a7 7 0 00-7 7v4.5L3 16v1h18v-1l-2-2.5V9a7 7 0 00-7-7zm0 20a3 3 0 003-3H9a3 3 0 003 3z"/>
             </svg>
 
-{{-- STOK DARAH --}}
-<h2 class="text-xl font-bold text-[#0f5c5c] mb-3">
-    Stok Darah
-</h2>
+            <h2 class="text-xl font-bold text-[#0f5c5c]">
+                Status Permintaan
+            </h2>
+        </div>
 
-<div class="grid grid-cols-2 gap-5">
+        <a href="{{ route('statusDokter') }}"
+           class="bg-[#0f5c5c] text-white px-6 py-2 rounded-md font-bold hover:bg-[#0b4444] transition">
+            Lihat
+        </a>
 
-    @foreach($stok as $gol => $jumlah)
-        <div class="bg-white rounded-2xl shadow-md px-5 py-4 flex items-center justify-between">
+    </div>
 
-            <div>
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 mb-3">
-                    🩸
+
+    {{-- PERMINTAAN DARAH --}}
+    <div class="bg-gradient-to-r from-[#0f8f86] to-[#13b7aa] rounded-xl shadow-md px-5 py-4 mb-5 flex items-center justify-between">
+
+        <div class="flex items-center gap-3">
+            <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+
+            <h2 class="text-2xl font-bold text-white">
+                Permintaan Darah
+            </h2>
+        </div>
+
+        <a href="{{ route('permintaanDokter') }}"
+           class="bg-white text-[#0f5c5c] px-6 py-2 rounded-lg font-bold text-sm shadow hover:bg-gray-100 transition">
+            Isi Form Permintaan Darah
+        </a>
+
+    </div>
+
+
+    {{-- STOK DARAH --}}
+    <h2 class="text-xl font-bold text-[#0f5c5c] mb-3">
+        Stok Darah
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-6">
+
+        @foreach([
+            ['title' => 'Total Pendonor', 'value' => 80],
+            ['title' => 'Distribusi Hari Ini', 'value' => 20],
+            ['title' => 'Stok Darah', 'value' => 80],
+            ['title' => 'Permintaan', 'value' => 10],
+        ] as $card)
+
+            <div class="bg-white rounded-2xl shadow-md px-5 py-4 flex items-center justify-between">
+
+                <div>
+                    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 mb-3">
+                        <svg class="h-5 w-5 text-red-700" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2S6 9.1 6 14a6 6 0 0012 0c0-4.9-6-12-6-12z"/>
+                        </svg>
+                    </div>
+
+                    <p class="text-[#8b1118] font-bold text-sm">
+                        {{ $card['title'] }}
+                    </p>
                 </div>
 
-                <p class="text-[#8b1118] font-bold text-sm">
-                    Gol. {{ $gol }}
-                </p>
-            </div>
-
-            <span class="bg-[#0f5c5c] text-white font-bold px-3 py-2 rounded-md">
-                {{ $jumlah }}
-            </span>
-
-        </div>
-    @endforeach
-
-</div>
+                <span class="bg-[#0f5c5c] text-white font-bold px-3 py-2 rounded-md">
+                    {{ $card['value'] }}
                 </span>
 
             </div>
-
 
         @endforeach
 
@@ -83,6 +119,7 @@
 
         </div>
 
+
         {{-- TABEL --}}
         <div class="overflow-x-auto">
 
@@ -101,6 +138,7 @@
                 </thead>
 
                 <tbody>
+
                     <tr>
                         <td class="border px-4 py-3">1</td>
                         <td class="border px-4 py-3">A</td>
@@ -130,26 +168,20 @@
                         <td class="border px-4 py-3">Unit Bank Darah</td>
                         <td class="border px-4 py-3">Telah diuji</td>
                     </tr>
+
                 </tbody>
 
             </table>
 
         </div>
 
+
         <div class="flex justify-end mt-5">
             <a href="{{ route('stok') }}"
                class="border border-gray-300 px-6 py-2 rounded-lg text-sm font-bold text-[#0f5c5c] hover:bg-gray-100 transition">
                 Lihat Detail Stok
             </a>
-
         </div>
-
-        @endforeach
-
-    </div>
-
-</div>
-        
 
     </div>
 

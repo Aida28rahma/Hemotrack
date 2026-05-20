@@ -8,6 +8,7 @@
         Ringkasan Stok Darah
     </h1>
 
+    {{-- RINGKASAN STOK --}}
     <div class="mb-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
 
         @foreach (['A', 'B', 'AB', 'O'] as $gol)
@@ -58,6 +59,8 @@
 
     </div>
 
+
+    {{-- DETAIL STOK --}}
     <div class="rounded-2xl bg-white p-6 shadow-md">
 
         <h2 class="mb-5 text-xl font-bold text-gray-800">
@@ -69,9 +72,10 @@
 
             <div class="flex flex-wrap items-center gap-4">
 
+                {{-- GOLONGAN --}}
                 <select
                     name="golongan"
-                    class="w-48 rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-teal-500"
+                    class="w-52 rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-teal-500"
                 >
                     <option value="">Golongan Darah</option>
                     <option value="A" {{ request('golongan') == 'A' ? 'selected' : '' }}>A</option>
@@ -81,14 +85,7 @@
                 </select>
 
 
-            {{-- FILTER jenis_komponen --}}
-            <select
-                name="jenis_komponen"
-                onchange="this.form.submit()"
-                class="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
-            >
-                <option value="">Komponen</option>
-
+                {{-- KOMPONEN --}}
                 <select
                     name="jenis_komponen"
                     class="w-56 rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-teal-500"
@@ -101,25 +98,29 @@
                     <option value="Kriopresipitasi" {{ request('jenis_komponen') == 'Kriopresipitasi' ? 'selected' : '' }}>Kriopresipitasi</option>
                 </select>
 
+
+                {{-- RHESUS --}}
                 <select
                     name="rhesus"
-                    class="w-48 rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-teal-500"
+                    class="w-52 rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-teal-500"
                 >
                     <option value="">Rhesus Darah</option>
                     <option value="+" {{ request('rhesus') == '+' ? 'selected' : '' }}>Positif (+)</option>
                     <option value="-" {{ request('rhesus') == '-' ? 'selected' : '' }}>Negatif (-)</option>
                 </select>
 
+
                 <button
                     type="submit"
-                    class="rounded-xl bg-[#0f5c5c] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#0b4444]"
+                    class="rounded-xl bg-[#0f5c5c] px-7 py-3 text-sm font-bold text-white transition hover:bg-[#0b4444]"
                 >
                     Filter
                 </button>
 
+
                 <a
                     href="{{ route('stok') }}"
-                    class="rounded-xl bg-gray-200 px-6 py-3 text-sm font-bold text-gray-700 transition hover:bg-gray-300"
+                    class="rounded-xl bg-gray-200 px-7 py-3 text-sm font-bold text-gray-700 transition hover:bg-gray-300"
                 >
                     Reset
                 </a>
@@ -128,6 +129,8 @@
 
         </form>
 
+
+        {{-- TABEL --}}
         <div class="overflow-x-auto">
 
             <table class="w-full border-collapse overflow-hidden rounded-xl">
@@ -167,7 +170,7 @@
                             </td>
 
                             <td class="border px-4 py-2">
-                                {{ $item->jenis_komponen ?? $item->jenis_komponen }}
+                                {{ $item->jenis_komponen }}
                             </td>
 
                             <td class="border px-4 py-2">
@@ -188,7 +191,9 @@
                                             @csrf
 
                                             <button
-                                                class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700 transition hover:bg-yellow-200">
+                                                type="submit"
+                                                class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700 transition hover:bg-yellow-200"
+                                            >
                                                 Belum Teruji
                                             </button>
                                         </form>
@@ -242,6 +247,7 @@
                                             @method('DELETE')
 
                                             <button
+                                                type="submit"
                                                 class="rounded bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 hover:bg-red-200">
                                                 Hapus
                                             </button>

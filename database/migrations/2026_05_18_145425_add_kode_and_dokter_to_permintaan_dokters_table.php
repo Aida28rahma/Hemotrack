@@ -10,32 +10,47 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::table('permintaan_dokters', function (Blueprint $table) {
+    {
+        Schema::table('permintaan_dokters', function (Blueprint $table) {
+            if (!Schema::hasColumn('permintaan_dokters', 'dokter_id')) {
+                $table->unsignedBigInteger('dokter_id')->nullable()->after('id');
+            }
 
-        $table->string('kode_permintaan')
-              ->nullable()
-              ->unique();
+            if (!Schema::hasColumn('permintaan_dokters', 'kode_permintaan')) {
+                $table->string('kode_permintaan')->nullable()->after('dokter_id');
+            }
 
-        $table->foreignId('dokter_id')
-              ->nullable()
-              ->constrained('users')
-              ->nullOnDelete();
+            if (!Schema::hasColumn('permintaan_dokters', 'disetujui_oleh')) {
+                $table->unsignedBigInteger('disetujui_oleh')->nullable()->after('status');
+            }
 
-    });
-}
+            if (!Schema::hasColumn('permintaan_dokters', 'tanggal_disetujui')) {
+                $table->timestamp('tanggal_disetujui')->nullable()->after('disetujui_oleh');
+            }
+        });
+    }
 
-public function down(): void
-{
-    Schema::table('permintaan_dokters', function (Blueprint $table) {
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('permintaan_dokters', function (Blueprint $table) {
+            if (Schema::hasColumn('permintaan_dokters', 'tanggal_disetujui')) {
+                $table->dropColumn('tanggal_disetujui');
+            }
 
-        $table->dropForeign(['dokter_id']);
+            if (Schema::hasColumn('permintaan_dokters', 'disetujui_oleh')) {
+                $table->dropColumn('disetujui_oleh');
+            }
 
-        $table->dropColumn([
-            'kode_permintaan',
-            'dokter_id'
-        ]);
+            if (Schema::hasColumn('permintaan_dokters', 'kode_permintaan')) {
+                $table->dropColumn('kode_permintaan');
+            }
 
-    });
-}
+            if (Schema::hasColumn('permintaan_dokters', 'dokter_id')) {
+                $table->dropColumn('dokter_id');
+            }
+        });
+    }
 };
