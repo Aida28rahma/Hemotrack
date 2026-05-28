@@ -41,7 +41,7 @@
                             name="nama_pendonor"
                             value="{{ old('nama_pendonor') }}"
                             placeholder="Masukkan Nama Pendonor"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
+                            class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
                     </div>
 
                     <div>
@@ -56,7 +56,7 @@
                             inputmode="numeric"
                             pattern="[0-9]{16}"
                             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16)"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
+                            class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
                     </div>
 
                 </div>
@@ -67,7 +67,7 @@
                         <label class="block font-bold mb-2">Jenis Kelamin</label>
                         <select
                             name="jenis_kelamin"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
+                            class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
                             <option value="">Pilih Jenis Kelamin</option>
                             <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
@@ -81,7 +81,7 @@
                             id="tanggal_lahir"
                             name="tanggal_lahir"
                             value="{{ old('tanggal_lahir') }}"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
+                            class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
                     </div>
 
                     <div>
@@ -93,7 +93,7 @@
                             value="{{ old('usia') }}"
                             readonly
                             placeholder=" "
-                            class="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none">
+                            class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
                     </div>
 
                 </div>
@@ -106,7 +106,7 @@
                             name="alamat_pendonor"
                             rows="4"
                             placeholder="Masukkan Alamat Pendonor"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">{{ old('alamat_pendonor') }}</textarea>
+                            class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">{{ old('alamat_pendonor') }}</textarea>
                     </div>
 
                     <div>
@@ -115,11 +115,11 @@
                             type="text"
                             name="nomor_telpon_pendonor"
                             value="{{ old('nomor_telpon_pendonor') }}"
-                            placeholder=""
+                            placeholder="Masukkan Nomor Telepon Pendonor"
                             maxlength="13"
                             inputmode="numeric"
                             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13)"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
+                            class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
                     </div>
 
                 </div>
@@ -144,7 +144,7 @@
                             name="tekanan_darah"
                             value="{{ old('tekanan_darah') }}"
                             placeholder="120/80"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
+                            class="w-full border border-black-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
                     </div>
 
                     <div>
@@ -154,7 +154,7 @@
                             name="berat_badan"
                             value="{{ old('berat_badan') }}"
                             placeholder="Kg"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
+                            class="w-full border border-black-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
                     </div>
 
                     <div>
@@ -164,7 +164,7 @@
                             name="suhu_badan"
                             value="{{ old('suhu_badan') }}"
                             placeholder="°C"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
+                            class="w-full border border-black-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#0f5c5c] focus:outline-none">
                     </div>
 
                 </div>

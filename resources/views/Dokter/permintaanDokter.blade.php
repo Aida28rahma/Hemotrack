@@ -4,7 +4,7 @@
 
 <div class="min-h-screen flex items-center justify-center p-6">
 
-    <div class="w-full max-w-5xl bg-gradient-to-br from-[#063b3a] via-[#0d7770] to-[#20b8b0] rounded-xl shadow-2xl p-10">
+    <div class="w-full max-w-5xl bg-gradient-to-br from-[#063b3a] via-[#0d7770] to-[#20b8b0] rounded-xl shadow-2xl p-10 -mt-10">
 
         <h1 class="text-3xl font-bold text-white text-center mb-8">
             Form Permintaan Darah
@@ -41,8 +41,14 @@
                         <label class="block text-white text-sm mb-2">
                             No Rekam Medis
                         </label>
-                        <input type="text" name="no_rm"
-                            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+                       <input
+                        type="text"
+                        name="no_rm"
+                        inputmode="numeric"
+                        pattern="[0-9]+"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        required
+                        class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
                     </div>
 
                     <!-- POLI -->
@@ -65,32 +71,32 @@
 
                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
 
-    <!-- NAMA PASIEN -->
-<div class="md:col-span-2">
-        <label class="block text-white text-sm mb-2">
-            Nama Pasien
-        </label>
+                    <!-- NAMA PASIEN -->
+                <div class="md:col-span-2">
+                        <label class="block text-white text-sm mb-2">
+                            Nama Pasien
+                        </label>
 
-        <input type="text" name="nama"
-            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+                        <input type="text" name="nama"
+                            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+                    </div>
+
+                    <!-- JENIS KELAMIN -->
+                    <div>
+                        <label class="block text-white text-sm mb-2">
+                            Jenis Kelamin
+                        </label>
+
+                        <select name="jenis_kelamin"
+                            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
+
+                            <option value="">Pilih Jenis Kelamin</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
+
+                        </select>
+                    </div>
     </div>
-
-    <!-- JENIS KELAMIN -->
-    <div>
-        <label class="block text-white text-sm mb-2">
-            Jenis Kelamin
-        </label>
-
-        <select name="jenis_kelamin"
-            class="w-full rounded-md border-none px-4 py-3 text-gray-800 focus:ring-2 focus:ring-teal-300">
-
-            <option value="">Pilih Jenis Kelamin</option>
-            <option value="L">Laki-laki</option>
-            <option value="P">Perempuan</option>
-
-        </select>
-    </div>
-</div>
 </div>
 
             <!-- DETAIL PERMINTAAN -->
@@ -129,7 +135,7 @@
                         </select>
                     </div>
 
-                    <!-- jenis_komponen -->
+                    <!-- Komponen -->
                     <div>
                         <label class="block text-white text-sm mb-2">
                             Jenis Komponen

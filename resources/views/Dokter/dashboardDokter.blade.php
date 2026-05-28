@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="mb-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
 
-<div class="w-full px-8 py-6">
 
     {{-- STATUS PERMINTAAN --}}
     <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-5 mb-6 flex items-center justify-between">
@@ -33,7 +33,7 @@
                 <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
 
-            <h2 class="text-2xl font-bold text-white">
+            <h2 class="text-xl font-bold text-white">
                 Permintaan Darah
             </h2>
         </div>
@@ -53,12 +53,50 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-6">
 
-        @foreach([
+       @foreach([
 
-    ['title' => 'Total Pendonor', 'value' => \App\Models\Pendonor::count()],
-    ['title' => 'Distribusi Hari Ini', 'value' => \App\Models\PermintaanDokter::where('status','disetujui')->whereDate('updated_at', today())->sum('jumlah')],
-    ['title' => 'Stok Darah', 'value' => \App\Models\DataDarahPendonor::count()],
-    ['title' => 'Permintaan', 'value' => \App\Models\PermintaanDokter::count()],
+[
+'title' => 'Total Pendonor',
+
+'value' =>
+\App\Models\Pendonor::count()
+],
+
+[
+'title' => 'Distribusi Hari Ini',
+
+'value' =>
+\App\Models\PermintaanDokter::where(
+'status',
+'disetujui'
+)
+->whereDate(
+'updated_at',
+today()
+)
+->sum(
+'jumlah'
+)
+],
+
+[
+'title' => 'Stok Darah',
+
+'value' =>
+\App\Models\DataDarahPendonor::where(
+'status',
+'Sudah Teruji'
+)
+->count()
+],
+
+[
+'title' => 'Permintaan',
+
+'value' =>
+\App\Models\PermintaanDokter::count()
+],
+
 ] as $card)
 
 
@@ -127,7 +165,7 @@
 
             <table class="w-full border-collapse text-center">
 
-                <thead class="bg-[#19b5aa] text-white">
+                <thead class="bg-[#0f5c5c] text-white">
                     <tr>
                         <th class="border px-4 py-3">No</th>
                         <th class="border px-4 py-3">Golongan</th>
@@ -141,8 +179,20 @@
 
                 <tbody>
 
+@php
 
-@foreach(\App\Models\DataDarahPendonor::latest()->take(10)->get() as $item)
+$dataStok = \App\Models\DataDarahPendonor::whereNotIn(
+    'status',
+    ['Didistribusikan']
+)
+->latest()
+->take(10)
+->get();
+
+@endphp
+
+
+@foreach($dataStok as $item)
 
 <tr>
 
@@ -163,7 +213,11 @@
     </td>
 
     <td class="border px-4 py-3">
-        {{ \Carbon\Carbon::parse($item->tanggal_kedaluwarsa)->format('d/m/Y') }}
+
+        {{ \Carbon\Carbon::parse(
+            $item->tanggal_kedaluwarsa
+        )->format('d/m/Y') }}
+
     </td>
 
     <td class="border px-4 py-3">
@@ -174,8 +228,11 @@
 
         <span class="
             px-3 py-1 rounded-full text-sm font-bold
+
             {{ $item->status == 'Sudah Teruji'
+
                 ? 'bg-green-100 text-green-700'
+
                 : 'bg-yellow-100 text-yellow-700'
             }}
         ">
@@ -189,6 +246,22 @@
 </tr>
 
 @endforeach
+
+
+@if($dataStok->isEmpty())
+
+<tr>
+
+    <td colspan="7"
+        class="py-6 text-gray-400">
+
+        Tidak ada stok darah
+
+    </td>
+
+</tr>
+
+@endif
 
 </tbody>
             </table>

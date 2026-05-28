@@ -18,6 +18,7 @@ class PermintaanDokter extends Model
     'jumlah',
     'poli',
     'status',
+    'alasan_penolakan',
     'disetujui_oleh',
     'tanggal_disetujui',
     ];

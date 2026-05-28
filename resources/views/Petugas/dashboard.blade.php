@@ -2,14 +2,12 @@
 
 @section('content')
 
-<div class="min-h-screen bg-gray-100 p-5">
-
-    <div class="w-full rounded-[25px] bg-[#f4f4f4] p-5 shadow-[0_8px_25px_rgba(0,0,0,0.18)]">
+<div class="mb-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
 
         {{-- NOTIFIKASI --}}
-        <div class="bg-white rounded-3xl shadow-md p-6 mt-6 mb-8">
+        <div class="bg-white rounded-3xl shadow-[0_6px_15px_rgba(0,0,0,0.2)] p-6 mt-6 mb-8">
 
-            <h2 class="text-2xl font-bold mb-5">
+            <h2 class="text-2xl font-bold text-[#0f5c5c] mb-5">
                 Notifikasi
             </h2>
             @forelse($notif as $item)
@@ -64,8 +62,8 @@
                 <div class="grid grid-cols-2 gap-5 mt-6">
 
                   {{-- GRAFIK --}}
-                    <div class="bg-white rounded-3xl shadow-md p-6">
-                        <h2 class="text-2xl font-bold mb-5">
+                    <div class="bg-white rounded-3xl shadow-[0_6px_15px_rgba(0,0,0,0.2)] p-6">
+                        <h2 class="text-2xl font-bold text-[#0f5c5c] mb-5">
                             Grafik Stok Darah
                         </h2>
                         <div class="flex items-end justify-center gap-10 h-[420px]">
@@ -131,8 +129,8 @@
                     </div>
 
                     {{-- PERMINTAAN TERBARU --}}
-                <div class="bg-white rounded-3xl shadow-md p-6">
-                    <h2 class="text-2xl font-bold mb-5">
+                <div class="bg-white rounded-3xl shadow-[0_6px_15px_rgba(0,0,0,0.2)] p-6">
+                    <h2 class="text-2xl font-bold text-[#0f5c5c] mb-5">
                         Permintaan Terbaru
                     </h2>
 
@@ -174,5 +172,5 @@
             </div>
         </div>
     </div>
-</div>
+
 @endsection

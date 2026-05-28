@@ -2,24 +2,24 @@
 
 @section('content')
 
-<div class="p-6">
+<div class="mb-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+
 
     <!-- Header -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="mb-5 rounded-3xl bg-white p-5 shadow">
 
-        <h1 class="text-3xl font-bold text-gray-800">
+        <h1 class="text-3xl font-bold text-[#0f5c5c]">
             Permintaan Darah
         </h1>
 
-    </div>
+    
 
     <!-- Filter -->
-    <div class="bg-white rounded-3xl shadow-md border border-gray-200 p-5 mb-8">
 
         <div class="flex justify-between items-end flex-wrap gap-4">
 
           <!-- Status Filter -->
-            <div class="flex flex-wrap gap-4">
+            <div class="mt-5 flex flex-wrap gap-4">
 
                 <!-- Semua -->
                 <a href="{{ route('permintaan', ['search' => request('search')]) }}"
@@ -69,7 +69,7 @@
     <!-- Table -->
     <div class="bg-white rounded-3xl shadow-md border border-gray-200 p-5">
 
-        <h2 class="text-2xl font-bold text-teal-700 mb-5">
+        <h2 class="text-2xl font-bold text-[#0f5c5c] mb-5">
             Data Riwayat Permintaan Darah
         </h2>
 
@@ -78,7 +78,7 @@
             <table class="w-full overflow-hidden rounded-2xl">
 
                 <!-- Head -->
-                <thead class="bg-teal-500 text-white">
+                <thead class="bg-teal-700 text-white">
 
                     <tr class="text-sm">
 
@@ -88,7 +88,7 @@
                         <th class="px-4 py-3">Poli</th>
                         <th class="px-4 py-3">Golongan Darah</th>
                         <th class="px-4 py-3">Rhesus</th>
-                        <th class="px-4 py-3">jenis_komponen</th>
+                        <th class="px-4 py-3">Komponen</th>
                         <th class="px-4 py-3">Jumlah</th>
                         <th class="px-4 py-3">Tanggal Permintaan</th>
                         <th class="px-4 py-3">Status</th>
@@ -117,43 +117,53 @@
                         <td class="px-4 py-3">{{ $item->created_at->format('d/m/Y') }}</td>
 
                         <!-- STATUS -->
-                      <td class="px-4 py-3">
-
-                            @if (trim(strtolower($item->status)) == 'menunggu')
-
-                                <button type="button"
-                                    onclick="openStatusModal({{ $item->id }})"
-                                    class="relative z-50 cursor-pointer bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold transition">
-
+                        <td class="px-4 py-3">
+                            @if($item->status == 'menunggu')
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
                                     Menunggu
-
-                                </button>
-
-                            @elseif (trim(strtolower($item->status)) == 'disetujui')
-
+                                </span>
+                            @elseif($item->status == 'disetujui')
                                 <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
                                     Disetujui
                                 </span>
-
-                            @elseif (trim(strtolower($item->status)) == 'ditolak')
-
+                            @elseif($item->status == 'ditolak')
                                 <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
                                     Ditolak
                                 </span>
+                            @endif
+                        </td>
+                        <td class="px-4 py-3 text-center">
+
+                            @if($item->status == 'menunggu')
+
+                            <button
+                            type="button"
+
+                            onclick="openModal({{ $item->id }})"
+
+                            class="
+                            bg-yellow-100
+                            hover:bg-yellow-200
+                            text-yellow-700
+                            px-4
+                            py-2
+                            rounded-full
+                            text-sm
+                            font-semibold
+                            transition
+                            ">
+
+                            Menunggu
+
+                            </button>
+
+                            @else
+
+                            <span class="text-gray-400">
+                            -
+                            </span>
 
                             @endif
-
-                        </td>
-                        <td class="px-4 py-3">
-                            <form action="{{ route('permintaan.delete', $item->id) }}" method="POST"
-                                onsubmit="return confirm('Yakin mau hapus permintaan ini?')">
-                                @csrf
-                                @method('DELETE')
-
-                                <button class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                    Hapus
-                                </button>
-                            </form>
                         </td>
                     </tr>
 
@@ -186,61 +196,211 @@
 
 </div>
 
+{{-- MODAL STATUS --}}
 <div id="statusModal"
-    class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+class="hidden fixed inset-0 bg-black/40 z-50 items-center justify-center">
 
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 text-center">
-        <h2 class="text-xl font-bold text-gray-800 mb-4">
-            Konfirmasi Permintaan
-        </h2>
+<div class="bg-white rounded-2xl p-6 w-[420px] shadow-xl">
 
-        <p class="text-gray-600 mb-6">
-            Apakah permintaan akan disetujui atau ditolak?
-        </p>
+<h2 class="text-xl font-bold text-[#0f5c5c] mb-5">
+Proses Permintaan Darah
+</h2>
 
-        <div class="flex justify-center gap-4">
 
-            <form id="approveForm" method="POST">
-                @csrf
-                <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl font-semibold">
-                    ✔ Disetujui
-                </button>
-            </form>
+<div class="grid grid-cols-2 gap-3 mb-5">
 
-            <form id="rejectForm" method="POST">
-                @csrf
-                <button class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl font-semibold">
-                    ✖ Ditolak
-                </button>
-            </form>
+<form id="approveForm" method="POST">
 
-        </div>
+@csrf
 
-        <button onclick="closeStatusModal()"
-            class="mt-5 text-gray-500 hover:text-gray-700 text-sm">
-            Batal
-        </button>
-    </div>
+<button
+type="submit"
+class="
+w-full
+rounded-xl
+bg-green-100
+py-3
+font-semibold
+text-green-700
+hover:bg-green-200
+">
+
+Setujui
+
+</button>
+
+</form>
+
+
+<button
+type="button"
+
+onclick="showRejectArea()"
+
+class="
+rounded-xl
+bg-red-100
+py-3
+font-semibold
+text-red-700
+hover:bg-red-200
+">
+
+Tolak
+
+</button>
+
 </div>
 
+
+
+<div id="rejectArea"
+class="hidden">
+
+<form id="rejectForm"
+method="POST">
+
+@csrf
+
+
+<textarea
+name="alasan_penolakan"
+
+required
+
+placeholder="Masukkan alasan penolakan..."
+
+class="
+w-full
+border
+rounded-xl
+p-3
+mb-4
+">
+
+</textarea>
+
+
+<button
+type="submit"
+
+class="
+w-full
+rounded-xl
+bg-red-500
+py-3
+text-white
+font-semibold
+">
+
+Simpan Penolakan
+
+</button>
+
+</form>
+
+</div>
+
+
+
+<button
+type="button"
+
+onclick="closeModal()"
+
+class="
+mt-4
+w-full
+rounded-xl
+border
+py-2
+hover:bg-gray-100
+">
+
+Batal
+
+</button>
+
+</div>
+
+</div>
+
+
+
 <script>
-    function openStatusModal(id) {
-        const modal = document.getElementById('statusModal');
-        const approveForm = document.getElementById('approveForm');
-        const rejectForm = document.getElementById('rejectForm');
 
-        approveForm.action = `/permintaan/${id}/approve`;
-        rejectForm.action = `/permintaan/${id}/reject`;
+function openModal(id){
 
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-    }
+const modal =
+document.getElementById(
+'statusModal'
+);
 
-    function closeStatusModal() {
-        const modal = document.getElementById('statusModal');
+document.getElementById(
+'approveForm'
+).action =
+'/permintaan/' +
+id +
+'/approve';
 
-        modal.classList.remove('flex');
-        modal.classList.add('hidden');
-    }
+
+document.getElementById(
+'rejectForm'
+).action =
+'/permintaan/' +
+id +
+'/reject';
+
+
+document.getElementById(
+'rejectArea'
+).classList.add(
+'hidden'
+);
+
+modal.classList.remove(
+'hidden'
+);
+
+modal.classList.add(
+'flex'
+);
+
+}
+
+
+
+function showRejectArea(){
+
+document.getElementById(
+'rejectArea'
+).classList.remove(
+'hidden'
+);
+
+}
+
+
+
+function closeModal(){
+
+const modal =
+document.getElementById(
+'statusModal'
+);
+
+modal.classList.add(
+'hidden'
+);
+
+modal.classList.remove(
+'flex'
+);
+
+}
+
 </script>
+
+
+
 @endsection

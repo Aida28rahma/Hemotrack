@@ -42,7 +42,7 @@
                     </label>
 
                     <select name="golongan"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
+                        class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
                         <option value="">Pilih Golongan Darah</option>
                         <option value="A" {{ old('golongan') == 'A' ? 'selected' : '' }}>A</option>
                         <option value="B" {{ old('golongan') == 'B' ? 'selected' : '' }}>B</option>
@@ -62,7 +62,7 @@
                     </label>
 
                     <select name="rhesus"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
+                        class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
                         <option value="">Pilih Rhesus</option>
                         <option value="+" {{ old('rhesus') == '+' ? 'selected' : '' }}>Positif (+)</option>
                         <option value="-" {{ old('rhesus') == '-' ? 'selected' : '' }}>Negatif (-)</option>
@@ -77,8 +77,9 @@
                 <div>
 
                     <label class="block font-bold text-base mb-2">Jenis komponen</label>
-                    <select name="jenis_komponen" class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
-                        <option value="">Pilih Jenin komponen</option>
+                    <select name="jenis_komponen" 
+                        class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
+                        <option value="">Pilih Komponen</option>
                         <option value="Whole Blood">Whole Blood</option>
                         <option value="PRC">PRC</option>
                         <option value="Trombosit">Trombosit</option>
@@ -97,8 +98,12 @@
 
                     <label class="block font-bold text-base mb-2">Tanggal Kedaluwarsa</label>
                     <input type="date" name="tanggal_kedaluwarsa"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
-
+                        class="w-full border border-black-300 rounded-lg px-4 py-3 text-gray-400 outline-none focus:ring-2 focus:ring-[#0f5c5c]">
+                        @error('tanggal_kedaluwarsa')
+                        <div class="text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </div>
+                        @enderror
                 </div>
 
             </div>
@@ -116,4 +121,26 @@
 
 </div>
 
+<script>
+document.querySelectorAll('select').forEach(select => {
+
+    select.addEventListener(
+        'change',
+
+        function(){
+
+            this.classList.remove(
+                'text-gray-400'
+            );
+
+            this.classList.add(
+                'text-gray-800'
+            );
+
+        }
+
+    );
+
+});
+</script>
 @endsection

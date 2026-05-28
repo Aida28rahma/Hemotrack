@@ -2,9 +2,10 @@
 
 @section('content')
 
-<main class="flex-1 p-6">
+<div class="mb-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
 
-    <h1 class="mb-6 text-2xl font-bold text-gray-800">
+
+    <h1 class="mb-6 text-2xl font-bold text-[#0f5c5c]">
         Ringkasan Stok Darah
     </h1>
 
@@ -63,7 +64,7 @@
     {{-- DETAIL STOK --}}
     <div class="rounded-2xl bg-white p-6 shadow-md">
 
-        <h2 class="mb-5 text-xl font-bold text-gray-800">
+        <h2 class="mb-5 text-xl font-bold text-[#0f5c5c]">
             Detail Stok Darah
         </h2>
 
@@ -112,7 +113,7 @@
 
                 <button
                     type="submit"
-                    class="rounded-xl bg-[#0f5c5c] px-7 py-3 text-sm font-bold text-white transition hover:bg-[#0b4444]"
+                    class="rounded-xl bg-[#0f5c5c] px-7 py-3 text-sm font-semibold text-white transition hover:bg-[#0b4444]"
                 >
                     Filter
                 </button>
@@ -120,7 +121,7 @@
 
                 <a
                     href="{{ route('stok') }}"
-                    class="rounded-xl bg-gray-200 px-7 py-3 text-sm font-bold text-gray-700 transition hover:bg-gray-300"
+                    class="rounded-xl bg-gray-200 px-7 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-300"
                 >
                     Reset
                 </a>
@@ -187,16 +188,35 @@
 
                                     @if(auth()->user()->role == 'petugas')
 
-                                        <form action="{{ route('darah.uji', $item->id) }}" method="POST">
-                                            @csrf
+                                        <form action="{{ route('darah.uji', $item->id) }}"
+                                        method="POST"
+                                        onsubmit="event.preventDefault();
 
-                                            <button
-                                                type="submit"
-                                                class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700 transition hover:bg-yellow-200"
-                                            >
-                                                Belum Teruji
-                                            </button>
-                                        </form>
+                                        Swal.fire({
+                                            title: 'Tandai Darah Teruji?',
+                                            text: 'Status darah akan diubah menjadi Sudah Teruji.',
+                                            icon: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#0f5c5c',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Ya, Uji Sekarang',
+                                            cancelButtonText: 'Batal',
+                                            reverseButtons: true
+                                        }).then((result) => {
+                                            if(result.isConfirmed){
+                                                this.submit();
+                                            }
+                                        })">
+
+                                        @csrf
+
+                                        <button
+                                            type="submit"
+                                            class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700 transition hover:bg-yellow-200">
+                                            Belum Teruji
+                                        </button>
+
+                                    </form>
 
                                     @else
 
@@ -280,6 +300,6 @@
 
     </div>
 
-</main>
-
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection

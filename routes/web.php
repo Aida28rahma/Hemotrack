@@ -67,10 +67,21 @@ Route::middleware(['auth'])->group(function () {
             ->count();
 
             $stok = [
-                'A' => DataDarahPendonor::where('golongan','A')->count(),
-                'B' => DataDarahPendonor::where('golongan','B')->count(),
-                'AB' => DataDarahPendonor::where('golongan','AB')->count(),
-                'O' => DataDarahPendonor::where('golongan','O')->count(),
+                'A' => DataDarahPendonor::where('golongan','A')
+                    ->where('status', 'Sudah Teruji')
+                    ->count(),
+
+                'B' => DataDarahPendonor::where('golongan','B')
+                    ->where('status', 'Sudah Teruji')
+                    ->count(),
+
+                'AB' => DataDarahPendonor::where('golongan','AB')
+                    ->where('status', 'Sudah Teruji')
+                    ->count(),
+
+                'O' => DataDarahPendonor::where('golongan','O')
+                    ->where('status', 'Sudah Teruji')
+                    ->count(),
             ];
             
             return view(
@@ -88,7 +99,7 @@ Route::middleware(['auth'])->group(function () {
             'created_at',
             today()
         )->count();
-        $totalStok = DataDarahPendonor::count();
+        $totalStok = DataDarahPendonor::where('status', 'Sudah Teruji')->count();
         $totalPermintaan = PermintaanDokter::whereDate(
             'created_at',
             today()
@@ -108,19 +119,29 @@ Route::middleware(['auth'])->group(function () {
         ->sum('jumlah');
 
         $grafik = [
-            'A' => DataDarahPendonor::where('golongan','A')->count(),
-            'B' => DataDarahPendonor::where('golongan','B')->count(),
-            'AB' => DataDarahPendonor::where('golongan','AB')->count(),
-            'O' => DataDarahPendonor::where('golongan','O')->count(),
+            'A' => DataDarahPendonor::where('golongan','A')
+                ->where('status', 'Sudah Teruji')
+                ->count(),
+
+            'B' => DataDarahPendonor::where('golongan','B')
+                ->where('status', 'Sudah Teruji')
+                ->count(),
+
+            'AB' => DataDarahPendonor::where('golongan','AB')
+                ->where('status', 'Sudah Teruji')
+                ->count(),
+
+            'O' => DataDarahPendonor::where('golongan','O')
+                ->where('status', 'Sudah Teruji')
+                ->count(),
         ];
         $notif = [];
 
         foreach (['A','B','AB','O'] as $gol) {
 
-            $jumlah = DataDarahPendonor::where(
-                'golongan',
-                $gol
-            )->count();
+           $jumlah = DataDarahPendonor::where('golongan', $gol)
+            ->where('status', 'Sudah Teruji')
+            ->count();
 
             if ($jumlah == 0) {
 
@@ -187,8 +208,8 @@ Route::middleware(['auth'])->group(function () {
             $query->where('golongan', $request->golongan);
         }
 
-        if ($request->jenis_jenis_komponen) {
-            $query->where('jenis_komponen', $request->jenis_jenis_komponen);
+        if ($request->jenis_komponen) {
+            $query->where('jenis_komponen', $request->jenis_komponen);
         }
 
         if ($request->rhesus) {
@@ -196,15 +217,29 @@ Route::middleware(['auth'])->group(function () {
         }
 
         $data = $query->latest()->get();
+        $ringkasan = DataDarahPendonor::whereNotIn(
+                'status',
+                [
+                    'Didistribusikan'
+                ]
+            )
 
-        $ringkasan = DataDarahPendonor::selectRaw("
-            golongan,
-            SUM(CASE WHEN rhesus = '+' THEN 1 ELSE 0 END) as plus,
-            SUM(CASE WHEN rhesus = '-' THEN 1 ELSE 0 END) as minus
-        ")
-            ->groupBy('golongan')
+            ->selectRaw("
+                golongan,
+
+                SUM(CASE WHEN rhesus='+' THEN 1 ELSE 0 END) as plus,
+
+                SUM(CASE WHEN rhesus='-' THEN 1 ELSE 0 END) as minus
+            ")
+
+            ->groupBy(
+                'golongan'
+            )
+
             ->get()
-            ->keyBy('golongan');
+
+            ->keyBy(
+                'golongan');
 
         return view('Petugas.stok', compact('data', 'ringkasan'));
     })->name('stok');
@@ -272,32 +307,105 @@ Route::middleware(['auth'])->group(function () {
             abort(403);
         }
 
-        $data = PermintaanDokter::findOrFail($id);
+        $permintaan = PermintaanDokter::findOrFail($id);
 
-        $data->update([
+        // CARI DARAH YANG COCOK
+        $stok = DataDarahPendonor::where(
+            'golongan',
+            $permintaan->golongan
+        )
+        ->where(
+            'rhesus',
+            $permintaan->rhesus
+        )
+        ->where(
+            'jenis_komponen',
+            $permintaan->jenis_komponen
+        )
+        ->where(
+            'status',
+            'Sudah Teruji'
+        )
+        ->whereNull(
+            'kode_permintaan'
+        )
+        ->oldest()
+        ->take(
+            $permintaan->jumlah
+        )
+        ->get();
+
+        // CEK STOK
+        if (
+            $stok->count()
+            <
+            $permintaan->jumlah
+        ) {
+            return back()->with(
+                'error',
+                'Stok darah tidak mencukupi'
+            );
+        }
+
+        // DISTRIBUSIKAN
+        foreach ($stok as $darah) {
+            $darah->update([
+
+                'status' => 'Didistribusikan',
+                'kode_permintaan'
+                    =>
+                $permintaan->kode_permintaan,
+            ]);
+        }
+
+        // UPDATE STATUS PERMINTAAN
+        $permintaan->update([
             'status' => 'disetujui',
-            'disetujui_oleh' => Auth::id(),
-            'tanggal_disetujui' => now(),
+            'disetujui_oleh'
+                =>
+            Auth::id(),
+            'tanggal_disetujui'
+                =>
+            now(),
         ]);
 
-        return back()->with('success', 'Permintaan berhasil disetujui.');
+        return back()->with(
+            'success',
+            'Darah berhasil didistribusikan'
+        );
     })->name('permintaan.approve');
 
-
-    Route::post('/permintaan/{id}/reject', function ($id) {
+    Route::post('/permintaan/{id}/reject', function (Request $request, $id) {
         if (auth()->user()->role != 'petugas') {
             abort(403);
         }
 
-        $data = PermintaanDokter::findOrFail($id);
-
-        $data->update([
-            'status' => 'ditolak',
-            'disetujui_oleh' => Auth::id(),
-            'tanggal_disetujui' => now(),
+        $request->validate([
+            'alasan_penolakan' => 'required',
         ]);
 
-        return back()->with('success', 'Permintaan berhasil ditolak.');
+            $data = PermintaanDokter::findOrFail($id);
+
+            $data->update([
+
+            'status'
+                =>
+            'ditolak',
+
+            'alasan_penolakan'
+                =>
+            $request->alasan_penolakan,
+
+            'disetujui_oleh'
+                =>
+            Auth::id(),
+
+            'tanggal_disetujui'
+                =>
+            now(),
+
+        ]);
+    return back()->with('success', 'Permintaan berhasil ditolak.');        
     })->name('permintaan.reject');
     Route::delete('/permintaan/{id}', function ($id) {
         $data = PermintaanDokter::findOrFail($id);
@@ -401,7 +509,20 @@ Route::middleware(['auth'])->group(function () {
         strtoupper($request->golongan) .
         '-' .
         $nomor;
-        
+    
+    $request->validate([
+        'tanggal_kedaluwarsa' => [
+            'required',
+            'date_format:Y-m-d',
+            'regex:/^\d{4}-\d{2}-\d{2}$/',
+            'before:2100-01-01',
+        ]
+    ], [
+        'tanggal_kedaluwarsa.required' => 'Tanggal wajib diisi',
+        'tanggal_kedaluwarsa.date_format' => 'Masukkan tanggal yang valid',
+        'tanggal_kedaluwarsa.regex' => 'Masukkan tanggal yang valid',
+        'tanggal_kedaluwarsa.before' => 'Tanggal tidak masuk akal',
+    ]);
     DataDarahPendonor::create([
         'kode_kantong' => $kodeKantong,
         'golongan' => $request->golongan,
@@ -410,6 +531,7 @@ Route::middleware(['auth'])->group(function () {
         'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
         'asal_darah' => 'PMI',
         'status' => 'Belum diuji',
+        'input_by' => auth()->id(),
     ]);
         return redirect()
             ->route('pmi')
@@ -461,6 +583,7 @@ Route::middleware(['auth'])->group(function () {
         'tekanan_darah' => $request->tekanan_darah,
         'berat_badan' => $request->berat_badan,
         'suhu_badan' => $request->suhu_badan,
+        'input_by' => auth()->id(),
     ]);
     session([
         'nik_pendonor' => $pendonor->nik_pendonor
@@ -495,18 +618,30 @@ Route::middleware(['auth'])->group(function () {
         ]);
 
         $nomor = str_pad(
-    DataDarahPendonor::count() + 1,
-    4,
-    '0',
-    STR_PAD_LEFT
-);
+        DataDarahPendonor::count() + 1,
+        4,
+        '0',
+        STR_PAD_LEFT
+    );
 
-$kodeKantong =
-    'UBD-' .
-    strtoupper($request->golongan) .
-    '-' .
-    $nomor;
-
+    $kodeKantong =
+        'UBD-' .
+        strtoupper($request->golongan) .
+        '-' .
+        $nomor;
+        $request->validate([
+        'tanggal_kedaluwarsa' => [
+            'required',
+            'date_format:Y-m-d',
+            'regex:/^\d{4}-\d{2}-\d{2}$/',
+            'before:2100-01-01',
+        ]
+    ], [
+        'tanggal_kedaluwarsa.required' => 'Tanggal wajib diisi',
+        'tanggal_kedaluwarsa.date_format' => 'Masukkan tanggal yang valid',
+        'tanggal_kedaluwarsa.regex' => 'Masukkan tanggal yang valid',
+        'tanggal_kedaluwarsa.before' => 'Tanggal tidak masuk akal',
+    ]);
     DataDarahPendonor::create([
         'nik_pendonor' => session('nik_pendonor'),
         'kode_kantong' => $kodeKantong,
@@ -516,6 +651,7 @@ $kodeKantong =
         'tanggal_kedaluwarsa' => $request->tanggal_kedaluwarsa,
         'asal_darah' => 'Unit Bank Darah',
         'status' => 'Belum diuji',
+        'input_by' => auth()->id(),
     ]);
 
         return redirect()
@@ -542,7 +678,7 @@ $kodeKantong =
 
 
     Route::get('/darah/{id}/label', function ($id) {
-        if (auth()->user()->role != 'petugas') {
+        if (!in_array(auth()->user()->role, ['petugas', 'dokter'])) {
             abort(403);
         }
 
@@ -571,37 +707,6 @@ $kodeKantong =
     |--------------------------------------------------------------------------
     */
 
-   Route::get('/dashboardDokter', function () {
-        if (auth()->user()->role != 'dokter') {
-            abort(403);
-        }
-
-        $menunggu = PermintaanDokter::where('dokter_id', auth()->id())
-            ->where('status', 'menunggu')
-            ->count();
-
-        $diterima = PermintaanDokter::where('dokter_id', auth()->id())
-            ->where('status', 'disetujui')
-            ->count();
-
-        $ditolak = PermintaanDokter::where('dokter_id', auth()->id())
-            ->where('status', 'ditolak')
-            ->count();
-
-        $stok = [
-            'A' => DataDarahPendonor::where('golongan', 'A')->count(),
-            'B' => DataDarahPendonor::where('golongan', 'B')->count(),
-            'AB' => DataDarahPendonor::where('golongan', 'AB')->count(),
-            'O' => DataDarahPendonor::where('golongan', 'O')->count(),
-        ];
-
-        return view('Dokter.dashboardDokter', compact(
-            'menunggu',
-            'diterima',
-            'ditolak',
-            'stok'
-        ));
-    })->name('Dokter.dashboardDokter');
 
 
     Route::get('/permintaanDokter', function () {
@@ -619,8 +724,11 @@ $kodeKantong =
         }
 
         $request->validate([
-            'no_rm' => 'required',
-            'nama' => 'required',
+            'no_rm' => 'required|numeric',
+            'nama' => [
+                'required',
+                'regex:/^[a-zA-Z\s]+$/'
+            ],
             'jenis_kelamin' => 'required',
             'golongan' => 'required',
             'rhesus' => 'required',
@@ -628,16 +736,22 @@ $kodeKantong =
             'jumlah' => 'required|numeric',
             'poli' => 'required',
         ]);
-        $nomor = str_pad(
-            PermintaanDokter::count() + 1,
-            4,
-            '0',
-            STR_PAD_LEFT
+        $last = PermintaanDokter::latest('id')->first();
+
+        $nomor = $last
+        ? $last->id + 1
+        : 1;
+
+        $kode = 'REQ-' .
+        str_pad(
+        $nomor,
+        4,
+        '0',
+        STR_PAD_LEFT
         );
 
-$kodePermintaan = 'REQ-' . $nomor;
         PermintaanDokter::create([
-            'kode_permintaan' => $kodePermintaan,
+            'kode_permintaan' => $kode,
             'dokter_id' => auth()->id(),
             'no_rm' => $request->no_rm,
             'nama' => $request->nama,

@@ -15,5 +15,6 @@ class DataDarahPendonor extends Model
         'status',
         'nik_pendonor',
         'kode_kantong',
+        'kode_permintaan',
     ];
 }

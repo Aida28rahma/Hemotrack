@@ -2,15 +2,16 @@
 
 @section('content')
 
-<div class="w-full min-h-screen bg-[#eefaf8] px-10 py-8">
+<div class="mb-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
 
     {{-- TITLE --}}
-    <h1 class="text-2xl font-bold text-[#0f5c5c] mb-5">
+    <h1 class="text-2xl font-bold text-teal-700 mb-5">
         Status Permintaan Darah
     </h1>
 
+
     {{-- FILTER BAR --}}
-    {{-- FILTER BAR --}}
+
 <form method="GET" action="{{ route('statusDokter') }}"
       class="bg-white rounded-2xl shadow-md px-5 py-3 mb-10 flex items-center justify-between gap-4">
 
@@ -80,7 +81,7 @@
 
         @foreach($requests as $item)
 
-            <div class="bg-white rounded-xl shadow-md w-full min-h-[260px] px-7 py-6 relative">
+            <div class="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.12)] w-full min-h-[260px] px-7 py-6 relative">
 
                 {{-- BADGE --}}
                 <div class="absolute top-5 right-5 px-3 py-1 rounded-md text-xs font-bold
@@ -130,7 +131,7 @@
                     <hr class="my-4">
 
                     <div class="grid grid-cols-[110px_1fr] gap-2">
-                        <span class="text-gray-500 font-semibold">jenis_komponen</span>
+                        <span class="text-gray-500 font-semibold">Komponen</span>
                         <span class="font-bold text-black text-right">{{ $item['jenis_komponen'] }}</span>
                     </div>
 
@@ -143,8 +144,26 @@
                         <span class="text-gray-500 font-semibold">Jumlah</span>
                         <span class="font-bold text-black text-right">{{ $item['jumlah'] }}</span>
                     </div>
+                    @if(strtolower($item->status) == 'ditolak')
 
-                </div>
+                    <hr class="my-4">
+
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+
+                        <p class="text-xs font-bold text-red-700 mb-1">
+                            Alasan Penolakan
+                        </p>
+
+                        <p class="text-sm text-red-600">
+
+                            {{ $item->alasan_penolakan ?? 'Tidak ada alasan' }}
+
+                        </p>
+
+                    </div>
+
+                    @endif
+                </div>      
 
             </div>
 
